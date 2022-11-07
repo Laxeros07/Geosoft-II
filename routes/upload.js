@@ -4,12 +4,14 @@ var R = require("r-integration");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("Upload", { title: "Upload", p: R });
+  res.render("Upload", { title: "Upload", data: "" });
 });
 
 router.post("/", function (req, res, next) {
-  let result = R.executeRCommand("max(1, 2, 3)");
-  res.send("Result: " + result + "<br><a href='/upload'>Zurück</a>");
+  console.log("----------------------");
+  console.log(process.cwd());
+  let result = R.executeRScript("public/rScripts/test.r");
+  res.render("Upload", { title: "Upload", data: result });
 });
 
 module.exports = router;
