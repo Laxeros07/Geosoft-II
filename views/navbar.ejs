@@ -3,7 +3,7 @@
     <!--Titel--> 
     <a class="navbar-brand fs-2 fw-bold" href="/">
 			<i class='fas fa-mountain'></i>
-			Deine<span class="limegreen">Gebirge</span></a>
+			Spacy<span class="limegreen"></span></a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -13,14 +13,14 @@
         <%
         // get current active page
         var home = "";
-        var Uplaod = "";
+        var create = "";
         var edit = "";
         var wikipedia = "";
         switch(title){
           case "Home":
             home = "active";
             break;
-          case "Upload":
+          case "create":
             create = "active";
             break;
           case "Edit":
@@ -36,7 +36,7 @@
           <a class="nav-link <%- home %>" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <%- create %>" aria-current="page" href="/Uplaod">Upload</a>
+          <a class="nav-link <%- create %>" aria-current="page" href="/create">Upload</a>
         </li>
         <li class="nav-item">
           <a class="nav-link <%- edit %>" aria-current="page" href="/edit">Edit</a>
