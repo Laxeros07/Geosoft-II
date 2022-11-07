@@ -4,5 +4,10 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
+}
+
+#map {
+  height: 100%;
+  margin-top: 10px;
 }
