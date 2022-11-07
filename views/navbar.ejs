@@ -13,14 +13,14 @@
         <%
         // get current active page
         var home = "";
-        var create = "";
+        var upload = "";
         var edit = "";
         var wikipedia = "";
         switch(title){
           case "Home":
             home = "active";
             break;
-          case "create":
+          case "upload":
             create = "active";
             break;
           case "Edit":
@@ -36,7 +36,7 @@
           <a class="nav-link <%- home %>" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <%- create %>" aria-current="page" href="/create">Upload</a>
+          <a class="nav-link <%- upload %>" aria-current="page" href="/upload">upload</a>
         </li>
         <li class="nav-item">
           <a class="nav-link <%- edit %>" aria-current="page" href="/edit">Edit</a>
