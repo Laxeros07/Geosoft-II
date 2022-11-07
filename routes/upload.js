@@ -10,6 +10,7 @@ router.get("/", function (req, res, next) {
 router.post("/", function (req, res, next) {
   let result = R.executeRCommand("max(1, 2, 3)");
   console.log(result);
+  res.send("Result: " + result)
 });
 
 module.exports = router;
