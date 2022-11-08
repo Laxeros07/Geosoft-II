@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title= title
+    title= "Apollo 13 - " + title
     link(rel='stylesheet' href='/stylesheets/style.css')
     link(rel='stylesheet' href='/stylesheets/bootstrap.css')
 
@@ -22,7 +22,7 @@ html
     // Responsive navbar
     nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
       .container.px-5
-        a.navbar-brand(href='#!') Citizen Science
+        a.navbar-brand(href='#!') Apollo 13
         button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
           span.navbar-toggler-icon
         #navbarSupportedContent.collapse.navbar-collapse
@@ -30,11 +30,9 @@ html
             li.nav-item
               a.nav-link.active(aria-current='page' href='/') Home
             li.nav-item
-              a.nav-link(href='/kalibrierung') Kalibrierung
+              a.nav-link(href='/upload') Upload
             li.nav-item
-              a.nav-link(href='/messung') Messung
-            li.nav-item
-              a.nav-link(href='/map') Open Sense Map
+              a.nav-link(href='/karte') Karte
 
     // Page Content
     .container.px-4.px-lg-5
