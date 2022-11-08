@@ -21,8 +21,13 @@
     </form>
     
     <textarea><%= data %></textarea>
+
+    <h2>Trainingsdaten hochladen</h2>
+    <input id="trainingsdatenInput" type='file' accept=".json, .geojson, .gpkg" onClick="uploadTrainingsdaten()"></button>
+    <%- include('footer') -%>
   </body>
 
-  <%- include('footer') -%>
+  <script src="javascripts/trainingsdaten.js"></script>
+  
 </html>
 
