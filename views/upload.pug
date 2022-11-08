@@ -5,14 +5,26 @@ block content
     .container.p-3
         .row.justify-content-md-center
             .col-lg-6.col-xs-12.mb-3
-                .card.text-dark.shadow.p-4
-                    h1 Trainingsdaten
-                    form(method='' action='')
-                        form-group
-                            label.col-form-label(for='trainingsdaten') Trainingsdaten laden
-                            div
-                            input.form-control(type='file' name="trainingsdaten" accept=".json, .geojson, .gpck")
-                        button.btn.btn-primary.mb-2(type='submit') Hochladen
+                .col.justify-content-md-center
+                    .row.mb-3
+                        .card.text-dark.shadow.p-4
+                            h1 Trainingsdaten
+                            form(method='' action='')
+                                form-group
+                                    label.col-form-label(for='trainingsdaten') Trainingsdaten laden
+                                    div
+                                    input.form-control(type='file' name="trainingsdaten" accept=".json, .geojson, .gpck")
+                                button.btn.btn-primary.mb-2(type='submit') Hochladen
+
+                    .row.mb-3
+                        .card.text-dark.shadow.p-4
+                            h1 Rasterdaten
+                            form(method='' action='')
+                                form-group
+                                    label.col-form-label(for='rasterdaten') Rasterdaten laden
+                                    div
+                                    input.form-control(type='file' name="rasterdaten" accept=".tiff, .geotiff")
+                                button.btn.btn-primary.mb-2(type='submit') Hochladen
 
 
             .col-lg-6.col-xs-12.mb-3
