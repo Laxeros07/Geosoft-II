@@ -8,8 +8,6 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/", function (req, res, next) {
-  console.log("----------------------");
-  console.log(process.cwd());
   let result = R.executeRScript("public/rScripts/test.r");
   res.render("Upload", { title: "Upload", data: result });
 });
