@@ -1,49 +1,26 @@
+<!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <!--Titel--> 
-    <a class="navbar-brand fs-2 fw-bold" href="/">
-			<i class='fas fa-mountain'></i>
-			Apollo 13<span class="limegreen"></span></a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <div class="container px-5">
+    <a class="navbar-brand" href="#!">Start Bootstrap</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <%
-        // get current active page
-        var home = "";
-        var upload = "";
-        var edit = "";
-        var wikipedia = "";
-        switch(title){
-          case "Home":
-            home = "active";
-            break;
-          case "upload":
-            create = "active";
-            break;
-          case "Edit":
-            edit = "active";
-            break;
-          case "Manuell":
-            edit = "active";
-            break;
-        }
-        %>
-
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link <%- home %>" aria-current="page" href="/">Home</a>
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link <%- upload %>" aria-current="page" href="/upload">upload</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link <%- edit %>" aria-current="page" href="/edit">Edit</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link <%- edit %>" aria-current="page" href="/edit">Edit</a>
-        </li>        
+        <li class="nav-item"><a class="nav-link" href="/Uplaod">Upload</a></li>
+        <li class="nav-item"><a class="nav-link" href="/edit">Edit</a></li>
+        <li class="nav-item"><a class="nav-link" href="/">Services</a></li>
       </ul>
     </div>
   </div>
