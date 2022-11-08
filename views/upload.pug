@@ -2,17 +2,34 @@ extends layout
 
 block content
 
+<<<<<<< HEAD
     .container
         .row.gx-4.gx-lg-5justify-content-md-center.my-5 
+=======
+    .container.p-3
+        .row.justify-content-md-center
+>>>>>>> 2a4ffc7f6362da05764a527f1daa7fd8e1283ecc
             .col-lg-6.col-xs-12.mb-3
-                .card.text-dark.shadow.p-4
-                    h1 Trainingsdaten
-                    form(method='' action='')
-                        form-group
-                            label.col-form-label(for='trainingsdaten') Trainingsdaten laden
-                            div
-                            input.form-control(type='file' name="trainingsdaten" accept=".json, .geojson, .gpck")
-                        button.btn.btn-primary.mb-2(type='submit') Hochladen
+                .col.justify-content-md-center
+                    .row.mb-3
+                        .card.text-dark.shadow.p-4
+                            h1 Trainingsdaten
+                            form(method='' action='')
+                                form-group
+                                    label.col-form-label(for='trainingsdaten') Trainingsdaten laden
+                                    div
+                                    input.form-control(type='file' name="trainingsdaten" accept=".json, .geojson, .gpck")
+                                button.btn.btn-primary.mb-2(type='submit') Hochladen
+
+                    .row.mb-3
+                        .card.text-dark.shadow.p-4
+                            h1 Rasterdaten
+                            form(method='' action='')
+                                form-group
+                                    label.col-form-label(for='rasterdaten') Rasterdaten laden
+                                    div
+                                    input.form-control(type='file' name="rasterdaten" accept=".tiff, .geotiff")
+                                button.btn.btn-primary.mb-2(type='submit') Hochladen
 
 
             .col-lg-6.col-xs-12.mb-3
@@ -22,7 +39,7 @@ block content
                         form-group
                             select.form-control(name='select' value=selected) Skript auswählen
                                 option(value='flaeche') Fläche berechnen
-                                option(value='max') max(1,2,3)
+                                //option(value='max') max(1,2,3)
                         form-group
                             label.col-form-label(for='radius') Radius
                             div
