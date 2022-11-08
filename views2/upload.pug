@@ -1,0 +1,13 @@
+extends layout
+
+block content
+
+    script.
+        // Set active Button
+        document.querySelectorAll(".active")[0].classList.remove("active");
+        document.querySelectorAll(".nav-link")[1].classList.add("active");
+
+    div
+        form(method='post' action='')
+        button(type='submit') Test Skript
+textarea data

@@ -1,4 +1,4 @@
-#map {
-  height: 100%;
-  margin-top: 10px;
+body {
+  min-height: 100%;
+  text-align: justify;
 }
