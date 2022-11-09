@@ -8,6 +8,9 @@ services:
         build:
           context: .
           dockerfile: ./Dockerfile
+        command: npm start
+        volumes:
+            - ./src:/usr/app/  
         ports: 
             - '3000:3000'
         depends_on: 
