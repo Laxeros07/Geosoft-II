@@ -4,7 +4,7 @@ FROM node:14
 WORKDIR /usr/src/app
 
 # Copy app code source from our local folder into the docker /usr/src/app working directory
-COPY ./src .
+COPY . .
 
 # Install app dependencies
 RUN npm install
