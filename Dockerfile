@@ -4,13 +4,13 @@ FROM node:14
 WORKDIR /usr/src/app
 
 # Copy app code source from our local folder into the docker /usr/src/app working directory
-COPY package*.json ./
+COPY ./src .
 
 # Install app dependencies
 RUN npm install
 
 # Copy app code sour /package.json
-COPY . .
+COPY package*.json ./
 
 # Expose app on a given port
 EXPOSE 3000
