@@ -1,5 +1,5 @@
 # Geosoft-II
-Hier wird für Christian Knoth und Edzer Pebesma programmiert :) Irgandwas mit Fernerkundung und Machine Learning
+Hier wird für Christian Knoth und Edzer Pebesma programmiert :) Irgend etwas mit Fernerkundung und Machine Learning
 
 Abgabe Pflichtenheft per Email bis Dienstag, 01.11.22 um 12:00 Uhr, Präsentation am Mittwoch danach.
 
