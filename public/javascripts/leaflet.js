@@ -5,7 +5,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 
-let x = document.getElementById("demo");
+let x = document.getElementById("coordinates");
 /**
  * Returns the Geolocation of the browser
  * @returns {coordinates}
