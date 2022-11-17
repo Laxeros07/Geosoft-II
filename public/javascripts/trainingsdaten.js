@@ -1,4 +1,4 @@
-var map = L.map("map").setView([51.97, 7.62], 13);
+
 //var trainingsdaten = null;
 var trainingsdatenInput = document.getElementById("trainingsdatenInput");
 var trainingsdatenHochladen = document.getElementById(
