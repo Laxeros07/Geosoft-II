@@ -72,5 +72,8 @@ var map = L.map('map').setView([51.97, 7.62], 13);
           layer.bindTooltip(name, {permanent:true, direction:'top'})
       };
       drawnItems.addLayer(layer);
+      // get json
+      var json = drawnItems.toGeoJSON();
+      console.log(json);
   });
 function uploadTrainingsdaten() {}
