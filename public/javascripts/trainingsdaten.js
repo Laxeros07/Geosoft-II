@@ -1,4 +1,4 @@
-//var trainingsdaten = null;
+var trainingsdaten = null;
 var trainingsdatenInput = document.getElementById("trainingsdatenInput");
 var trainingsdatenHochladen = document.getElementById(
   "trainingsdatenHochladen"
@@ -96,11 +96,6 @@ map.on(L.Draw.Event.CREATED, function (e) {
   console.log(json);
 });
 
-function uploadTrainingsdaten() {
-  if (trainingsdaten != null) {
-    console.log(trainingsdaten);
-  }
-}
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
  * Quelle: https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
@@ -130,5 +125,20 @@ function uploadTrainingsdaten() {
       "Content-Type": "application/json",
     },
     body: trainingsdaten,
-  });
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+      showTrainingsdaten(data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+function showTrainingsdaten(data) {
+  var jsonLayer = L.geoJSON(data).addTo(map);
+  alert("Hochladen erfolgreich!");
+
+  map.fitBounds(jsonLayer.getBounds());
 }

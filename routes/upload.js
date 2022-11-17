@@ -9,9 +9,11 @@ const client = new MongoClient(url); // mongodb client
 const dbName = "Apollo13"; // database name
 const collectionName = "trainingsdaten"; // collection nam
 
+var trainingsdaten = null;
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("Upload", { title: "Upload", trainingsdaten: null, radius: "" });
+  res.render("Upload", { title: "Upload", radius: "" });
 });
 
 // Wird ausgeführt, wenn der Speichern Button gedrückt wurde
@@ -26,15 +28,24 @@ router.post("/", function (req, res, next) {
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
 
+    trainingsdaten = req.body;
+
     // Insert the document in the database
-    collection.insertMany(req.body.features, () => loadPage(req.body, res));
+    collection.insertMany(trainingsdaten.features, function (err, result) {
+      console.log(
+        `Inserted ${result.insertedCount} document into the collection`
+      );
+      console.log(trainingsdaten);
+      res.send(trainingsdaten);
+    });
   });
 });
 
 function loadPage(features, res) {
+  console.log("Load Page");
+  console.log(features);
   res.render("Upload", {
     title: "Upload",
-    trainingsdaten: features,
     radius: "",
   });
 }
