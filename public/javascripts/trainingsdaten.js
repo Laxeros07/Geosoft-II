@@ -1,4 +1,3 @@
-
 //var trainingsdaten = null;
 var trainingsdatenInput = document.getElementById("trainingsdatenInput");
 var trainingsdatenHochladen = document.getElementById(
@@ -80,27 +79,28 @@ map.on(L.Draw.Event.CREATED, function (e) {
   }
   drawnItems.addLayer(layer);
 });
-  map.addControl(drawControl);
-  map.on(L.Draw.Event.CREATED, function(e) {
-      var layer = e.layer; 
-      var name = getName(layer);
-      if (name == 'geometry name') {
-          layer.bindPopup('-- no name provided --');
-      } else if (name == '') {
-          layer.bindPopup('-- no name provided --');
-      } else {
-          layer.bindTooltip(name, {permanent:true, direction:'top'})
-      };
-      drawnItems.addLayer(layer);
-      // get json
-      var json = drawnItems.toGeoJSON();
-      console.log(json);
-  });
-function uploadTrainingsdaten() {}
-if (trainingsdaten != null) {
-  console.log(trainingsdaten);
-}
+map.addControl(drawControl);
+map.on(L.Draw.Event.CREATED, function (e) {
+  var layer = e.layer;
+  var name = getName(layer);
+  if (name == "geometry name") {
+    layer.bindPopup("-- no name provided --");
+  } else if (name == "") {
+    layer.bindPopup("-- no name provided --");
+  } else {
+    layer.bindTooltip(name, { permanent: true, direction: "top" });
+  }
+  drawnItems.addLayer(layer);
+  // get json
+  var json = drawnItems.toGeoJSON();
+  console.log(json);
+});
 
+function uploadTrainingsdaten() {
+  if (trainingsdaten != null) {
+    console.log(trainingsdaten);
+  }
+}
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
  * Quelle: https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
