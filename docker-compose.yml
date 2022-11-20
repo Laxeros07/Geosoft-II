@@ -3,16 +3,18 @@ version: '3'
 services:
     appservice:
         container_name: AppGeosoft2
-        #build: .
-        image: felioxx/geosoft2image
         build:
-          context: .
           dockerfile: ./Dockerfile
-        command: npm start ##
         ports:
             - '3000:3000'
+
         depends_on:
             - mongoservice
+
+    # rservice:
+    #     container_name: RService
+    #     build:
+    #         dockerfile: ./r-backend/Dockerfile
 
     mongoservice:
         container_name: mongo
