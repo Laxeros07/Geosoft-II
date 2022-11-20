@@ -11,10 +11,14 @@ services:
         depends_on:
             - mongoservice
 
-    # rservice:
-    #     container_name: RService
-    #     build:
-    #         dockerfile: ./r-backend/Dockerfile
+    rservice:
+        container_name: RService
+        build:
+            dockerfile: ./r-backend/Dockerfile
+        ports:
+            - '7001:8000'
+        restart: always
+
 
     mongoservice:
         container_name: mongo
