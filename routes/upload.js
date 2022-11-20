@@ -13,7 +13,7 @@ var trainingsdaten = null;
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("Upload", { title: "Upload", radius: "" });
+  res.render("upload", { title: "Upload", radius: "" });
 });
 
 // Wird ausgeführt, wenn der Speichern Button gedrückt wurde
