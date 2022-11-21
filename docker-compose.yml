@@ -1,30 +1,38 @@
 # yml template to dockerise a node.js app
 version: '3'
-services: 
-    appservice: 
+services:
+    appservice:
         container_name: AppGeosoft2
-        #build: .
-        image: felioxx/geosoft2image
         build:
-          context: .
           dockerfile: ./Dockerfile
-        command: npm start ##
-        ports: 
+        ports:
             - '3000:3000'
-        depends_on: 
+
+        depends_on:
             - mongoservice
+
+    rservice:
+        container_name: RService
+        build:
+            dockerfile: ./r-backend/Dockerfile
+        ports:
+            - '7001:8000'
+        restart: always
+
+
     mongoservice:
-        container_name: mongo 
+        container_name: mongo
         image: mongo # image retrieved from docker hub
         ports:
             - '27017:27017'
         volumes:
             - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
             #- ./mongo-volume:/data/db
-    mongoexpressservice: 
+
+    mongoexpressservice:
         image: mongo-express # image retrieved from docker hub
         restart: always
-        ports: 
+        ports:
             - '8081:8081'
-        depends_on: 
+        depends_on:
             - mongoservice

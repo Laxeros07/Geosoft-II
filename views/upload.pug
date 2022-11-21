@@ -1,71 +1,41 @@
 extends layout
 
 block content
-
-    .container
-        .row.gx-4.gx-lg-5justify-content-md-center.my-5 
-
-    .container.p-3
-        .row.justify-content-md-center
-            .col-lg-6.col-xs-12.mb-3
-                .col.justify-content-md-center
-                    .row.mb-3
-                        .card.text-dark.shadow.p-4
-                            h1 Trainingsdaten
-                            form(method='' action='')
-                                form-group
-                                    label.col-form-label(for='trainingsdaten') Trainingsdaten laden
-                                    div
-                                    input.form-control(type='file' name="trainingsdaten" accept=".json, .geojson, .gpck")
-                                button.btn.btn-primary.mb-2(type='submit') Hochladen
-
-                    .row.mb-3
-                        .card.text-dark.shadow.p-4
-                            h1 Rasterdaten
-                            form(method='' action='')
-                                form-group
-                                    label.col-form-label(for='rasterdaten') Rasterdaten laden
-                                    div
-                                    input.form-control(type='file' name="rasterdaten" accept=".tiff, .geotiff")
-                                button.btn.btn-primary.mb-2(type='submit') Hochladen
-
-
-            .col-lg-6.col-xs-12.mb-3
-                .card.text-dark.shadow.p-4
-                    h3 Trainingsdaten
-                    form(method='' action='')
-                        form-group
-                            label.col-form-label(for='trainingsdaten') Trainingsdaten laden
-                            div
-                            input.form-control(type='file' name="trainingsdaten" accept=".json, .geojson, .gpck")
-                        button.btn.btn-primary.my-2(type='submit') Hochladen
-
-                .card.text-dark.shadow.p-4
-                    h3 Rasterdaten
-                    form(method='' action='')
-                        form-group
-                            label.col-form-label(for='rasterdaten') Rasterdaten laden
-                            div
-                            input.form-control(type='file' name="rasterdaten" accept=".tiff, .geotiff")
-                        button.btn.btn-primary.my-2(type='submit') Hochladen
-
-                .card.text-dark.shadow.p-4
-                    h3 RSkript
-                    form(method='post' action='')
-                        form-group
-                            select.form-control(name='select' value=selected) Skript auswählen
-                                option(value='flaeche') Fläche berechnen
-                                //option(value='max') max(1,2,3)
-                        form-group
-                            label.col-form-label(for='radius') Radius
-                            div
-                                input.form-control(type='number' name='radius' value=radius)
-                        button.btn.btn-primary.my-2(type='submit') Skript ausführen
-                    label(for='ergebnis') Ergebnis
-                    textarea.from-control(name = 'ergebnis')=data
-        .col-lg-12.col-xs-12.mb-3
-            .card.text-dark.shadow.p-4
-                .leaflet-container#map
+    .row.gx-4.gx-lg-3.justify-content-md-center.mt-3 
+        .col-lg-4.col-xs-12.mb-3
+            .card.text-dark.shadow.p-4.h-100
+                h3 Trainingsdaten
+                div
+                    label.col-form-label(for='trainingsdaten') Trainingsdaten laden
+                    input#trainingsdatenInput.form-control(type='file' name="trainingsdaten" accept=".json, .geojson, .gpkg")
+                    button#trainingsdatenHochladen.btn.btn-primary.my-2 Hochladen
+        .col-lg-4.col-xs-12.mb-3
+            .card.text-dark.shadow.p-4.h-100
+                h3 Rasterdaten
+                form(method='' action='')
+                    form-group
+                        label.col-form-label(for='rasterdaten') Rasterdaten laden
+                        div
+                        input.form-control(type='file' name="rasterdaten" accept=".tiff, .geotiff")
+                    button.btn.btn-primary.my-2(type='submit') Hochladen
+        .col-lg-4.col-xs-12.mb-3
+            .card.text-dark.shadow.p-4.h-100
+                h3 RSkript
+                form(method='post' action='')
+                    form-group
+                        select.form-control(name='select' value=selected) Skript auswählen
+                            option(value='flaeche') Fläche berechnen
+                            //option(value='max') max(1,2,3)
+                    form-group
+                        label.col-form-label(for='radius') Radius
+                        div
+                            input.form-control(type='number' name='radius' value=radius)
+                    button.btn.btn-primary.my-2(type='submit') Skript ausführen
+                label(for='ergebnis') Ergebnis
+                textarea.from-control(name = 'ergebnis')=data
+    .col-lg-12.col-xs-12.mb-3
+        .card.text-dark.shadow.p-4
+            .leaflet-container#map
 
 
     script.
