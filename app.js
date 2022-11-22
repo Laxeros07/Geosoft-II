@@ -31,7 +31,6 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/upload", uploadRouter);
 app.use("/result", resultRouter);
-app.use("/karte", karteRouter);
 app.use("/demo", demoRouter);
 
 // catch 404 and forward to error handler
