@@ -1,17 +1,17 @@
-{
-  "type": "FeatureCollection",
-  "name": "trainingsgebiete",
-  "crs": {
-    "type": "name",
-    "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" }
+var trainingsgebiete = {
+  type: "FeatureCollection",
+  name: "trainingsgebiete",
+  crs: {
+    type: "name",
+    properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
   },
-  "features": [
+  features: [
     {
-      "type": "Feature",
-      "properties": { "id": 32, "ClassID": 17, "Label": "See" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 32, ClassID: 17, Label: "See" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.614705626512126, 51.956706491818174],
@@ -25,18 +25,18 @@
               [7.610189976049825, 51.954720432449456],
               [7.611560109309753, 51.955445889483165],
               [7.612467098932525, 51.956183227227086],
-              [7.614705626512126, 51.956706491818174]
-            ]
-          ]
-        ]
-      }
+              [7.614705626512126, 51.956706491818174],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 33, "ClassID": 17, "Label": "See" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 33, ClassID: 17, Label: "See" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.599277154099265, 51.947286794778769],
@@ -47,18 +47,18 @@
               [7.59745352602795, 51.944562801463825],
               [7.597395633073305, 51.945597700507022],
               [7.597328091292886, 51.946525520727675],
-              [7.599277154099265, 51.947286794778769]
-            ]
-          ]
-        ]
-      }
+              [7.599277154099265, 51.947286794778769],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 21, "ClassID": 11, "Label": "Siedlung" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 21, ClassID: 11, Label: "Siedlung" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.626670170472068, 51.961017246094748],
@@ -78,18 +78,18 @@
               [7.62551231137917, 51.959703253192366],
               [7.625473716076074, 51.960214585324891],
               [7.626187729183362, 51.960505923117729],
-              [7.626670170472068, 51.961017246094748]
-            ]
-          ]
-        ]
-      }
+              [7.626670170472068, 51.961017246094748],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 3, "ClassID": 1, "Label": "Laubwald" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 3, ClassID: 1, Label: "Laubwald" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.683262052819123, 51.926373223431732],
@@ -97,18 +97,18 @@
               [7.684947106277132, 51.926274927436459],
               [7.68495849177347, 51.925727274379113],
               [7.6832848238118, 51.925706210666533],
-              [7.683262052819123, 51.926373223431732]
-            ]
-          ]
-        ]
-      }
+              [7.683262052819123, 51.926373223431732],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 1, "ClassID": 1, "Label": "Laubwald" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 1, ClassID: 1, Label: "Laubwald" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.739233152816242, 51.90918219422381],
@@ -121,18 +121,18 @@
               [7.74845540484994, 51.908676476067377],
               [7.747908901025721, 51.905852778368576],
               [7.740280618479327, 51.905332973872987],
-              [7.739233152816242, 51.90918219422381]
-            ]
-          ]
-        ]
-      }
+              [7.739233152816242, 51.90918219422381],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 2, "ClassID": 1, "Label": "Laubwald" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 2, ClassID: 1, Label: "Laubwald" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.563896509212578, 52.006202634980085],
@@ -145,18 +145,18 @@
               [7.562211455754567, 52.004660707582111],
               [7.56198374582781, 52.005046194411868],
               [7.562405009192312, 52.00564194025452],
-              [7.563896509212578, 52.006202634980085]
-            ]
-          ]
-        ]
-      }
+              [7.563896509212578, 52.006202634980085],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 31, "ClassID": 16, "Label": "Fliessgewaesser" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 31, ClassID: 16, Label: "Fliessgewaesser" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.662642918951184, 51.974245850842223],
@@ -169,18 +169,18 @@
               [7.663303277738782, 51.971748924156067],
               [7.663030025826673, 51.972562544763356],
               [7.662870628877943, 51.973320040324559],
-              [7.662642918951184, 51.974245850842223]
-            ]
-          ]
-        ]
-      }
+              [7.662642918951184, 51.974245850842223],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 29, "ClassID": 16, "Label": "Fliessgewaesser" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 29, ClassID: 16, Label: "Fliessgewaesser" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.646646296596433, 51.951150986793884],
@@ -197,18 +197,18 @@
               [7.64791008668994, 51.950680828033398],
               [7.647374968362059, 51.950821174448159],
               [7.646600754611082, 51.950933451263715],
-              [7.646646296596433, 51.951150986793884]
-            ]
-          ]
-        ]
-      }
+              [7.646646296596433, 51.951150986793884],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 30, "ClassID": 16, "Label": "Fliessgewaesser" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 30, ClassID: 16, Label: "Fliessgewaesser" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.637469586548086, 51.938202276475032],
@@ -222,18 +222,18 @@
               [7.637697296474843, 51.93608942216801],
               [7.637344346088369, 51.937100235313956],
               [7.637082479672597, 51.937626691474954],
-              [7.637469586548086, 51.938202276475032]
-            ]
-          ]
-        ]
-      }
+              [7.637469586548086, 51.938202276475032],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 23, "ClassID": 11, "Label": "Siedlung" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 23, ClassID: 11, Label: "Siedlung" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.63017148339549, 51.963843410101006],
@@ -256,18 +256,18 @@
               [7.627336494807352, 51.9635838442927],
               [7.62778052916453, 51.963899532240305],
               [7.628543357419169, 51.964376567587159],
-              [7.63017148339549, 51.963843410101006]
-            ]
-          ]
-        ]
-      }
+              [7.63017148339549, 51.963843410101006],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 22, "ClassID": 11, "Label": "Siedlung" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 22, ClassID: 11, Label: "Siedlung" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.635232336517685, 51.958935958851129],
@@ -292,18 +292,18 @@
               [7.634446737270371, 51.958788621772115],
               [7.634264569328963, 51.958157171663146],
               [7.635016012087266, 51.958213300921877],
-              [7.635232336517685, 51.958935958851129]
-            ]
-          ]
-        ]
-      }
+              [7.635232336517685, 51.958935958851129],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 8, "ClassID": 3, "Label": "Mischwald" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 8, ClassID: 3, Label: "Mischwald" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.636228923244011, 52.002469064248771],
@@ -316,18 +316,18 @@
               [7.640373243911006, 52.000632609669083],
               [7.640077221006221, 51.999553131741905],
               [7.636798198060905, 51.999412937893432],
-              [7.636228923244011, 52.002469064248771]
-            ]
-          ]
-        ]
-      }
+              [7.636228923244011, 52.002469064248771],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 6, "ClassID": 3, "Label": "Mischwald" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 6, ClassID: 3, Label: "Mischwald" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.578618311774239, 52.008272326170484],
@@ -339,18 +339,18 @@
               [7.577388678169745, 52.003366236036427],
               [7.576022418609197, 52.003842851234246],
               [7.574701701034002, 52.004207318255141],
-              [7.578618311774239, 52.008272326170484]
-            ]
-          ]
-        ]
-      }
+              [7.578618311774239, 52.008272326170484],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 7, "ClassID": 3, "Label": "Mischwald" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 7, ClassID: 3, Label: "Mischwald" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.478425944000718, 51.962442526121762],
@@ -370,18 +370,18 @@
               [7.485439409744864, 51.959355603770767],
               [7.481067379151111, 51.958766258066078],
               [7.480110997458726, 51.960057195698425],
-              [7.478425944000718, 51.962442526121762]
-            ]
-          ]
-        ]
-      }
+              [7.478425944000718, 51.962442526121762],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 9, "ClassID": 5, "Label": "Gruenland" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 9, ClassID: 5, Label: "Gruenland" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.593214518079428, 51.942626400919671],
@@ -391,18 +391,18 @@
               [7.59310066311605, 51.941643787272483],
               [7.592371991350424, 51.941756087064405],
               [7.592144281423666, 51.942022797943508],
-              [7.593214518079428, 51.942626400919671]
-            ]
-          ]
-        ]
-      }
+              [7.593214518079428, 51.942626400919671],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 10, "ClassID": 5, "Label": "Gruenland" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 10, ClassID: 5, Label: "Gruenland" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.625435472715686, 51.983343814485465],
@@ -433,18 +433,18 @@
               [7.625572098671741, 51.982530389654549],
               [7.625731495620471, 51.982782833424288],
               [7.625640411649768, 51.983105398392929],
-              [7.625435472715686, 51.983343814485465]
-            ]
-          ]
-        ]
-      }
+              [7.625435472715686, 51.983343814485465],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 13, "ClassID": 5, "Label": "Gruenland" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 13, ClassID: 5, Label: "Gruenland" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.538888622303147, 52.01791823344152],
@@ -468,18 +468,18 @@
               [7.539548981090745, 52.016951283855924],
               [7.538729225354417, 52.017203533588855],
               [7.537795614654708, 52.017231561249162],
-              [7.538888622303147, 52.01791823344152]
-            ]
-          ]
-        ]
-      }
+              [7.538888622303147, 52.01791823344152],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 14, "ClassID": 5, "Label": "Gruenland" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 14, ClassID: 5, Label: "Gruenland" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.589053119167933, 51.941057718171308],
@@ -500,18 +500,18 @@
               [7.588347218394984, 51.939611814348993],
               [7.588119508468226, 51.939794309634216],
               [7.58825613442428, 51.940454094086938],
-              [7.589053119167933, 51.941057718171308]
-            ]
-          ]
-        ]
-      }
+              [7.589053119167933, 51.941057718171308],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 11, "ClassID": 5, "Label": "Gruenland" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 11, ClassID: 5, Label: "Gruenland" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.73155114495902, 52.015502572085722],
@@ -527,18 +527,18 @@
               [7.73567269463334, 52.012867793441778],
               [7.733486679336462, 52.012951884518827],
               [7.732086263286901, 52.013197149257557],
-              [7.73155114495902, 52.015502572085722]
-            ]
-          ]
-        ]
-      }
+              [7.73155114495902, 52.015502572085722],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 12, "ClassID": 5, "Label": "Gruenland" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 12, ClassID: 5, Label: "Gruenland" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.729877476997349, 52.01910411952516],
@@ -553,18 +553,18 @@
               [7.733816858730264, 52.015880958404473],
               [7.731972408323525, 52.016315398009084],
               [7.731334820528602, 52.017086167570682],
-              [7.729877476997349, 52.01910411952516]
-            ]
-          ]
-        ]
-      }
+              [7.729877476997349, 52.01910411952516],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 27, "ClassID": 12, "Label": "Industriegebiet" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 27, ClassID: 12, Label: "Industriegebiet" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.636220384121786, 51.931028433208269],
@@ -572,18 +572,18 @@
               [7.637108452836142, 51.929736659804682],
               [7.635947132209677, 51.929596247411588],
               [7.635264002429403, 51.930733575162982],
-              [7.636220384121786, 51.931028433208269]
-            ]
-          ]
-        ]
-      }
+              [7.636220384121786, 51.931028433208269],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 28, "ClassID": 12, "Label": "Industriegebiet" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 28, ClassID: 12, Label: "Industriegebiet" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.638565796367394, 51.929301379956136],
@@ -592,18 +592,18 @@
               [7.640478559752162, 51.929343503996961],
               [7.640820124642298, 51.928515057269834],
               [7.639317239125694, 51.928290391114672],
-              [7.638565796367394, 51.929301379956136]
-            ]
-          ]
-        ]
-      }
+              [7.638565796367394, 51.929301379956136],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 25, "ClassID": 12, "Label": "Industriegebiet" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 25, ClassID: 12, Label: "Industriegebiet" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.643393246814663, 51.92910480057617],
@@ -613,18 +613,18 @@
               [7.646535643803923, 51.929764742230574],
               [7.647196002591523, 51.929034593446062],
               [7.644258544536344, 51.92823422440015],
-              [7.643393246814663, 51.92910480057617]
-            ]
-          ]
-        ]
-      }
+              [7.643393246814663, 51.92910480057617],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 26, "ClassID": 12, "Label": "Industriegebiet" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 26, ClassID: 12, Label: "Industriegebiet" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.643962521631556, 51.933064304935527],
@@ -646,18 +646,18 @@
               [7.644372399499721, 51.932657137979248],
               [7.643962521631556, 51.932797540795306],
               [7.643825895675501, 51.932895822505159],
-              [7.643962521631556, 51.933064304935527]
-            ]
-          ]
-        ]
-      }
+              [7.643962521631556, 51.933064304935527],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 19, "ClassID": 6, "Label": "Acker_bepflanzt" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 19, ClassID: 6, Label: "Acker_bepflanzt" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.584695651418345, 51.976104091446729],
@@ -665,36 +665,36 @@
               [7.586349858124649, 51.97522896327397],
               [7.585513024143813, 51.974881304872191],
               [7.58397558496972, 51.975768427867024],
-              [7.584695651418345, 51.976104091446729]
-            ]
-          ]
-        ]
-      }
+              [7.584695651418345, 51.976104091446729],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 20, "ClassID": 6, "Label": "Acker_bepflanzt" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 20, ClassID: 6, Label: "Acker_bepflanzt" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.589969651623147, 51.97736280747344],
               [7.592927762439125, 51.977494670915505],
               [7.593180758758913, 51.976571618670555],
               [7.590281031709041, 51.976176019029488],
-              [7.589969651623147, 51.97736280747344]
-            ]
-          ]
-        ]
-      }
+              [7.589969651623147, 51.97736280747344],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 17, "ClassID": 6, "Label": "Acker_bepflanzt" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 17, ClassID: 6, Label: "Acker_bepflanzt" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.589444197728205, 51.980311660826914],
@@ -702,18 +702,18 @@
               [7.593414293823332, 51.980479475911764],
               [7.59364782888775, 51.980191792524273],
               [7.589619349026518, 51.979976028771198],
-              [7.589444197728205, 51.980311660826914]
-            ]
-          ]
-        ]
-      }
+              [7.589444197728205, 51.980311660826914],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 18, "ClassID": 6, "Label": "Acker_bepflanzt" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 18, ClassID: 6, Label: "Acker_bepflanzt" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.523295390731449, 51.982427283577834],
@@ -721,18 +721,18 @@
               [7.527411446241838, 51.981204669585644],
               [7.526156195270584, 51.980329641044648],
               [7.521777412812723, 51.981312548633163],
-              [7.523295390731449, 51.982427283577834]
-            ]
-          ]
-        ]
-      }
+              [7.523295390731449, 51.982427283577834],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 15, "ClassID": 6, "Label": "Acker_bepflanzt" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 15, ClassID: 6, Label: "Acker_bepflanzt" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.542990181164139, 51.97770445286433],
@@ -741,18 +741,18 @@
               [7.548069568815257, 51.97577442188156],
               [7.546415362108954, 51.975354838926656],
               [7.54466384912581, 51.976397795016048],
-              [7.542990181164139, 51.97770445286433]
-            ]
-          ]
-        ]
-      }
+              [7.542990181164139, 51.97770445286433],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 16, "ClassID": 6, "Label": "Acker_bepflanzt" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 16, ClassID: 6, Label: "Acker_bepflanzt" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.552351044996278, 51.973328797365028],
@@ -760,18 +760,18 @@
               [7.550229768161135, 51.972045989958261],
               [7.54993784933061, 51.972237813961783],
               [7.550755222056078, 51.972609470631781],
-              [7.552351044996278, 51.973328797365028]
-            ]
-          ]
-        ]
-      }
+              [7.552351044996278, 51.973328797365028],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 39, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 39, ClassID: 19, Label: "Offenboden" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.550210306905766, 51.974947240293595],
@@ -792,18 +792,18 @@
               [7.550249229416504, 51.973208910378091],
               [7.549782159287664, 51.973592547607211],
               [7.550035155607453, 51.974203962652041],
-              [7.550210306905766, 51.974947240293595]
-            ]
-          ]
-        ]
-      }
+              [7.550210306905766, 51.974947240293595],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 40, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 40, ClassID: 19, Label: "Offenboden" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.48386688735533, 52.014311335001018],
@@ -815,18 +815,18 @@
               [7.480577935198093, 52.011795944298477],
               [7.482232141904396, 52.012311012003245],
               [7.481842916797032, 52.013257283729125],
-              [7.48386688735533, 52.014311335001018]
-            ]
-          ]
-        ]
-      }
+              [7.48386688735533, 52.014311335001018],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 37, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 37, ClassID: 19, Label: "Offenboden" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.404464965452779, 52.005614669367311],
@@ -838,18 +838,18 @@
               [7.40703385116139, 52.005854269572403],
               [7.405126648135299, 52.005279226925218],
               [7.40465957800646, 52.005279226925218],
-              [7.404464965452779, 52.005614669367311]
-            ]
-          ]
-        ]
-      }
+              [7.404464965452779, 52.005614669367311],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 38, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 38, ClassID: 19, Label: "Offenboden" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.424899283589463, 52.002403902861168],
@@ -859,18 +859,18 @@
               [7.428090929469859, 52.001469382768725],
               [7.428324464534278, 52.000438991846494],
               [7.42583342384714, 52.000271251544525],
-              [7.424899283589463, 52.002403902861168]
-            ]
-          ]
-        ]
-      }
+              [7.424899283589463, 52.002403902861168],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 36, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 36, ClassID: 19, Label: "Offenboden" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.513953988154672, 51.941511532687542],
@@ -888,18 +888,18 @@
               [7.515627656116346, 51.93809220212836],
               [7.515024357199928, 51.939303994702563],
               [7.514829744646245, 51.939903879903881],
-              [7.513953988154672, 51.941511532687542]
-            ]
-          ]
-        ]
-      }
+              [7.513953988154672, 51.941511532687542],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 24, "ClassID": 11, "Label": "Siedlung" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 24, ClassID: 11, Label: "Siedlung" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.597192967453884, 52.000986163772446],
@@ -912,18 +912,18 @@
               [7.598640375421634, 51.999232999457995],
               [7.597743611789442, 51.999339547315174],
               [7.597381759797504, 52.000046631214197],
-              [7.597192967453884, 52.000986163772446]
-            ]
-          ]
-        ]
-      }
+              [7.597192967453884, 52.000986163772446],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 5, "ClassID": 1, "Label": "Siedlung" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 5, ClassID: 1, Label: "Siedlung" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.697009052795039, 51.987419143999084],
@@ -936,18 +936,18 @@
               [7.699542016738601, 51.985675137493445],
               [7.698417129024532, 51.985176145359254],
               [7.696600002717195, 51.985118009991758],
-              [7.697009052795039, 51.987419143999084]
-            ]
-          ]
-        ]
-      }
+              [7.697009052795039, 51.987419143999084],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 35, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 35, ClassID: 19, Label: "Offenboden" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.571509342373986, 52.050791874756079],
@@ -958,18 +958,18 @@
               [7.573570325458498, 52.04759900396742],
               [7.57243757139678, 52.048092462539238],
               [7.569841676672012, 52.050037216795026],
-              [7.571509342373986, 52.050791874756079]
-            ]
-          ]
-        ]
-      }
+              [7.571509342373986, 52.050791874756079],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 4, "ClassID": 1, "Label": "Siedlung" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 4, ClassID: 1, Label: "Siedlung" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.59326765997613, 51.994021531103144],
@@ -979,18 +979,18 @@
               [7.59471506794388, 51.990417707519484],
               [7.591694390445967, 51.99179339483527],
               [7.591694390445967, 51.99179339483527],
-              [7.59326765997613, 51.994021531103144]
-            ]
-          ]
-        ]
-      }
+              [7.59326765997613, 51.994021531103144],
+            ],
+          ],
+        ],
+      },
     },
     {
-      "type": "Feature",
-      "properties": { "id": 34, "ClassID": 17, "Label": "See" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      type: "Feature",
+      properties: { id: 34, ClassID: 17, Label: "See" },
+      geometry: {
+        type: "MultiPolygon",
+        coordinates: [
           [
             [
               [7.655826544849389, 52.027803372450485],
@@ -1002,11 +1002,11 @@
               [7.656754425115327, 52.026564490889811],
               [7.655993563297258, 52.026712930121548],
               [7.654880106978132, 52.027021225413137],
-              [7.655826544849389, 52.027803372450485]
-            ]
-          ]
-        ]
-      }
-    }
-  ]
-}
+              [7.655826544849389, 52.027803372450485],
+            ],
+          ],
+        ],
+      },
+    },
+  ],
+};
