@@ -4,7 +4,7 @@ var trainingsdatenHochladen = document.getElementById(
   "trainingsdatenHochladen"
 );
 
-trainingsdatenInput.addEventListener("change", fileChange);
+trainingsdatenInput.addEventListener("change", fileTrainingChange);
 trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
 
 // Karte mit Zentrum definieren
@@ -101,7 +101,7 @@ map.on(L.Draw.Event.CREATED, function (e) {
  * Quelle: https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
  * @param {*} event
  */
-function fileChange(event) {
+function fileTrainingChange(event) {
   var reader = new FileReader();
   reader.onload = (event) => {
     trainingsdaten = event.target.result;

@@ -28,14 +28,20 @@ html
 
     // Favicon
     // link(rel='icon' type='image/x-icon' href='/images/muenster-icon.png')
+    link(rel='icon' sizes='16x16 32x32 48x48 64x64' href='/images/Apollo_64_Kreis.ico')
 
   body.d-flex.flex-column.min-vh-100
     // Responsive navbar
-    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-      .container.px-5
-        a.navbar-brand(href='/') Apollo 13
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+      .container.px-4.m-1
+        img.col-sm-2.float-end(src= "/images/IconDonkey.svg")
+        a.navbar-brand(href='/') Apollo13 
+
         button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
           span.navbar-toggler-icon
+            // span.icon
+              svg(width="128px" height="128px")
+                use(xlink:href="/images/IconDonkey.svg#DonkeyIcon")
         #navbarSupportedContent.collapse.navbar-collapse
           ul.navbar-nav.ms-auto.mb-2.mb-lg-0
             li.nav-item
@@ -43,6 +49,9 @@ html
             li.nav-item
               a.nav-link(href='/upload') Upload
             li.nav-item
+              a.nav-link(href='/result') Result
+
+
               a.nav-link(href='/karte') Karte
             li.nav-item
               a.nav-link(href='/demo') Demo

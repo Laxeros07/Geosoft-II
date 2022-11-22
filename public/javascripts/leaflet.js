@@ -4,8 +4,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-
-let x = document.getElementById("demo");
+let x = document.getElementById("coordinates");
 /**
  * Returns the Geolocation of the browser
  * @returns {coordinates}

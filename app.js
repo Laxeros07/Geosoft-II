@@ -9,10 +9,13 @@ const bodyParser = require("body-parser");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var uploadRouter = require("./routes/upload");
-var karteRouter = require("./routes/karte");
+var resultRouter = require("./routes/result");
 var demoRouter = require("./routes/demo");
 
 var app = express();
+
+app.use(bodyParser.json({ limit: "500mb" }));
+app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -27,6 +30,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/upload", uploadRouter);
+app.use("/result", resultRouter);
 app.use("/karte", karteRouter);
 app.use("/demo", demoRouter);
 
