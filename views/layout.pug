@@ -26,6 +26,7 @@ html
 
     // Favicon
     // link(rel='icon' type='image/x-icon' href='/images/muenster-icon.png')
+    link(rel='icon', sizes='16x16 32x32 48x48 64x64', href='/images/Apollo_64_Kreis.ico')
 
   body.d-flex.flex-column.min-vh-100
     // Responsive navbar
@@ -34,6 +35,9 @@ html
         a.navbar-brand(href='/') Apollo13
         button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
           span.navbar-toggler-icon
+            // span.icon
+                svg(width="128px", height="128px")
+                  use(xlink:href="/images/IconDonkey.svg#DonkeyIcon")
         #navbarSupportedContent.collapse.navbar-collapse
           ul.navbar-nav.ms-auto.mb-2.mb-lg-0
             li.nav-item
