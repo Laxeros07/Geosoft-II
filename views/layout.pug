@@ -26,7 +26,7 @@ html
 
     // Favicon
     // link(rel='icon' type='image/x-icon' href='/images/muenster-icon.png')
-    link(rel='icon', sizes='16x16 32x32 48x48 64x64', href='/images/Apollo_64_Kreis.ico')
+    link(rel='icon' sizes='16x16 32x32 48x48 64x64' href='/images/Apollo_64_Kreis.ico')
 
   body.d-flex.flex-column.min-vh-100
     // Responsive navbar
@@ -34,12 +34,12 @@ html
       .container.px-4.m-1
         img.col-sm-2.float-end(src= "/images/IconDonkey.svg")
         a.navbar-brand(href='/') Apollo13 
-      
+
         button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
           span.navbar-toggler-icon
             // span.icon
-                svg(width="128px", height="128px")
-                  use(xlink:href="/images/IconDonkey.svg#DonkeyIcon")
+              svg(width="128px" height="128px")
+                use(xlink:href="/images/IconDonkey.svg#DonkeyIcon")
         #navbarSupportedContent.collapse.navbar-collapse
           ul.navbar-nav.ms-auto.mb-2.mb-lg-0
             li.nav-item
@@ -49,13 +49,9 @@ html
             li.nav-item
               a.nav-link(href='/result') Result
 
-    //Leerer Container
-    .col-lg-5
-      h1.font-weight-light Apollo 13
-      
 
     // Page Content
-    .container
+    .container.mt-5
       block content
 
     // Footer
