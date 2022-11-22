@@ -14,3 +14,11 @@ body {
   background-color: #01406b !important;
   border-color: #005288 !important;
 }
+
+img.col-sm-2 {
+  width: 4%;
+}
+
+a.nav-link{
+  font-size: 20px;
+}
