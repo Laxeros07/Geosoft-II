@@ -1,7 +1,7 @@
 body {
   min-height: 100%;
   text-align: justify;
-  font-family: 'proxima-nova', sans-serif !important;
+  font-family: "proxima-nova", sans-serif !important;
   padding-top: 80px;
 }
 
@@ -20,6 +20,6 @@ img.col-sm-2 {
   width: 4%;
 }
 
-a.nav-link{
+a.nav-link {
   font-size: 20px;
 }
