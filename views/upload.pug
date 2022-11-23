@@ -12,12 +12,10 @@ block content
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
                 h3 Rasterdaten
-                form(method='' action='')
-                    form-group
-                        label.col-form-label(for='rasterdaten') Rasterdaten laden
-                        div
-                        input.form-control(type='file' name="rasterdaten" accept=".tiff, .geotiff")
-                    button.btn.btn-primary.my-2(type='submit') Hochladen
+                div
+                    label.col-form-label(for='rasterdaten') Rasterdaten laden
+                    input#rasterdatenInput.form-control(type='file' name="rasterdaten" accept=".tif")
+                    button#rasterdatenHochladen.btn.btn-primary.my-2 Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
                 h3 RSkript
@@ -44,3 +42,4 @@ block content
         document.querySelectorAll(".nav-link")[1].classList.add("active");
 
     script(src='/javascripts/trainingsdaten.js')
+    script(src='/javascripts/rasterdaten.js')

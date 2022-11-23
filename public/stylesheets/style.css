@@ -1,7 +1,8 @@
 body {
   min-height: 100%;
   text-align: justify;
-  font-family: 'proxima-nova', sans-serif !important;
+  font-family: "proxima-nova", sans-serif !important;
+  padding-top: 80px;
 }
 
 .btn-primary {
@@ -13,4 +14,12 @@ body {
   color: #fff;
   background-color: #01406b !important;
   border-color: #005288 !important;
+}
+
+img.col-sm-2 {
+  width: 4%;
+}
+
+a.nav-link {
+  font-size: 20px;
 }

@@ -1,0 +1,25 @@
+extends layout
+
+block content
+
+    .row.gx-10.gx-lg-3.justify-content-center
+    .col-md-8.mb-3
+      .card.center
+        .card-body
+          #map
+    .col-md-8.mb-3
+      .card.center
+        .card-body
+          #map
+          
+            
+
+    script.
+        // Set active Button
+        document.querySelectorAll(".active")[0].classList.remove("active");
+        document.querySelectorAll(".nav-link")[2].classList.add("active");
+
+
+    script(src='/javascripts/trainingsdaten.js')
+    script(src='/javascripts/leaflet.js')
+
