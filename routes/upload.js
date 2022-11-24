@@ -5,8 +5,10 @@ const MongoClient = require("mongodb").MongoClient;
 const app = require("../app");
 /*
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 */
+
 const url = "mongodb://localhost:27017"; // connection URL
 const client = new MongoClient(url); // mongodb client
 const dbName = "Apollo13"; // database name
@@ -22,11 +24,12 @@ router.get("/", function (req, res, next) {
 // Wird ausgeführt, wenn der Speichern Button gedrückt wurde
 router.post(
   "/",
-  /*upload.single("rasterdaten"),*/ (req, res, next) => {
+  /*upload.single("file"), */ function (req, res, next) {
     /*
-    console.log(req);
-
-    res.send(req.body);*/
+    let file = req;
+    console.log(file.body);
+    //await upload(file);
+    res.send({ file: file.body });*/
 
     if (req.body.select) {
       let result = R.callMethod("public/rScripts/flaeche.r", "x", {
@@ -60,6 +63,11 @@ router.post(
     }
   }
 );
+
+router.put("/", function (req, res, next) {
+  console.log(req);
+  res.send({ data: "Fertig" });
+});
 /*
 
 router.post("/rSkript", function (req, res, next) {
