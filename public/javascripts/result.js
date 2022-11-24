@@ -4,11 +4,11 @@ var trainingsdatenHochladen = document.getElementById(
   "trainingsdatenHochladen"
 );
 
-//trainingsdatenInput.addEventListener("change", fileTrainingChange);
-//trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
+trainingsdatenInput.addEventListener("change", fileTrainingChange);
+trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
 
-// Karte mit Zentrum definieren
-var map = L.map("map").setView([52, 7.6], 10);
+//Karte mit Zentrum definieren
+//var map = L.map("map").setView([54, 7.6], 10);
 
 mapLink = '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -66,10 +66,7 @@ var getName = function (layer) {
   return name;
 };
 
-//Controlbar hinzufügen
 map.addControl(drawControl);
-
-
 map.on(L.Draw.Event.CREATED, function (e) {
   var layer = e.layer;
   var name = getName(layer);
@@ -82,7 +79,22 @@ map.on(L.Draw.Event.CREATED, function (e) {
   }
   drawnItems.addLayer(layer);
 });
-
+map.addControl(drawControl);
+map.on(L.Draw.Event.CREATED, function (e) {
+  var layer = e.layer;
+  var name = getName(layer);
+  if (name == "geometry name") {
+    layer.bindPopup("-- no name provided --");
+  } else if (name == "") {
+    layer.bindPopup("-- no name provided --");
+  } else {
+    layer.bindTooltip(name, { permanent: true, direction: "top" });
+  }
+  drawnItems.addLayer(layer);
+  // get json
+  var json = drawnItems.toGeoJSON();
+  console.log(json);
+});
 
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
