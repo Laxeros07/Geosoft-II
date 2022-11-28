@@ -4,8 +4,8 @@ var bbox;
 var rasterdatenInput = document.getElementById("rasterdatenInput");
 var rasterdatenHochladen = document.getElementById("rasterdatenHochladen");
 
-//rasterdatenInput.addEventListener("change", (event) => fileRasterChange(event));
-//rasterdatenHochladen.addEventListener("click", uploadRasterdaten);
+rasterdatenInput.addEventListener("change", (event) => fileRasterChange(event));
+rasterdatenHochladen.addEventListener("click", uploadRasterdaten);
 
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
@@ -19,33 +19,48 @@ function fileRasterChange(evt) {
   // FileReader support
   if (FileReader && files && files.length) {
     var fr = new FileReader();
-    fr.onload = function () {
+    fr.onload = async function () {
       rasterdaten = fr.result;
-      console.log(GeoTIFF);
-      GeoTIFF.fromBlob(files[0]).then((f) => {
-        f.getImage().then((f2) => {
-          const width = f2.getWidth();
-          const height = f2.getHeight();
-          const tileWidth = f2.getTileWidth();
-          const tileHeight = f2.getTileHeight();
-          const samplesPerPixel = f2.getSamplesPerPixel();
 
-          // when we are actually dealing with geo-data the following methods return
-          // meaningful results:
-          const origin = f2.getOrigin();
-          const resolution = f2.getResolution();
-          bbox = f2.getBoundingBox();
+      const tiff = await GeoTIFF.fromBlob(files[0]);
+      const image = await tiff.getImage();
+      const width = image.getWidth();
+      const height = image.getHeight();
+      const tileWidth = image.getTileWidth();
+      const tileHeight = image.getTileHeight();
+      const samplesPerPixel = image.getSamplesPerPixel();
 
-          var imageUrl = rasterdaten;
-          var imageBounds = [
-            [40.712216, -74.22655],
-            [40.773941, -74.12544],
-          ];
-          L.imageOverlay(imageUrl, bbox).addTo(map).bringToFront();
+      // when we are actually dealing with geo-data the following methods return
+      // meaningful results:
+      const origin = image.getOrigin();
+      const resolution = image.getResolution();
+      const keys = image.getGeoKeys();
+      bbox = image.getBoundingBox();
+      console.log(bbox);
 
-          map.fitBounds(imageBounds);
-        });
+      const response = await fetch("http://localhost:3000/upload", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          epsg: keys.ProjectedCSTypeGeoKey,
+          bbox: bbox,
+        }),
       });
+      const data = await response.json();
+      console.log("Success:", data);
+
+      const [red, green, blue] = await image.readRasters();
+
+      var imageUrl = rasterdaten;
+      var imageBounds = [
+        [parseFloat(data[2]), parseFloat(data[1])],
+        [parseFloat(data[4]), parseFloat(data[3])],
+      ];
+      L.imageOverlay(imageUrl, imageBounds).addTo(map).bringToFront();
+
+      map.fitBounds(imageBounds);
     };
     fr.readAsDataURL(files[0]);
   }
