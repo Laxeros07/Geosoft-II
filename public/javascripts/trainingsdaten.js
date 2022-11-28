@@ -66,10 +66,8 @@ var getName = function (layer) {
   return name;
 };
 
-//Controlbar hinzufügen
+
 map.addControl(drawControl);
-
-
 map.on(L.Draw.Event.CREATED, function (e) {
   var layer = e.layer;
   var name = getName(layer);
@@ -81,7 +79,12 @@ map.on(L.Draw.Event.CREATED, function (e) {
     layer.bindTooltip(name, { permanent: true, direction: "top" });
   }
   drawnItems.addLayer(layer);
+  // get json
+  var json = drawnItems.toGeoJSON();
+  console.log(json);
 });
+
+
 
 
 /**
@@ -106,6 +109,9 @@ function fileTrainingChange(event) {
   */
 }
 
+/**
+ * Trainingsdaten in die Mongodb laden 
+ */
 function uploadTrainingsdaten() {
   fetch("http://localhost:3000/upload", {
     method: "POST", // or 'PUT'
