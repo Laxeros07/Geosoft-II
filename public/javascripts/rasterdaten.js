@@ -1,9 +1,11 @@
 var rasterdaten = null;
+var bbox;
+
 var rasterdatenInput = document.getElementById("rasterdatenInput");
 var rasterdatenHochladen = document.getElementById("rasterdatenHochladen");
 
-//rasterdatenInput.addEventListener("change", (event) => fileRasterChange(event));
-//rasterdatenHochladen.addEventListener("click", uploadRasterdaten);
+rasterdatenInput.addEventListener("change", (event) => fileRasterChange(event));
+rasterdatenHochladen.addEventListener("click", uploadRasterdaten);
 
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
@@ -17,8 +19,48 @@ function fileRasterChange(evt) {
   // FileReader support
   if (FileReader && files && files.length) {
     var fr = new FileReader();
-    fr.onload = function () {
+    fr.onload = async function () {
       rasterdaten = fr.result;
+
+      const tiff = await GeoTIFF.fromBlob(files[0]);
+      const image = await tiff.getImage();
+      const width = image.getWidth();
+      const height = image.getHeight();
+      const tileWidth = image.getTileWidth();
+      const tileHeight = image.getTileHeight();
+      const samplesPerPixel = image.getSamplesPerPixel();
+
+      // when we are actually dealing with geo-data the following methods return
+      // meaningful results:
+      const origin = image.getOrigin();
+      const resolution = image.getResolution();
+      const keys = image.getGeoKeys();
+      bbox = image.getBoundingBox();
+      console.log(bbox);
+
+      const response = await fetch("http://localhost:3000/upload", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          epsg: keys.ProjectedCSTypeGeoKey,
+          bbox: bbox,
+        }),
+      });
+      const data = await response.json();
+      console.log("Success:", data);
+
+      const [red, green, blue] = await image.readRasters();
+
+      var imageUrl = rasterdaten;
+      var imageBounds = [
+        [parseFloat(data[2]), parseFloat(data[1])],
+        [parseFloat(data[4]), parseFloat(data[3])],
+      ];
+      L.imageOverlay(imageUrl, imageBounds).addTo(map).bringToFront();
+
+      map.fitBounds(imageBounds);
     };
     fr.readAsDataURL(files[0]);
   }
@@ -28,18 +70,33 @@ function uploadRasterdaten() {
   fetch("http://localhost:3000/upload", {
     method: "POST", // or 'PUT'
     headers: {
-      "Content-Type": "image/tiff",
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify({
+      data: rasterdaten,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  /*
+  fetch("http://localhost:3000/upload", {
+    method: "POST", // or 'PUT'
+    headers: { "Content-Type": "application/json" },
     body: rasterdaten,
   })
-    .then((response) => response)
+    .then((response) => response.json())
     .then((data) => {
       console.log("Success:", data);
       //showRasterdaten(data);
     })
     .catch((error) => {
       console.error("Error:", error);
-    });
+    });*/
 }
 
 function showrasterdaten(data) {
