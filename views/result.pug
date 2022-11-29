@@ -6,11 +6,14 @@ block content
             .card.text-dark.shadow.p-4.h-100
               #map
     .col-lg-4.col-xs-12.mb-3
-            .card.text-dark.shadow.p-4.h-100
-              p#bereich1.card-text
-              button.btn.btn-1.my-2(type='submit') Submit Data
+            .card.text-dark.shadow.p-4.h-
+                div
+                  p#bereich1
+                    
+                div 
+                  button.btn.btn-1.my-2.m-2(onclick='geojsonExport()') Upload Data
+                  button.btn.btn-2.my-2.m-2(onclick='geojsonExport()') Expport Data
           
-            
 
     script.
         // Set active Button
@@ -20,4 +23,5 @@ block content
 
     script(src='/javascripts/trainingsdaten.js')
     script(src='/javascripts/leaflet.js')
+    
 
