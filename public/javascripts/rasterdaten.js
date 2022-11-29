@@ -54,11 +54,18 @@ function fileRasterChange(evt) {
       const [red, green, blue] = await image.readRasters();
 
       var imageUrl = rasterdaten;
+
+      document.getElementById("test").innerHTML =
+        "<img src='" + imageUrl + "'/>";
+
       var imageBounds = [
         [parseFloat(data[2]), parseFloat(data[1])],
         [parseFloat(data[4]), parseFloat(data[3])],
       ];
-      L.imageOverlay(imageUrl, imageBounds).addTo(map).bringToFront();
+      console.log(
+        L.imageOverlay(imageUrl, imageBounds).addTo(map).bringToFront()
+      );
+      //L.leafletGeotiff(imageUrl, imageBounds).addTo(map);
 
       map.fitBounds(imageBounds);
     };

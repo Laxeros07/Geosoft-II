@@ -4,8 +4,8 @@ var trainingsdatenHochladen = document.getElementById(
   "trainingsdatenHochladen"
 );
 
-//trainingsdatenInput.addEventListener("change", fileTrainingChange);
-//trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
+trainingsdatenInput.addEventListener("change", fileTrainingChange);
+trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
 
 // Karte mit Zentrum definieren
 var map = L.map("map").setView([52, 7.6], 10);
@@ -69,7 +69,6 @@ var getName = function (layer) {
 //Controlbar hinzufügen
 map.addControl(drawControl);
 
-
 map.on(L.Draw.Event.CREATED, function (e) {
   var layer = e.layer;
   var name = getName(layer);
@@ -82,7 +81,6 @@ map.on(L.Draw.Event.CREATED, function (e) {
   }
   drawnItems.addLayer(layer);
 });
-
 
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
@@ -98,6 +96,7 @@ function fileTrainingChange(event) {
 
     //uploadTrainingsdaten();
   };
+  console.log(event.target.files[0].name);
   reader.readAsText(event.target.files[0]);
   /*
   const dataTransfer = new DataTransfer();
