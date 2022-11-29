@@ -66,10 +66,8 @@ var getName = function (layer) {
   return name;
 };
 
-//Controlbar hinzufügen
+
 map.addControl(drawControl);
-
-
 map.on(L.Draw.Event.CREATED, function (e) {
   var layer = e.layer;
   var name = getName(layer);
@@ -81,9 +79,13 @@ map.on(L.Draw.Event.CREATED, function (e) {
     layer.bindTooltip(name, { permanent: true, direction: "top" });
   }
   drawnItems.addLayer(layer);
+  // get json
+  var json = drawnItems.toGeoJSON();
+  console.log(json);
 });
 
 var dateiname = null;
+
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
  * Quelle: https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
@@ -108,6 +110,9 @@ function fileTrainingChange(event) {
   */
 }
 
+/**
+ * Trainingsdaten in die Mongodb laden 
+ */
 function uploadTrainingsdaten() {
   if(getoutput(dateiname)){
     // falls geopackage dateiformat

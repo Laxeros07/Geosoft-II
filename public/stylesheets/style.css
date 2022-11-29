@@ -17,9 +17,21 @@ body {
 }
 
 img.col-sm-2 {
-  width: 4%;
+  width: 15%;
 }
 
 a.nav-link {
   font-size: 20px;
+}
+
+.btn-1{
+  color: #fff;
+  background-color: #efd90f !important;
+  border-color: #d6c30f !important;
+}
+
+.btn-1:hover {
+  color: #fff;
+  background-color: #01406b !important;
+  border-color: #005288 !important;
 }
