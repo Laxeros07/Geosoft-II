@@ -38,8 +38,9 @@ router.post("/", function (req, res, next) {
       epsg: req.body.epsg,
       bbox: req.body.bbox,
     });
-
     res.send(result);
+//  } else if (req.body) {
+
   } else {
     // connect to the mongodb database and afterwards, insert one the new element
     client.connect(function (err) {

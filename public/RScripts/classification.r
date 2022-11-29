@@ -90,9 +90,3 @@ umprojizieren(rasterdaten, trainingsdaten)
 zusammenfuegen(rasterdaten, trainingsdaten)
 modelltraining(rasterdaten, trainingsdaten, extr)
 klassifizierung(rasterdaten, trainingsdaten)
-
-
-
-
-
-

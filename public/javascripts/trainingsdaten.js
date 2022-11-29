@@ -4,8 +4,8 @@ var trainingsdatenHochladen = document.getElementById(
   "trainingsdatenHochladen"
 );
 
-//trainingsdatenInput.addEventListener("change", fileTrainingChange);
-//trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
+trainingsdatenInput.addEventListener("change", fileTrainingChange);
+trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
 
 // Karte mit Zentrum definieren
 var map = L.map("map").setView([52, 7.6], 10);
@@ -83,7 +83,7 @@ map.on(L.Draw.Event.CREATED, function (e) {
   drawnItems.addLayer(layer);
 });
 
-
+var dateiname = null;
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
  * Quelle: https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
@@ -99,6 +99,8 @@ function fileTrainingChange(event) {
     //uploadTrainingsdaten();
   };
   reader.readAsText(event.target.files[0]);
+  dateiname = event.target.files[0].name;
+  console.log(dateiname);
   /*
   const dataTransfer = new DataTransfer();
   dataTransfer.items.add(event.target.files[0]); //your file(s) reference(s)
@@ -107,6 +109,26 @@ function fileTrainingChange(event) {
 }
 
 function uploadTrainingsdaten() {
+  if(getoutput(dateiname)){
+    // falls geopackage dateiformat
+    // an dieser STelle R Skript ausführen um in geojson umzuwandeln
+    fetch("http://localhost:3000/upload", {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/gpkg",
+      },
+      body: trainingsdaten,
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+      showTrainingsdaten(data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  } else {
+  // falls geojseon dateiformat
   fetch("http://localhost:3000/upload", {
     method: "POST", // or 'PUT'
     headers: {
@@ -122,6 +144,7 @@ function uploadTrainingsdaten() {
     .catch((error) => {
       console.error("Error:", error);
     });
+  }
 }
 
 function showTrainingsdaten(data) {
@@ -129,4 +152,13 @@ function showTrainingsdaten(data) {
   alert("Hochladen erfolgreich!");
 
   map.fitBounds(jsonLayer.getBounds());
+}
+
+// checkt, ob das Dateiformat Geopackage ist
+function getoutput(name) {
+  extension = name.toString().split('.')[1];
+  console.log(extension)
+  if(extension == "gpkg") {
+      return true}
+  else {return false}
 }
