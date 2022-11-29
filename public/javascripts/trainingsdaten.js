@@ -66,7 +66,6 @@ var getName = function (layer) {
   return name;
 };
 
-
 map.addControl(drawControl);
 map.on(L.Draw.Event.CREATED, function (e) {
   var layer = e.layer;
@@ -111,44 +110,44 @@ function fileTrainingChange(event) {
 }
 
 /**
- * Trainingsdaten in die Mongodb laden 
+ * Trainingsdaten in die Mongodb laden
  */
 function uploadTrainingsdaten() {
-  if(getoutput(dateiname)){
+  if (getoutput(dateiname)) {
     // falls geopackage dateiformat
     // an dieser STelle R Skript ausführen um in geojson umzuwandeln
     fetch("http://localhost:3000/upload", {
       method: "POST", // or 'PUT'
       headers: {
-        "Content-Type": "application/gpkg",
+        "Content-Type": "application/json",
+      },
+      body: toGeojson(trainingsdaten),
+    })
+      //.then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        showTrainingsdaten(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  } else {
+    // falls geojseon dateiformat
+    fetch("http://localhost:3000/upload", {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
       },
       body: trainingsdaten,
     })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success:", data);
-      showTrainingsdaten(data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-  } else {
-  // falls geojseon dateiformat
-  fetch("http://localhost:3000/upload", {
-    method: "POST", // or 'PUT'
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: trainingsdaten,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success:", data);
-      showTrainingsdaten(data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        showTrainingsdaten(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }
 }
 
@@ -161,9 +160,22 @@ function showTrainingsdaten(data) {
 
 // checkt, ob das Dateiformat Geopackage ist
 function getoutput(name) {
-  extension = name.toString().split('.')[1];
-  console.log(extension)
-  if(extension == "gpkg") {
-      return true}
-  else {return false}
+  extension = name.toString().split(".")[1];
+  console.log(extension);
+  if (extension == "gpkg") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function toGeojson(x) {
+  var geojsonRahmen = {
+    trainingsdaten: null,
+    geopackage: null,
+  };
+  geojsonRahmen.trainingsdaten = x;
+  geojsonRahmen.geopackage = true;
+  console.log(geojsonRahmen);
+  return JSON.stringify({ geojsonRahmen });
 }
