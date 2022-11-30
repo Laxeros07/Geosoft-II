@@ -37,6 +37,8 @@ L.geoJSON(trainingsgebiete, {
     return layer.feature.properties.Label;
   });
 
+var layer = L.leafletGeotiff("../beispieldaten/sentinelRaster2.tif").addTo(map);
+
 // This function is run for every feature found in the geojson file. It adds the feature to the empty layer we created above
 function addMyData(feature, layer) {
   trainingspolygone.addLayer(layer);

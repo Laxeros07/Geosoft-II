@@ -24,3 +24,8 @@ function(spec){
   plot(myData$Sepal.Length, myData$Petal.Length,
        main=title, xlab="Sepal Length", ylab="Petal Length")
 }
+
+#root <- pr("plumber.R")
+#root
+
+#root %>% pr_run()

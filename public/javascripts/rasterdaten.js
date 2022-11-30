@@ -46,6 +46,7 @@ function fileRasterChange(evt) {
         body: JSON.stringify({
           epsg: keys.ProjectedCSTypeGeoKey,
           bbox: bbox,
+          image: rasterdaten.split(",")[1],
         }),
       });
       const data = await response.json();
@@ -55,15 +56,14 @@ function fileRasterChange(evt) {
 
       var imageUrl = rasterdaten;
 
-      document.getElementById("test").innerHTML =
-        "<img src='" + imageUrl + "'/>";
-
       var imageBounds = [
         [parseFloat(data[2]), parseFloat(data[1])],
         [parseFloat(data[4]), parseFloat(data[3])],
       ];
       console.log(
-        L.imageOverlay(imageUrl, imageBounds).addTo(map).bringToFront()
+        L.imageOverlay("temporaererDatenspeicher/sentinel.png", imageBounds)
+          .addTo(map)
+          .bringToFront()
       );
       //L.leafletGeotiff(imageUrl, imageBounds).addTo(map);
 
