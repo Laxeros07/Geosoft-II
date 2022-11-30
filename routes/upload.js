@@ -23,6 +23,7 @@ router.get("/", function (req, res, next) {
 
 // Wird ausgeführt, wenn der Speichern Button gedrückt wurde
 router.post("/", function (req, res, next) {
+  console.log(req.body);
   if (req.body.select) {
     let result = R.callMethod("public/rScripts/flaeche.r", "x", {
       radius: parseInt(req.body.radius),
@@ -39,8 +40,17 @@ router.post("/", function (req, res, next) {
       bbox: req.body.bbox,
     });
     res.send(result);
-//  } else if (req.body) {
-
+  } else if (req.body.geojsonRahmen) {
+    console.log("test");
+    let result = R.callMethod(
+      "public/rScripts/gpkgToGeojson_converter.r",
+      "konvertierung",
+      {
+        geopackageEingabe: req.body.geojsonRahmen.trainingsdaten,
+      }
+    );
+    res.send(result);
+    console.log(result);
   } else {
     // connect to the mongodb database and afterwards, insert one the new element
     client.connect(function (err) {

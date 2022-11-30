@@ -1,14 +1,7 @@
-var trainingsdaten = null;
-var trainingsdatenInput = document.getElementById("trainingsdatenInput");
-var trainingsdatenHochladen = document.getElementById(
-  "trainingsdatenHochladen"
-);
+var json = []; //Geojson Array
 
-trainingsdatenInput.addEventListener("change", fileTrainingChange);
-trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
-
-//Karte mit Zentrum definieren
-//var map = L.map("map").setView([54, 7.6], 10);
+// Karte mit Zentrum definieren
+var map = L.map("map").setView([52, 7.6], 10);
 
 mapLink = '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -55,34 +48,34 @@ map.on("draw:created", function (e) {
     layer = e.layer;
 
   if (type === "marker") {
-    layer.bindPopup("A popup!");
+    layer.bindPopup("ascacacsdcascscsd");
   }
 
   drawnItems.addLayer(layer);
 });
 
+//Popup Name
 var getName = function (layer) {
   var name = prompt("please, enter the geometry name", "geometry name");
   return name;
 };
 
+//popup Id
+var getID = function (layer) {
+  var classID = prompt("please, enter the geometry ClassID", "ClassID");
+  return classID;
+};
+
 map.addControl(drawControl);
 map.on(L.Draw.Event.CREATED, function (e) {
-  var layer = e.layer;
+  var layer = e.layer,
+    feature = (layer.feature = layer.feature || {});
   var name = getName(layer);
-  if (name == "geometry name") {
-    layer.bindPopup("-- no name provided --");
-  } else if (name == "") {
-    layer.bindPopup("-- no name provided --");
-  } else {
-    layer.bindTooltip(name, { permanent: true, direction: "top" });
-  }
+  var classID = getID(layer);
+  var props = (feature.properties = feature.properties || {}); // Intialize feature.properties
+  props.label = name;
+  props.classID = classID;
   drawnItems.addLayer(layer);
-});
-map.addControl(drawControl);
-map.on(L.Draw.Event.CREATED, function (e) {
-  var layer = e.layer;
-  var name = getName(layer);
   if (name == "geometry name") {
     layer.bindPopup("-- no name provided --");
   } else if (name == "") {
@@ -92,53 +85,64 @@ map.on(L.Draw.Event.CREATED, function (e) {
   }
   drawnItems.addLayer(layer);
   // get json
-  var json = drawnItems.toGeoJSON();
+  console.log(JSON.stringify(drawnItems.toGeoJSON()));
+  json.push(drawnItems.toGeoJSON());
   console.log(json);
 });
 
+var dateiname = null;
+function datenAnzeigen() {
+  console.log("hallo");
+  //document.getElementById('bereich1').innerHTML = json.features[0].geometry.properties.label + '</br>' ;
+  auslesen(json);
+}
+
+function auslesen() {
+  var altes = [];
+  i = 0;
+  while (i < json.length) {
+    altes.push(
+      json[i].features[i].geometry.properties.label +
+        ":  " +
+        json[i].features[i].geometry.properties.classID +
+        "</br>"
+    );
+    i++;
+  }
+  document.getElementById("bereich1").innerHTML = altes;
+}
+
 /**
- * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
- * Quelle: https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
- * @param {*} event
+ * Trainingsdaten exportieren
+ * https://github.com/anshori/leaflet-draw-to-geojson-file/blob/master/assets/js/app.js
  */
-function fileTrainingChange(event) {
-  var reader = new FileReader();
-  reader.onload = (event) => {
-    trainingsdaten = event.target.result;
-    console.log(trainingsdaten);
-    //console.log(trainingsdatenInput);
+// Export Button
+var showExport =
+  '<a href="#" onclick="datenAnzeigen()" title="Export to GeoJSON File" type="button" class="btn btn-danger btn-sm text-light"><i class="fa fa-file-code-o" aria-hidden="true"></i> laden</a>';
 
-    //uploadTrainingsdaten();
-  };
-  reader.readAsText(event.target.files[0]);
-  /*
-  const dataTransfer = new DataTransfer();
-  dataTransfer.items.add(event.target.files[0]); //your file(s) reference(s)
-  trainingsdatenInput.files = dataTransfer.files;
-  */
-}
+var showExportButton = new L.Control({ position: "topright" });
+showExportButton.onAdd = function (map) {
+  this._div = L.DomUtil.create("div");
+  this._div.innerHTML = showExport;
+  return this._div;
+};
+showExportButton.addTo(map);
 
-function uploadTrainingsdaten() {
-  fetch("http://localhost:3000/upload", {
-    method: "POST", // or 'PUT'
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: trainingsdaten,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success:", data);
-      showTrainingsdaten(data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-function showTrainingsdaten(data) {
-  var jsonLayer = L.geoJSON(data).addTo(map);
-  alert("Hochladen erfolgreich!");
-
-  map.fitBounds(jsonLayer.getBounds());
+// Export to GeoJSON File
+function geojsonExport() {
+  let nodata = '{"type":"FeatureCollection","features":[]}';
+  let jsonData = JSON.stringify(drawnItems.toGeoJSON());
+  let dataUri =
+    "data:application/json;charset=utf-8," + encodeURIComponent(jsonData);
+  let datenow = new Date();
+  let datenowstr = datenow.toLocaleDateString("en-GB");
+  let exportFileDefaultName = "export_draw_" + datenowstr + ".geojson";
+  let linkElement = document.createElement("a");
+  linkElement.setAttribute("href", dataUri);
+  linkElement.setAttribute("download", exportFileDefaultName);
+  if (jsonData == nodata) {
+    alert("No features are drawn");
+  } else {
+    linkElement.click();
+  }
 }
