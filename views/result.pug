@@ -12,16 +12,19 @@ block content
                     
                 div 
                   button.btn.btn-1.my-2.m-2(onclick='geojsonExport()') Upload Data
-                  button.btn.btn-2.my-2.m-2(onclick='geojsonExport()') Expport Data
+                  form(method='post' action='upload')
+                    button.btn.btn-primary.my-2(type='submit') Skript ausführen
+          
           
 
     script.
         // Set active Button
-        document.querySelectorAll(".active")[0].classList.remove("active");
-        document.querySelectorAll(".nav-link")[2].classList.add("active");
+        document.querySelectorAll(".active")[0].classList.remove("active")
+        document.querySelectorAll(".nav-link")[2].classList.add("active")
 
     
-    script(src='/javascripts/trainingsdaten.js')
-    script(src='/javascripts/leaflet.js')
     
+    
+    script(src='/javascripts/result.js')
+   
 
