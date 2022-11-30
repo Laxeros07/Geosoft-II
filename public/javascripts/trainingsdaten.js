@@ -181,15 +181,42 @@ function fileTrainingChange(event) {
 
 /**
  * Trainingsdaten in die Mongodb laden
+ * Trainingsdaten in die Mongodb laden
  */
 function uploadTrainingsdaten() {
+  if (getoutput(dateiname)) {
   if (getoutput(dateiname)) {
     // falls geopackage dateiformat
     // an dieser STelle R Skript ausführen um in geojson umzuwandeln
     fetch("http://localhost:3000/upload", {
       method: "POST", // or 'PUT'
       headers: {
-        "Content-Type": "application/gpkg",
+        "Content-Type": "application/json",
+      },
+      body: toGeojson(trainingsdaten),
+    })
+      //.then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        showTrainingsdaten(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        showTrainingsdaten(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  } else {
+    // falls geojseon dateiformat
+    fetch("http://localhost:3000/upload", {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
       },
       body: trainingsdaten,
     })
@@ -201,7 +228,6 @@ function uploadTrainingsdaten() {
       .catch((error) => {
         console.error("Error:", error);
       });
-  } else {
     // falls geojseon dateiformat
     fetch("http://localhost:3000/upload", {
       method: "POST", // or 'PUT'
@@ -238,3 +264,22 @@ function getoutput(name) {
     return false;
   }
 }
+
+function toGeojson(x) {
+  var geojsonRahmen = {
+    trainingsdaten: null,
+    geopackage: null,
+  };
+  geojsonRahmen.trainingsdaten = x;
+  geojsonRahmen.geopackage = true;
+  console.log(geojsonRahmen);
+  return JSON.stringify({ geojsonRahmen });
+  extension = name.toString().split(".")[1];
+  console.log(extension);
+  if (extension == "gpkg") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
