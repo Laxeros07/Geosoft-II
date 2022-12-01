@@ -7,8 +7,9 @@ block content
                 h3 Trainingsdaten
                 div
                     label.col-form-label(for='trainingsdaten') Trainingsdaten laden
-                    input#trainingsdatenInput.form-control(type='file' name="trainingsdaten" accept=".json, .geojson, .gpkg")
-                    button#trainingsdatenHochladen.btn.btn-primary.my-2 Hochladen
+                    form(action='/routes/upload' method='post' enctype='multipart/form-data')
+                        input(type='file' name='trainingsdaten' accept=".json, .geojson, .gpkg")
+                    //button#trainingsdatenHochladen.btn.btn-primary.my-2 Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
                 h3 Rasterdaten
