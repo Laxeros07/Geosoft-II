@@ -67,9 +67,9 @@ function uploadTrainingsdaten() {
       fetch("http://localhost:3000/upload", {
         method: "POST", // or 'PUT'
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
-        body: toGeojson(trainingsdaten),
+        body: trainingsdaten, //toGeojson(trainingsdaten),
       })
         //.then((response) => response.json())
         .then((data) => {
