@@ -31,4 +31,7 @@ function showPosition(position) {
     position.coords.longitude;
 
   pos = [position.coords.latitude, position.coords.longitude];
+  var marker = new L.marker([pos[0], pos[1]]);
+  marker.bindPopup("mein Standort");
+  marker.addTo(map);
 }
