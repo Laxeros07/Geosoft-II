@@ -20,10 +20,16 @@ router.get("/", function (req, res, next) {
 });
 
 // Wird ausgeführt, wenn der Speichern Button gedrückt wurde
-router.post("/upload_files", uploadFiles);
+
+router.post("/", upload.single("trainingsdaten"), uploadFiles);
+
 function uploadFiles(req, res) {
+  console.log("lol");
   console.log(req.body);
+  console.log(req.files);
+  res.json({ message: "Successfully uploaded files" });
 }
+
 // req.file is the `avatar` file
 // req.body will hold the text fields, if there were any
 

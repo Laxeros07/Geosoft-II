@@ -5,24 +5,24 @@ var trainingsdatenHochladen = document.getElementById(
 );
 
 const form = document.getElementById("form");
-
+console.log(form);
 form.addEventListener("submit", submitForm);
 
 function submitForm(e) {
   e.preventDefault();
   const files = document.getElementById("files");
   const formData = new FormData();
-  formData.append("files", files.files[0]);
+  formData.append("trainingsdaten", files.files[0]);
   //for (let i = 0; i < files.files.length; i++) {
   //  formData.append("files", files.files[i]);
   //}
+  for (var [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
 
   fetch("http://localhost:3000/upload", {
     method: "POST",
     body: formData,
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
   })
     .then((res) => console.log(res))
     .catch((err) => ("Error occured", err));

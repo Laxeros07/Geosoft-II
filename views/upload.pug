@@ -6,10 +6,10 @@ block content
             .card.text-dark.shadow.p-4.h-100
                 h3 Trainingsdaten
                 div
-                    form#form
-                        div.input-group
+                    form#form(action="/" method="post")
+                        div.form-group
                             label(for='trainingsdaten') Trainingsdaten laden
-                            input#files(type='file' name='trainingsdaten' accept=".json, .geojson, .gpkg")
+                            input.form-control-file#files(type='file' name='trainingsdaten' accept=".json, .geojson, .gpkg")
                         button.submit-btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
