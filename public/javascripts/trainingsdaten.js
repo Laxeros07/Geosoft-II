@@ -70,6 +70,7 @@ function fileTrainingChange(event) {
 
     //uploadTrainingsdaten();
   };
+  console.log(event.target.files[0].name);
   reader.readAsText(event.target.files[0]);
   dateiname = event.target.files[0].name;
   console.log(dateiname);

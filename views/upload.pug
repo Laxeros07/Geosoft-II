@@ -33,6 +33,8 @@ block content
                     button.btn.btn-primary.my-2(type='submit') Skript ausführen
                 label(for='ergebnis') Ergebnis
                 textarea.from-control(name = 'ergebnis')=result
+    #test
+
     .col-lg-12.col-xs-12.mb-3
         .card.text-dark.shadow.p-4
             .leaflet-container#map
@@ -44,5 +46,6 @@ block content
         document.querySelectorAll(".nav-link")[1].classList.add("active");
 
     script(src="https://cdn.jsdelivr.net/npm/geotiff") <!-- Skript for Geotiff Import -->
+    script(src="https://cdn.jsdelivr.net/npm/leaflet-geotiff") <!-- Skript for Geotiff Import -->
     script(src='/javascripts/trainingsdaten.js')
     script(src='/javascripts/rasterdaten.js')
