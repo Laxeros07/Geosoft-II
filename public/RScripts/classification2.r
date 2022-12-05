@@ -6,8 +6,8 @@ library(raster)
 
 
 ## nur zum testen
-#rasterdaten <- rast("C:/Users/Felix/Desktop/Studium/Uni Fächer/5. Semester/Fernerkundung Maschinelles Lernen/R-Skripte/erstesProjekt/predictors_selm.tif")
-#trainingsdaten <- read_sf("C:/Users/Felix/Desktop/Studium/Uni Fächer/5. Semester/Fernerkundung Maschinelles Lernen/Selm_Klassifikation_QGis/Trainingspolygone_Selm.gpkg")
+rasterdaten <- rast("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/sentinelRaster2_umprojiziert.tif")
+trainingsdaten <- read_sf("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/trainingsgebiete.geojson")
 
 
 ## Ausgabe
@@ -15,7 +15,7 @@ klassifizierung = function(rasterdaten, trainingsdaten) {
 
 ##Variablen definieren
 predictors <- c("B02","B03","B04","B08","B05","B06","B07","B11",
-                "B12","B8A","NDVI","NDVI_3x3_sd","NDVI_5x5_sd")
+                "B12","B8A")
 
 # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -36,15 +36,15 @@ predictors <- c("B02","B03","B04","B08","B05","B06","B07","B11",
   #eventuell Daten limitieren.
   #Verhälnis der Daten aus jedem Trainingsgebiet soll aber gleich bleiben
   # hier:10% aus jedem Trainingsgebiet (see ?createDataPartition)
-  #trainIDs <- createDataPartition(extr$ID,p=0.1,list = FALSE)
-  #trainDat <- extr[trainIDs,]
+  trainIDs <- createDataPartition(extr$ID,p=0.1,list = FALSE)
+  trainDat <- extr[trainIDs,]
   #Sicherstellen das kein NA in Prädiktoren enthalten ist:
-  #trainDat <- trainDat[complete.cases(trainDat[,predictors]),]
+  trainDat <- trainDat[complete.cases(trainDat[,predictors]),]
   
   
   #### Modelltraining
-  model <- train(extr_subset[,predictors],
-                 extr_subset$Label,
+  model <- train(trainDat[,predictors],
+                 trainDat$Label,
                  method="rf",
                  importance=TRUE,
                  ntree=50) # 50 is quite small (default=500). But it runs faster.
