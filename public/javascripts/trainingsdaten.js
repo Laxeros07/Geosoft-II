@@ -4,8 +4,31 @@ var trainingsdatenHochladen = document.getElementById(
   "trainingsdatenHochladen"
 );
 
-trainingsdatenInput.addEventListener("change", fileTrainingChange);
-trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
+const form = document.getElementById("form");
+
+form.addEventListener("submit", submitForm);
+
+function submitForm(e) {
+  e.preventDefault();
+  const files = document.getElementById("files");
+  const formData = new FormData();
+  formData.append("files", files.files[0]);
+  //for (let i = 0; i < files.files.length; i++) {
+  //  formData.append("files", files.files[i]);
+  //}
+
+  fetch("http://localhost:3000/upload", {
+    method: "POST",
+    body: formData,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  })
+    .then((res) => console.log(res))
+    .catch((err) => ("Error occured", err));
+}
+//trainingsdatenInput.addEventListener("change", fileTrainingChange);
+//trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
 
 // Karte mit Zentrum definieren
 var map = L.map("map").setView([52, 7.6], 10);
@@ -36,6 +59,8 @@ var greenIcon = new LeafIcon({
  * Quelle: https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
  * @param {*} event
  */
+
+/** 
 function fileTrainingChange(event) {
   var reader = new FileReader();
   reader.onload = (event) => {
@@ -53,12 +78,14 @@ function fileTrainingChange(event) {
   dataTransfer.items.add(event.target.files[0]); //your file(s) reference(s)
   trainingsdatenInput.files = dataTransfer.files;
   */
-}
+//}
 
 /**
  * Trainingsdaten in die Mongodb laden
  * Trainingsdaten in die Mongodb laden
  */
+
+/**
 function uploadTrainingsdaten() {
   if (getoutput(dateiname)) {
     if (getoutput(dateiname)) {
@@ -151,3 +178,4 @@ function uploadTrainingsdaten() {
     }
   }
 }
+ */
