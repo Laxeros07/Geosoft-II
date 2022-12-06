@@ -1,18 +1,15 @@
 var trainingsdaten = null;
-var trainingsdatenInput = document.getElementById("trainingsdatenInput");
-var trainingsdatenHochladen = document.getElementById(
-  "trainingsdatenHochladen"
-);
+//var trainingsdatenInput = document.getElementById("trainingsdatenInput");
+//var trainingsdatenHochladen = document.getElementById("trainingsdatenHochladen");
 
-const form = document.getElementById("form");
-console.log(form);
-form.addEventListener("submit", submitForm);
+const trainingsdatenForm = document.getElementById("trainingsdatenForm");
+const trainingsdatenFiles = document.getElementById("trainingsdatenFiles");
+trainingsdatenForm.addEventListener("submit", submitFormT);
 
-function submitForm(e) {
+function submitFormT(e) {
   e.preventDefault();
-  const files = document.getElementById("files");
-  const formData = new FormData();
-  formData.append("trainingsdaten", files.files[0]);
+  let formData = new FormData();
+  formData.append("trainingsdaten", trainingsdatenFiles.files[0]);
   //for (let i = 0; i < files.files.length; i++) {
   //  formData.append("files", files.files[i]);
   //}
