@@ -33,9 +33,35 @@ function submitFormT(e) {
       console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
       var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
       geojsonLayer.addTo(map);
+
+      // this requests the file and executes a callback with the parsed result once it is available
+      fetchJSONFile("../uploads/trainingsdaten.json", function (data) {
+        console.log(data);
+      });
     })
     .catch((err) => ("Error occured", err));
 }
+
+/**
+ * Ruft eine lokale JSON Datei auf
+ * Quelle: https://stackoverflow.com/questions/14388452/how-do-i-load-a-json-object-from-a-file-with-ajax
+ * @param {*} path
+ * @param {*} callback
+ */
+function fetchJSONFile(path, callback) {
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.onreadystatechange = function () {
+    if (httpRequest.readyState === 4) {
+      if (httpRequest.status === 200) {
+        var data = JSON.parse(httpRequest.responseText);
+        if (callback) callback(data);
+      }
+    }
+  };
+  httpRequest.open("GET", path);
+  httpRequest.send();
+}
+
 //trainingsdatenInput.addEventListener("change", fileTrainingChange);
 //trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
 
