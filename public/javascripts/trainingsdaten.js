@@ -9,6 +9,7 @@ trainingsdatenForm.addEventListener("submit", submitFormT);
 function submitFormT(e) {
   e.preventDefault();
   let formData = new FormData();
+
   formData.append("trainingsdaten", trainingsdatenFiles.files[0]);
   //for (let i = 0; i < files.files.length; i++) {
   //  formData.append("files", files.files[i]);
@@ -21,7 +22,11 @@ function submitFormT(e) {
     method: "POST",
     body: formData,
   })
-    .then((res) => console.log(res))
+    .then((res) => {
+      console.log(res);
+      var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
+      geojsonLayer.addTo(map);
+    })
     .catch((err) => ("Error occured", err));
 }
 //trainingsdatenInput.addEventListener("change", fileTrainingChange);

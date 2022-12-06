@@ -6,7 +6,7 @@ const app = require("../app");
 
 const multer = require("multer");
 const storage = multer.diskStorage({
-  destination: "./uploads",
+  destination: "./public/uploads",
   filename: (req, file, cb) => {
     console.log(file);
     switch (file.mimetype) {
