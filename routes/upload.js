@@ -3,11 +3,9 @@ var router = express.Router();
 var R = require("r-integration");
 const MongoClient = require("mongodb").MongoClient;
 const app = require("../app");
-/*
+
 const multer = require("multer");
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
-*/
+const upload = multer({ dest: "uploads/" });
 
 const url = "mongodb://localhost:27017"; // connection URL
 const client = new MongoClient(url); // mongodb client
@@ -22,56 +20,18 @@ router.get("/", function (req, res, next) {
 });
 
 // Wird ausgeführt, wenn der Speichern Button gedrückt wurde
-router.post("/", function (req, res, next) {
+
+router.post("/", upload.single("trainingsdaten"), uploadFiles);
+
+function uploadFiles(req, res) {
+  console.log("lol");
   console.log(req.body);
-  if (req.body.select) {
-    let result = R.callMethod("public/rScripts/flaeche.r", "x", {
-      radius: parseInt(req.body.radius),
-    });
-    res.render("upload", {
-      title: "Upload",
-      trainingsdaten: null,
-      radius: req.body.radius,
-      result: result,
-    });
-  } else if (req.body.epsg && req.body.bbox) {
-    let result = R.callMethod("public/rScripts/coordConvers.r", "x", {
-      epsg: req.body.epsg,
-      bbox: req.body.bbox,
-    });
-    res.send(result);
-  } else if (req.body.geojsonRahmen) {
-    console.log("test");
-    let result = R.callMethod(
-      "public/rScripts/gpkgToGeojson_converter.r",
-      "konvertierung",
-      {
-        geopackageEingabe: req.body.geojsonRahmen.trainingsdaten,
-      }
-    );
-    res.send(result);
-    console.log(result);
-  } else {
-    // connect to the mongodb database and afterwards, insert one the new element
-    client.connect(function (err) {
-      console.log("Connected successfully to server");
+  console.log(req.files);
+  res.json({ message: "Successfully uploaded files" });
+}
 
-      const db = client.db(dbName);
-      const collection = db.collection(collectionName);
-
-      trainingsdaten = req.body;
-
-      // Insert the document in the database
-      collection.insertMany(trainingsdaten.features, function (err, result) {
-        console.log(
-          `Inserted ${result.insertedCount} document into the collection`
-        );
-        console.log(trainingsdaten);
-        res.send(trainingsdaten);
-      });
-    });
-  }
-});
+// req.file is the `avatar` file
+// req.body will hold the text fields, if there were any
 
 router.put("/", function (req, res, next) {
   console.log(req);
