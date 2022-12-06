@@ -4,10 +4,13 @@ var R = require("r-integration");
 const MongoClient = require("mongodb").MongoClient;
 const app = require("../app");
 
+var filetype;
+
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: "./public/uploads",
   filename: (req, file, cb) => {
+    filetype = file.mimetype;
     console.log(file);
     switch (file.mimetype) {
       case "application/geo+json":
@@ -16,7 +19,7 @@ const storage = multer.diskStorage({
       case "application/octet-stream":
         cb(null, "trainingsdaten.gpkg");
         break;
-      case "image/tif":
+      case "image/tiff":
         cb(null, "rasterdaten.tif");
         break;
     }
@@ -40,12 +43,13 @@ router.get("/", function (req, res, next) {
 // Wird ausgeführt, wenn der Speichern Button gedrückt wurde
 
 router.post("/", upload.single("trainingsdaten"), uploadFiles);
+//router.post("/", upload.single("rasterdaten"), uploadFiles);
 
 function uploadFiles(req, res) {
   console.log("lol");
-  console.log(req.body);
-  console.log(req.files);
-  res.json({ message: "Successfully uploaded files" });
+  console.log("Filetype");
+  console.log(filetype);
+  res.send({ message: filetype });
 }
 
 // req.file is the `avatar` file

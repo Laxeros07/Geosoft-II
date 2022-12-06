@@ -24,7 +24,7 @@ function submitFormR(e) {
     method: "POST",
     body: formData,
   })
-    .then((res) => console.log(res))
+    .then((res) => addGeotiffToMap("../uploads/rasterdaten.tif"))
     .catch((err) => ("Error occured", err));
 }
 

@@ -21,9 +21,16 @@ function submitFormT(e) {
   fetch("http://localhost:3000/upload", {
     method: "POST",
     body: formData,
+    headers: {},
   })
-    .then((res) => {
-      console.log(res);
+    .then(function (response) {
+      // The response is a Response instance.
+      // You parse the data into a useable format using `.json()`
+      return response.json();
+    })
+    .then(function (data) {
+      // `data` is the parsed version of the JSON returned from the above endpoint.
+      console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
       var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
       geojsonLayer.addTo(map);
     })
