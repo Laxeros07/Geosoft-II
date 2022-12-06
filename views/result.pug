@@ -9,12 +9,19 @@ block content
             .card.text-dark.shadow.p-4.h-
                 div
                   p#bereich1
+                  .form-group
+                    label(for='exampleFormControlSelect2') Example multiple select
+                    select#exampleFormControlSelect2.form-control(multiple='')
+                      option 1
+                      option 2
+                      option 3
+                      option 4
+                      option 5
                     
                 div 
-                  button.btn.btn-1.my-2.m-2(onclick='geojsonExport()') Upload Data
-                  form(method='post' action='upload')
+                  form(method='post' action='result')
                     button.btn.btn-primary.my-2(type='submit') Skript ausführen
-          
+                  button.btn.btn-2.my-2.m-2(onclick='geojsonExport()') Expport Data
           
 
     script.

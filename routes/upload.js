@@ -55,7 +55,6 @@ router.put("/", function (req, res, next) {
   console.log(req);
   res.send({ data: "Fertig" });
 });
-/*
 
 router.post("/rSkript", function (req, res, next) {
   //res.redirect("/upload");
@@ -77,6 +76,6 @@ router.post("/rSkript", function (req, res, next) {
     radius: req.body.radius,
     result: result,
   });
-});*/
+});
 
 module.exports = router;
