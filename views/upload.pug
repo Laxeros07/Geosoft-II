@@ -7,10 +7,10 @@ block content
                 h3 Trainingsdaten
                 div
                     form#form(action="/" method="post")
-                        div.form-group
+                        form-group
                             label(for='trainingsdaten') Trainingsdaten laden
-                            input.form-control-file#files(type='file' name='trainingsdaten' accept=".json, .geojson, .gpkg")
-                        button.submit-btn.btn-primary.my-2(type='submit') Hochladen
+                            input.form-control#files(type='file' name='trainingsdaten' accept=".json, .geojson, .gpkg")
+                        button.btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
                 h3 Rasterdaten
