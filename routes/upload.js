@@ -5,7 +5,25 @@ const MongoClient = require("mongodb").MongoClient;
 const app = require("../app");
 
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const storage = multer.diskStorage({
+  destination: "./public/uploads",
+  filename: (req, file, cb) => {
+    console.log(file);
+    switch (file.mimetype) {
+      case "application/geo+json":
+        cb(null, "trainingsdaten.json");
+        break;
+      case "application/octet-stream":
+        cb(null, "trainingsdaten.gpkg");
+        break;
+      case "image/tif":
+        cb(null, "rasterdaten.tif");
+        break;
+    }
+  },
+});
+const upload = multer({ storage: storage });
+//const upload = multer({ dest: "uploads/" });
 
 const url = "mongodb://localhost:27017"; // connection URL
 const client = new MongoClient(url); // mongodb client
@@ -37,7 +55,6 @@ router.put("/", function (req, res, next) {
   console.log(req);
   res.send({ data: "Fertig" });
 });
-/*
 
 router.post("/rSkript", function (req, res, next) {
   //res.redirect("/upload");
@@ -59,6 +76,6 @@ router.post("/rSkript", function (req, res, next) {
     radius: req.body.radius,
     result: result,
   });
-});*/
+});
 
 module.exports = router;
