@@ -51,6 +51,13 @@ var greenIcon = new LeafIcon({
   iconUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
 });
 
+function showTrainingsdaten(data) {
+  var jsonLayer = L.geoJSON(data).addTo(map);
+  alert("Hochladen erfolgreich!");
+
+  map.fitBounds(jsonLayer.getBounds());
+}
+
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
  * Quelle: https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
