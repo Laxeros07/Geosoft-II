@@ -42,7 +42,7 @@ router.get("/", function (req, res, next) {
 
 // Wird ausgeführt, wenn der Speichern Button gedrückt wurde
 
-router.post("/", upload.single("trainingsdaten"), uploadFiles);
+router.post("/", upload.single("daten"), uploadFiles);
 //router.post("/", upload.single("rasterdaten"), uploadFiles);
 
 function uploadFiles(req, res) {

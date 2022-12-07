@@ -15,7 +15,7 @@ rasterdatenForm.addEventListener("submit", submitFormR);
 function submitFormR(e) {
   e.preventDefault();
   let formData = new FormData();
-  formData.append("rasterdaten", rasterdatenFiles.files[0]);
+  formData.append("daten", rasterdatenFiles.files[0]);
   for (var [key, value] of formData.entries()) {
     console.log(key, value);
   }

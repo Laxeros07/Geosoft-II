@@ -8,8 +8,8 @@ block content
                 div
                     form#trainingsdatenForm(action="/" method="post")
                         form-group
-                            label.col-form-label(for='trainingsdaten') Trainingsdaten laden
-                            input#trainingsdatenFiles.form-control(type='file' name='trainingsdaten' accept=".json, .geojson, .gpkg")
+                            label.col-form-label(for='daten') Trainingsdaten laden
+                            input#trainingsdatenFiles.form-control(type='file' name='daten' accept=".json, .geojson, .gpkg")
                         button.btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
@@ -17,8 +17,8 @@ block content
                 div
                     form#rasterdatenForm(action="/" method="post")
                         form-group
-                            label.col-form-label(for='rasterdaten') Rasterdaten laden
-                            input#rasterdatenFiles.form-control(type='file' name="rasterdaten" accept=".tif")
+                            label.col-form-label(for='daten') Rasterdaten laden
+                            input#rasterdatenFiles.form-control(type='file' name="daten" accept=".tif")
                         button.btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100

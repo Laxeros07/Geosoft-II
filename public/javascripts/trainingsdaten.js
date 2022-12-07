@@ -10,7 +10,7 @@ function submitFormT(e) {
   e.preventDefault();
   let formData = new FormData();
 
-  formData.append("trainingsdaten", trainingsdatenFiles.files[0]);
+  formData.append("daten", trainingsdatenFiles.files[0]);
   //for (let i = 0; i < files.files.length; i++) {
   //  formData.append("files", files.files[i]);
   //}
