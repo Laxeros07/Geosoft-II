@@ -37,6 +37,11 @@ function submitFormT(e) {
       // this requests the file and executes a callback with the parsed result once it is available
       fetchJSONFile("../uploads/trainingsdaten.json", function (data) {
         console.log(data);
+        let labels = new set();
+        data.features.forEach((element) => {
+          labels.add(element.properties.Label);
+          console.log(labels);
+        });
       });
     })
     .catch((err) => ("Error occured", err));
