@@ -97,11 +97,14 @@ function datenAnzeigen() {
   auslesen(json);
 }
 
+//Punkte und Attribute zur Tabelle hinzufügen
+const table = document.getElementById("tabelle");
+
 function auslesen() {
-  var altes = [];
+  var name = [];
   i = 0;
   while (i < json.length) {
-    altes.push(
+    name.push(
       json[i].features[i].geometry.properties.label +
         ":  " +
         json[i].features[i].geometry.properties.classID +
@@ -109,7 +112,73 @@ function auslesen() {
     );
     i++;
   }
-  document.getElementById("bereich1").innerHTML = altes;
+
+  name.forEach((item, i = 0) => {
+    let row = table.insertRow(-1);
+    let cell0 = row.insertCell(0);
+    let cell1 = row.insertCell(1);
+
+    // Speichern der Nummer und der Attribute in jeder Zeile
+    cell0.innerHTML = name;
+    cell1.innerHTML = "nummer";
+  });
+
+  tabelleFüllen(json);
+
+  document.getElementById("bereich1").innerHTML = name;
+  //document.getElementById("bereich2").innerHTML = nummer;
+}
+
+function tabelleFüllen() {
+  //Punkte und Attribute zur Tabelle hinzufügen
+  const table = document.getElementById("tabelle");
+
+  /**
+   * Hinzufügen der Gebrige und ihrer Attribute in die Tabelle
+   */
+  json.forEach((item, i = 0) => {
+    let c = item.features.geometry.coordinates; //json[i].features[i].geometry.properties.label
+    let p = item.properties;
+    i++;
+
+    // Erstellen der Zeilen und Zellen pro Gebirge
+    let row = table.insertRow(-1);
+    let cell0 = row.insertCell(0);
+    let cell1 = row.insertCell(1);
+
+    // Speichern der Nummer und der Attribute in jeder Zeile
+    cell0.innerHTML = i;
+    cell1.innerHTML = p.label;
+    cell2.innerHTML = p.classID;
+  });
+
+  console.log(table);
+
+  /**
+   * Klick-Event-wenn auf Zeile in Tabelle auf Gebirge in Karte zoomen
+   * und das PopUp öffnen
+   * Quelle: stackoverflow https://stackoverflow.com/questions/1207939/adding-an-onclick-event-to-a-table-row
+   */
+  function addRowHandlers() {
+    var table = document.getElementById("tabelle");
+    var rows = table.getElementsByTagName("tr");
+    for (i = 0; i < rows.length; i++) {
+      var currentRow = table.rows[i];
+      var createClickHandler = function (row) {
+        return function () {
+          var cell = row.getElementsByTagName("td")[0];
+          var id = cell.innerHTML;
+          var y = geojson[id - 1].geometry.coordinates[0];
+          var x = geojson[id - 1].geometry.coordinates[1];
+          map.setView([x, y], 10);
+          markerArray[id - 1].openPopup();
+        };
+      };
+
+      currentRow.onclick = createClickHandler(currentRow);
+    }
+  }
+  window.onload = addRowHandlers();
 }
 
 /**
