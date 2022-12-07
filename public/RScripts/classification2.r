@@ -73,3 +73,6 @@ predictors <- c("B02","B03","B04","B08","B05","B06","B07","B11",
 
 
 klassifizierung(rasterdaten, trainingsdaten)
+
+
+
