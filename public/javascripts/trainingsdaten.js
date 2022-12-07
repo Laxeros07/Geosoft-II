@@ -17,6 +17,7 @@ function submitFormT(e) {
   for (var [key, value] of formData.entries()) {
     console.log(key, value);
   }
+  var dateiname = trainingsdatenFiles.files[0].name;
 
   fetch("http://localhost:3000/upload", {
     method: "POST",
@@ -31,8 +32,10 @@ function submitFormT(e) {
     .then(function (data) {
       // `data` is the parsed version of the JSON returned from the above endpoint.
       console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
+      console.log(dateiname);
       //GeoJSON
-      if (data.message == "application/geo+json") {
+      if (getoutput(dateiname) == "geojson" || getoutput(dateiname) == "json") {
+        console.log("test");
         var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
         geojsonLayer.addTo(map);
 
@@ -207,16 +210,7 @@ function uploadTrainingsdaten() {
     map.fitBounds(jsonLayer.getBounds());
   }
 
-  // checkt, ob das Dateiformat Geopackage ist
-  function getoutput(name) {
-    extension = name.toString().split(".")[1];
-    console.log(extension);
-    if (extension == "gpkg") {
-      return true;
-    } else {
-      return false;
-    }
-  }
+
 
   function toGeojson(x) {
     var geojsonRahmen = {
@@ -237,3 +231,10 @@ function uploadTrainingsdaten() {
   }
 }
  */
+
+// checkt, ob das Dateiformat Geopackage ist
+function getoutput(name) {
+  extension = name.toString().split(".")[1];
+  console.log(extension);
+  return extension;
+}
