@@ -31,18 +31,28 @@ function submitFormT(e) {
     .then(function (data) {
       // `data` is the parsed version of the JSON returned from the above endpoint.
       console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
-      var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
-      geojsonLayer.addTo(map);
+      //GeoJSON
+      if (data.message == "application/geo+json") {
+        var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
+        geojsonLayer.addTo(map);
 
-      // this requests the file and executes a callback with the parsed result once it is available
-      fetchJSONFile("../uploads/trainingsdaten.json", function (data) {
-        console.log(data);
-        let labels = new set();
-        data.features.forEach((element) => {
-          labels.add(element.properties.Label);
-          console.log(labels);
+        // this requests the file and executes a callback with the parsed result once it is available
+        fetchJSONFile("../uploads/trainingsdaten.json", function (data) {
+          console.log(data);
+          let labels = new Set();
+          data.features.forEach((element) => {
+            labels.add(element.properties.Label);
+            console.log(labels);
+          });
         });
-      });
+      } else {
+        //Geopackage
+        // Load the Rivers GeoPackage and display the feature layer
+        L.geoPackageTileLayer({
+          geoPackageUrl: "../uploads/trainingsdaten.gpkg",
+          layerName: "rivers_tiles",
+        }).addTo(map);
+      }
     })
     .catch((err) => ("Error occured", err));
 }
