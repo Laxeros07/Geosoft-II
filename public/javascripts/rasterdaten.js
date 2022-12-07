@@ -1,11 +1,32 @@
 var rasterdaten = null;
 var bbox;
 
-var rasterdatenInput = document.getElementById("rasterdatenInput");
-var rasterdatenHochladen = document.getElementById("rasterdatenHochladen");
+//var rasterdatenInput = document.getElementById("rasterdatenInput");
+//var rasterdatenHochladen = document.getElementById("rasterdatenHochladen");
 
-rasterdatenInput.addEventListener("change", (event) => fileRasterChange(event));
-rasterdatenHochladen.addEventListener("click", uploadRasterdaten);
+//rasterdatenInput.addEventListener("change", (event) => fileRasterChange(event));
+//rasterdatenHochladen.addEventListener("click", uploadRasterdaten);
+
+const rasterdatenForm = document.getElementById("rasterdatenForm");
+const rasterdatenFiles = document.getElementById("rasterdatenFiles");
+
+rasterdatenForm.addEventListener("submit", submitFormR);
+
+function submitFormR(e) {
+  e.preventDefault();
+  let formData = new FormData();
+  formData.append("daten", rasterdatenFiles.files[0]);
+  for (var [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
+
+  fetch("http://localhost:3000/upload", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => addGeotiffToMap("../uploads/rasterdaten.tif"))
+    .catch((err) => ("Error occured", err));
+}
 
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.

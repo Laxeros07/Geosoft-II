@@ -4,8 +4,29 @@ var R = require("r-integration");
 const MongoClient = require("mongodb").MongoClient;
 const app = require("../app");
 
+var filetype;
+
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const storage = multer.diskStorage({
+  destination: "./public/uploads",
+  filename: (req, file, cb) => {
+    filetype = file.mimetype;
+    console.log(file);
+    switch (file.mimetype) {
+      case "application/geo+json":
+        cb(null, "trainingsdaten.json");
+        break;
+      case "application/octet-stream":
+        cb(null, "trainingsdaten.gpkg");
+        break;
+      case "image/tiff":
+        cb(null, "rasterdaten.tif");
+        break;
+    }
+  },
+});
+const upload = multer({ storage: storage });
+//const upload = multer({ dest: "uploads/" });
 
 const url = "mongodb://localhost:27017"; // connection URL
 const client = new MongoClient(url); // mongodb client
@@ -21,13 +42,14 @@ router.get("/", function (req, res, next) {
 
 // Wird ausgeführt, wenn der Speichern Button gedrückt wurde
 
-router.post("/", upload.single("trainingsdaten"), uploadFiles);
+router.post("/", upload.single("daten"), uploadFiles);
+//router.post("/", upload.single("rasterdaten"), uploadFiles);
 
 function uploadFiles(req, res) {
   console.log("lol");
-  console.log(req.body);
-  console.log(req.files);
-  res.json({ message: "Successfully uploaded files" });
+  console.log("Filetype");
+  console.log(filetype);
+  res.send({ message: filetype });
 }
 
 // req.file is the `avatar` file
@@ -37,7 +59,6 @@ router.put("/", function (req, res, next) {
   console.log(req);
   res.send({ data: "Fertig" });
 });
-/*
 
 router.post("/rSkript", function (req, res, next) {
   //res.redirect("/upload");
@@ -59,6 +80,6 @@ router.post("/rSkript", function (req, res, next) {
     radius: req.body.radius,
     result: result,
   });
-});*/
+});
 
 module.exports = router;

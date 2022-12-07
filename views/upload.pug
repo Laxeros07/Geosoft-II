@@ -1,23 +1,25 @@
 extends layout
 
 block content
-    .row.gx-4.gx-lg-3.justify-content-md-center.mt-3 
+    .row.gy-4.gx-lg-3.justify-content-md-center.mt-3 
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
                 h3 Trainingsdaten
                 div
-                    form#form(action="/" method="post")
+                    form#trainingsdatenForm(action="/" method="post")
                         form-group
-                            label.col-form-label(for='trainingsdaten') Trainingsdaten laden
-                            input.form-control#files(type='file' name='trainingsdaten' accept=".json, .geojson, .gpkg")
+                            label.col-form-label(for='daten') Trainingsdaten laden
+                            input#trainingsdatenFiles.form-control(type='file' name='daten' accept=".json, .geojson, .gpkg")
                         button.btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
                 h3 Rasterdaten
                 div
-                    label.col-form-label(for='rasterdaten') Rasterdaten laden
-                    input#rasterdatenInput.form-control(type='file' name="rasterdaten" accept=".tif")
-                    button#rasterdatenHochladen.btn.btn-primary.my-2 Hochladen
+                    form#rasterdatenForm(action="/" method="post")
+                        form-group
+                            label.col-form-label(for='daten') Rasterdaten laden
+                            input#rasterdatenFiles.form-control(type='file' name="daten" accept=".tif")
+                        button.btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
                 h3 RSkript
@@ -30,7 +32,7 @@ block content
                         label.col-form-label(for='radius') Radius
                         div
                             input.form-control(type='number' name='radius' value=radius)
-                    button.btn.btn-primary.my-2(type='submit') Skript ausführen
+                    button#skriptAusfuehren.btn.btn-primary.my-2 Skript ausführen
                 label(for='ergebnis') Ergebnis
                 textarea.from-control(name = 'ergebnis')=result
     #test
@@ -47,5 +49,8 @@ block content
 
     script(src="https://cdn.jsdelivr.net/npm/geotiff") <!-- Skript for Geotiff Import -->
     script(src="https://cdn.jsdelivr.net/npm/leaflet-geotiff") <!-- Skript for Geotiff Import -->
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js") <!-- Skript for Geotiff Import -->
+    script(src="https://unpkg.com/georaster") 
+    script(src="https://unpkg.com/georaster-layer-for-leaflet") 
     script(src='/javascripts/trainingsdaten.js')
     script(src='/javascripts/rasterdaten.js')

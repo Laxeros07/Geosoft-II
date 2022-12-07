@@ -1,18 +1,16 @@
 var trainingsdaten = null;
-var trainingsdatenInput = document.getElementById("trainingsdatenInput");
-var trainingsdatenHochladen = document.getElementById(
-  "trainingsdatenHochladen"
-);
+//var trainingsdatenInput = document.getElementById("trainingsdatenInput");
+//var trainingsdatenHochladen = document.getElementById("trainingsdatenHochladen");
 
-const form = document.getElementById("form");
-console.log(form);
-form.addEventListener("submit", submitForm);
+const trainingsdatenForm = document.getElementById("trainingsdatenForm");
+const trainingsdatenFiles = document.getElementById("trainingsdatenFiles");
+trainingsdatenForm.addEventListener("submit", submitFormT);
 
-function submitForm(e) {
+function submitFormT(e) {
   e.preventDefault();
-  const files = document.getElementById("files");
-  const formData = new FormData();
-  formData.append("trainingsdaten", files.files[0]);
+  let formData = new FormData();
+
+  formData.append("daten", trainingsdatenFiles.files[0]);
   //for (let i = 0; i < files.files.length; i++) {
   //  formData.append("files", files.files[i]);
   //}
@@ -23,10 +21,52 @@ function submitForm(e) {
   fetch("http://localhost:3000/upload", {
     method: "POST",
     body: formData,
+    headers: {},
   })
-    .then((res) => console.log(res))
+    .then(function (response) {
+      // The response is a Response instance.
+      // You parse the data into a useable format using `.json()`
+      return response.json();
+    })
+    .then(function (data) {
+      // `data` is the parsed version of the JSON returned from the above endpoint.
+      console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
+      var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
+      geojsonLayer.addTo(map);
+
+      // this requests the file and executes a callback with the parsed result once it is available
+      fetchJSONFile("../uploads/trainingsdaten.json", function (data) {
+        console.log(data);
+        let labels = new set();
+        data.features.forEach((element) => {
+          labels.add(element.properties.Label);
+          console.log(labels);
+        });
+      });
+    })
     .catch((err) => ("Error occured", err));
 }
+
+/**
+ * Ruft eine lokale JSON Datei auf
+ * Quelle: https://stackoverflow.com/questions/14388452/how-do-i-load-a-json-object-from-a-file-with-ajax
+ * @param {*} path
+ * @param {*} callback
+ */
+function fetchJSONFile(path, callback) {
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.onreadystatechange = function () {
+    if (httpRequest.readyState === 4) {
+      if (httpRequest.status === 200) {
+        var data = JSON.parse(httpRequest.responseText);
+        if (callback) callback(data);
+      }
+    }
+  };
+  httpRequest.open("GET", path);
+  httpRequest.send();
+}
+
 //trainingsdatenInput.addEventListener("change", fileTrainingChange);
 //trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
 
@@ -53,6 +93,13 @@ var LeafIcon = L.Icon.extend({
 var greenIcon = new LeafIcon({
   iconUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
 });
+
+function showTrainingsdaten(data) {
+  var jsonLayer = L.geoJSON(data).addTo(map);
+  alert("Hochladen erfolgreich!");
+
+  map.fitBounds(jsonLayer.getBounds());
+}
 
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
