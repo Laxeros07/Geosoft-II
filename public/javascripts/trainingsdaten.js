@@ -6,6 +6,8 @@ const trainingsdatenForm = document.getElementById("trainingsdatenForm");
 const trainingsdatenFiles = document.getElementById("trainingsdatenFiles");
 trainingsdatenForm.addEventListener("submit", submitFormT);
 
+var trainingspolygone = L.layerGroup().addTo(map);
+
 function submitFormT(e) {
   e.preventDefault();
   let formData = new FormData();
@@ -37,16 +39,35 @@ function submitFormT(e) {
       if (getoutput(dateiname) == "geojson" || getoutput(dateiname) == "json") {
         console.log("test");
         var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
-        geojsonLayer.addTo(map);
+        geojsonLayer.addTo(map).bindPopup(function (layer) {
+          return layer.feature.properties.Label;
+        });
 
         // this requests the file and executes a callback with the parsed result once it is available
         fetchJSONFile("../uploads/trainingsdaten.json", function (data) {
           console.log(data);
+          // Die Labels aus dem geojson werden in einem Set gespeichert,
+          // um später die Trainingsdaten auf der Karte farblich zu differenzieren
           let labels = new Set();
           data.features.forEach((element) => {
             labels.add(element.properties.Label);
-            console.log(labels);
           });
+          console.log(labels);
+          // Die Polygone werden auf der Karte farblich differenziert
+          const labelsArray = Array.from(labels);
+          for (let index = 0; index < labelsArray.length; index++) {
+            let label = labelsArray[index];
+            console.log(label);
+            color = getRandomColor();
+            L.geoJSON(data, {
+              onEachFeature: addMyData,
+              style: function (feature) {
+                if (feature.properties.Label == label) {
+                  return { color: color };
+                }
+              },
+            }).addTo(map);
+          }
         });
       } else {
         //Geopackage
@@ -82,30 +103,6 @@ function fetchJSONFile(path, callback) {
 
 //trainingsdatenInput.addEventListener("change", fileTrainingChange);
 //trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
-
-// Karte mit Zentrum definieren
-var map = L.map("map").setView([52, 7.6], 10);
-
-mapLink = '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "&copy; " + mapLink + " Contributors",
-  maxZoom: 18,
-}).addTo(map);
-
-var LeafIcon = L.Icon.extend({
-  options: {
-    shadowUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-    iconSize: [38, 95],
-    shadowSize: [50, 64],
-    iconAnchor: [22, 94],
-    shadowAnchor: [4, 62],
-    popupAnchor: [-3, -76],
-  },
-});
-
-var greenIcon = new LeafIcon({
-  iconUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-});
 
 function showTrainingsdaten(data) {
   var jsonLayer = L.geoJSON(data).addTo(map);
@@ -237,4 +234,10 @@ function getoutput(name) {
   extension = name.toString().split(".")[1];
   console.log(extension);
   return extension;
+}
+
+// This function is run for every feature found in the geojson file. It adds the feature to the empty layer we created above
+function addMyData(feature, layer) {
+  trainingspolygone.addLayer(layer);
+  // some other code can go here, like adding a popup with layer.bindPopup("Hello")
 }

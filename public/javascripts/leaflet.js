@@ -1,37 +1,23 @@
-var map = L.map("map").setView([51.97, 7.62], 13);
+// Karte mit Zentrum definieren
+var map = L.map("map").setView([51.96, 7.62], 13);
 
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+mapLink = '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "&copy; " + mapLink + " Contributors",
+  maxZoom: 18,
 }).addTo(map);
 
-let x = document.getElementById("coordinates");
-/**
- * Returns the Geolocation of the browser
- * @returns {coordinates}
- */
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(showPosition);
-  } else {
-    x.innerHTML = "Geolocation is not supported by this browser.";
-  }
-}
+var LeafIcon = L.Icon.extend({
+  options: {
+    shadowUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    iconSize: [38, 95],
+    shadowSize: [50, 64],
+    iconAnchor: [22, 94],
+    shadowAnchor: [4, 62],
+    popupAnchor: [-3, -76],
+  },
+});
 
-let pos;
-/**
- * shows the position of the browser
- * @param {coordinates} position
- */
-function showPosition(position) {
-  x.innerHTML =
-    "Latitude: " +
-    position.coords.latitude +
-    ",  Longitude: " +
-    position.coords.longitude;
-
-  pos = [position.coords.latitude, position.coords.longitude];
-  var marker = new L.marker([pos[0], pos[1]]);
-  marker.bindPopup("mein Standort");
-  marker.addTo(map);
-}
+var greenIcon = new LeafIcon({
+  iconUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+});
