@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     console.log(file);
     switch (file.mimetype) {
       case "application/geo+json":
-        cb(null, "trainingsdaten.json");
+        cb(null, "trainingsdaten.geojson");
         break;
       case "application/octet-stream":
         cb(null, "trainingsdaten.gpkg");
@@ -46,16 +46,11 @@ router.post("/", upload.single("daten"), uploadFiles);
 function uploadFiles(req, res) {
   console.log("Filetype");
   console.log(filetype);
-  //if (filetype == "application/octet-stream") {
-  let result = R.callMethod(
-    "public/rScripts/gpkgToGeojson_converter.r",
-    "konvertierung",
-    {
+  if (filetype == "application/octet-stream") {
+    R.callMethod("public/rScripts/gpkgToGeojson_converter.r", "konvertierung", {
       x: "x",
-    }
-  );
-  console.log("wd: " + result);
-  //}
+    });
+  }
   res.send({ message: filetype });
 }
 
