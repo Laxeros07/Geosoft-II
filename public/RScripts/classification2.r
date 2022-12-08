@@ -6,9 +6,9 @@ library(raster)
 
 
 ## nur zum testen
-rasterdaten <- rast("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/sentinelRaster2_umprojiziert.tif")
-trainingsdaten <- read_sf("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/trainingsgebiete.geojson")
-modell <- readRDS("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/RFModel2.RDS")
+#rasterdaten <- rast("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/sentinelRaster2_umprojiziert.tif")
+#trainingsdaten <- read_sf("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/trainingsgebiete.geojson")
+#modell <- readRDS("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/RFModel2.RDS")
 
 ## Ausgabe
 klassifizierung_mit_Modell = function(rasterdaten, modell) {
@@ -97,8 +97,8 @@ klassifizierung_ohne_Modell = function(rasterdaten, trainingsdaten) {
 
 
 # zum Testen der Funktionen
-klassifizierung_mit_Modell(rasterdaten, modell)
-klassifizierung_ohne_Modell(rasterdaten, trainingsdaten)
+#klassifizierung_mit_Modell(rasterdaten, modell)
+#klassifizierung_ohne_Modell(rasterdaten, trainingsdaten)
 
 
 
