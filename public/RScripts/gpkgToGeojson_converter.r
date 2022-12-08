@@ -1,8 +1,6 @@
 library(sf)
 
-konvertierung = function(geopackageEingabe) {
-  data <- st_read(geopackageEingabe)
-  st_write(data, "temporaererDatenspeicher/data.geojson")
-  neu <- st_read("temporaererDatenspeicher/data.geojson")
-  return (neu)
+konvertierung = function(x) {
+  data <- st_read(paste(getwd(),"/public/uploads/trainingsdaten.gpkg",sep=""))
+  st_write(data, paste(getwd(),"/public/uploads/trainingsdaten.geojson",sep=""), delete_dsn=TRUE)
 }

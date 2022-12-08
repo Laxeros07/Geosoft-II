@@ -9,8 +9,14 @@ var bbox;
 
 const rasterdatenForm = document.getElementById("rasterdatenForm");
 const rasterdatenFiles = document.getElementById("rasterdatenFiles");
+const rasterdatenHochladen = document.getElementById("rasterdatenHochladen");
 
 rasterdatenForm.addEventListener("submit", submitFormR);
+rasterdatenFiles.addEventListener("change", () => {
+  rasterdatenHochladen.disabled = false;
+});
+rasterdatenHochladen.disabled = true;
+rasterdatenForm.reset();
 
 function submitFormR(e) {
   e.preventDefault();
@@ -26,13 +32,14 @@ function submitFormR(e) {
   })
     .then((res) => addGeotiffToMap("../uploads/rasterdaten.tif"))
     .catch((err) => ("Error occured", err));
-}
+} /*
 
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
  * Quelle: https://stackoverflow.com/questions/3814231/loading-an-image-to-a-img-from-input-file
  * @param {*} event
  */
+/*
 function fileRasterChange(evt) {
   var tgt = evt.target || window.event.srcElement,
     files = tgt.files;
@@ -124,7 +131,7 @@ function uploadRasterdaten() {
     })
     .catch((error) => {
       console.error("Error:", error);
-    });*/
+    });
 }
 
 function showrasterdaten(data) {
@@ -133,3 +140,4 @@ function showrasterdaten(data) {
 
   map.fitBounds(jsonLayer.getBounds());
 }
+*/
