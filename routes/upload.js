@@ -40,46 +40,23 @@ router.get("/", function (req, res, next) {
   res.render("upload", { title: "Upload", radius: "", result: "" });
 });
 
-// Wird ausgeführt, wenn der Speichern Button gedrückt wurde
-
+// Läd die Daten in den Upload Ordner hoch
 router.post("/", upload.single("daten"), uploadFiles);
-//router.post("/", upload.single("rasterdaten"), uploadFiles);
 
 function uploadFiles(req, res) {
-  console.log("lol");
   console.log("Filetype");
   console.log(filetype);
+  //if (filetype == "application/octet-stream") {
+  let result = R.callMethod(
+    "public/rScripts/gpkgToGeojson_converter.r",
+    "konvertierung",
+    {
+      x: "x",
+    }
+  );
+  console.log("wd: " + result);
+  //}
   res.send({ message: filetype });
 }
-
-// req.file is the `avatar` file
-// req.body will hold the text fields, if there were any
-
-router.put("/", function (req, res, next) {
-  console.log(req);
-  res.send({ data: "Fertig" });
-});
-
-router.post("/rSkript", function (req, res, next) {
-  //res.redirect("/upload");
-  let result;
-  switch (req.body.select) {
-    case "flaeche":
-      result = R.callMethod("public/rScripts/flaeche.r", "x", {
-        radius: parseInt(req.body.radius),
-      });
-      break;
-    case "max":
-      result = R.executeRScript("public/rScripts/test.r");
-      break;
-  }
-
-  res.render("upload", {
-    title: "Upload",
-    trainingsdaten: null,
-    radius: req.body.radius,
-    result: result,
-  });
-});
 
 module.exports = router;
