@@ -44,9 +44,18 @@ router.get("/", function (req, res, next) {
 router.post("/", upload.single("daten"), uploadFiles);
 
 function uploadFiles(req, res) {
-  console.log("lol");
   console.log("Filetype");
   console.log(filetype);
+  //if (filetype == "application/octet-stream") {
+  let result = R.callMethod(
+    "public/rScripts/gpkgToGeojson_converter.r",
+    "konvertierung",
+    {
+      x: "x",
+    }
+  );
+  console.log("wd: " + result);
+  //}
   res.send({ message: filetype });
 }
 

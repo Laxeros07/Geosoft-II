@@ -19,6 +19,17 @@ function submitFormT(e) {
   }
   var dateiname = trainingsdatenFiles.files[0].name;
 
+  // Dateityp wird abgefragt und dann gesetzt
+  if (getoutput(dateiname) == "geojson" || getoutput(dateiname) == "json") {
+    trainingsdatenFiles.files[0].type = "application/geo+json";
+  } else {
+    trainingsdatenFiles.files[0].type = "application/octet-stream";
+  }
+
+  var loc = window.location.pathname;
+  var dir = loc.substring(0, loc.lastIndexOf("/"));
+  console.log(dir);
+
   fetch("http://localhost:3000/upload", {
     method: "POST",
     body: formData,
@@ -31,11 +42,9 @@ function submitFormT(e) {
     })
     .then(function (data) {
       // `data` is the parsed version of the JSON returned from the above endpoint.
-      console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
-      console.log(dateiname);
+      console.log(data);
       //GeoJSON
-      if (getoutput(dateiname) == "geojson" || getoutput(dateiname) == "json") {
-        console.log("test");
+      if (data.message == "application/geo+json") {
         var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
         geojsonLayer.addTo(map);
 
@@ -50,7 +59,6 @@ function submitFormT(e) {
         });
       } else {
         //Geopackage
-        // Load the Rivers GeoPackage and display the feature layer
         L.geoPackageTileLayer({
           geoPackageUrl: "../uploads/trainingsdaten.gpkg",
           layerName: "rivers_tiles",
