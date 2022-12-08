@@ -236,6 +236,6 @@ function uploadTrainingsdaten() {
 // checkt, ob das Dateiformat Geopackage ist
 function getoutput(name) {
   extension = name.toString().split(".")[1];
-  console.log(extension);
+  //console.log(extension);
   return extension;
 }

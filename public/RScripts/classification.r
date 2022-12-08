@@ -1,3 +1,9 @@
+### Dieses Skript funktioniert nicht richtig und ist unvollständig 
+### und liegt hier nur noch als Backup!!!
+
+
+
+
 ## librarys installieren
 library(terra)
 library(sf)
