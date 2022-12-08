@@ -4,6 +4,20 @@ var R = require("r-integration");
 const MongoClient = require("mongodb").MongoClient;
 const app = require("../app");
 
+const fs = require("fs");
+const path = require("path");
+
+const directory = path.join(__dirname, "../public/uploads");
+fs.readdir(directory, (err, files) => {
+  if (err) throw err;
+
+  for (const file of files) {
+    fs.unlink(path.join(directory, file), (err) => {
+      if (err) throw err;
+    });
+  }
+});
+
 var filetype;
 
 const multer = require("multer");
