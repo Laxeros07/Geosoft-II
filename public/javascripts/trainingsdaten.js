@@ -10,6 +10,8 @@ trainingsdatenFiles.addEventListener("change", () => {
 trainingsdatenHochladen.disabled = true;
 trainingsdatenForm.reset();
 
+var trainingspolygone = L.layerGroup().addTo(map);
+
 function submitFormT(e) {
   e.preventDefault();
   let formData = new FormData();
@@ -32,10 +34,6 @@ function submitFormT(e) {
     trainingsdatenFiles.files[0].type = "application/octet-stream";
   }
 
-  var loc = window.location.pathname;
-  var dir = loc.substring(0, loc.lastIndexOf("/"));
-  console.log(dir);
-
   fetch("http://localhost:3000/upload", {
     method: "POST",
     body: formData,
@@ -51,13 +49,16 @@ function submitFormT(e) {
       console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
       console.log(dateiname);
       //GeoJSON
-      if (getoutput(dateiname) == "geojson" || getoutput(dateiname) == "json") {
+      if (
+        getDateityp(dateiname) == "geojson" ||
+        getDateityp(dateiname) == "json"
+      ) {
         console.log("test");
         var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
         geojsonLayer.addTo(map).bindPopup(function (layer) {
           return layer.feature.properties.Label;
         });
-
+      }
       // this requests the file and executes a callback with the parsed result once it is available
       fetchJSONFile("../uploads/trainingsdaten.geojson", function (data) {
         console.log(data);
@@ -65,7 +66,9 @@ function submitFormT(e) {
         data.features.forEach((element) => {
           labels.add(element.properties.Label);
           console.log(labels);
+          L.geoJSON(data).addTo(map);
           // Die Polygone werden auf der Karte farblich differenziert
+          /*
           const labelsArray = Array.from(labels);
           for (let index = 0; index < labelsArray.length; index++) {
             let label = labelsArray[index];
@@ -79,9 +82,9 @@ function submitFormT(e) {
                 }
               },
             }).addTo(map);
-          }
+          }*/
         });
-      }
+      });
     })
     .catch((err) => ("Error occured", err));
 }
@@ -106,32 +109,12 @@ function fetchJSONFile(path, callback) {
   httpRequest.send();
 }
 
+function addMyData(feature, layer) {
+  trainingspolygone.addLayer(layer);
+}
+
 //trainingsdatenInput.addEventListener("change", fileTrainingChange);
 //trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
-
-// Karte mit Zentrum definieren
-var map = L.map("map").setView([52, 7.6], 10);
-
-mapLink = '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "&copy; " + mapLink + " Contributors",
-  maxZoom: 18,
-}).addTo(map);
-
-var LeafIcon = L.Icon.extend({
-  options: {
-    shadowUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-    iconSize: [38, 95],
-    shadowSize: [50, 64],
-    iconAnchor: [22, 94],
-    shadowAnchor: [4, 62],
-    popupAnchor: [-3, -76],
-  },
-});
-
-var greenIcon = new LeafIcon({
-  iconUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-});
 
 /*
 function showTrainingsdaten(data) {
@@ -175,8 +158,8 @@ function fileTrainingChange(event) {
 
 /**
 function uploadTrainingsdaten() {
-  if (getoutput(dateiname)) {
-    if (getoutput(dateiname)) {
+  if (getDateityp(dateiname)) {
+    if (getDateityp(dateiname)) {
       // falls geopackage dateiformat
       // an dieser STelle R Skript ausführen um in geojson umzuwandeln
       fetch("http://localhost:3000/upload", {
