@@ -30,6 +30,9 @@ const storage = multer.diskStorage({
       case "application/geo+json":
         cb(null, "trainingsdaten.geojson");
         break;
+      case "application/json":
+        cb(null, "trainingsdaten.geojson");
+        break;
       case "application/octet-stream":
         cb(null, "trainingsdaten.gpkg");
         break;

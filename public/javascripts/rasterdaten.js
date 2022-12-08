@@ -9,8 +9,14 @@ var bbox;
 
 const rasterdatenForm = document.getElementById("rasterdatenForm");
 const rasterdatenFiles = document.getElementById("rasterdatenFiles");
+const rasterdatenHochladen = document.getElementById("rasterdatenHochladen");
 
 rasterdatenForm.addEventListener("submit", submitFormR);
+rasterdatenFiles.addEventListener("change", () => {
+  rasterdatenHochladen.disabled = false;
+});
+rasterdatenHochladen.disabled = true;
+rasterdatenForm.reset();
 
 function submitFormR(e) {
   e.preventDefault();

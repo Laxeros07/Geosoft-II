@@ -47,3 +47,10 @@ function addGeotiffToMap(url) {
       });
     });
 }
+
+// checkt, ob das Dateiformat Geopackage ist
+function getDateityp(name) {
+  extension = name.toString().split(".")[1];
+  //console.log(extension);
+  return extension;
+}

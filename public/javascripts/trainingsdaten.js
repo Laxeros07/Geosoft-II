@@ -1,10 +1,14 @@
-var trainingsdaten = null;
-//var trainingsdatenInput = document.getElementById("trainingsdatenInput");
-//var trainingsdatenHochladen = document.getElementById("trainingsdatenHochladen");
-
 const trainingsdatenForm = document.getElementById("trainingsdatenForm");
 const trainingsdatenFiles = document.getElementById("trainingsdatenFiles");
+const trainingsdatenHochladen = document.getElementById(
+  "trainingsdatenHochladen"
+);
 trainingsdatenForm.addEventListener("submit", submitFormT);
+trainingsdatenFiles.addEventListener("change", () => {
+  trainingsdatenHochladen.disabled = false;
+});
+trainingsdatenHochladen.disabled = true;
+trainingsdatenForm.reset();
 
 function submitFormT(e) {
   e.preventDefault();
@@ -20,8 +24,10 @@ function submitFormT(e) {
   var dateiname = trainingsdatenFiles.files[0].name;
 
   // Dateityp wird abgefragt und dann gesetzt
-  if (getoutput(dateiname) == "geojson" || getoutput(dateiname) == "json") {
+  if (getDateityp(dateiname) == "geojson") {
     trainingsdatenFiles.files[0].type = "application/geo+json";
+  } else if (getDateityp(dateiname) == "json") {
+    trainingsdatenFiles.files[0].type = "application/json";
   } else {
     trainingsdatenFiles.files[0].type = "application/octet-stream";
   }
@@ -49,7 +55,7 @@ function submitFormT(e) {
       geojsonLayer.addTo(map);
 
       // this requests the file and executes a callback with the parsed result once it is available
-      fetchJSONFile("../uploads/trainingsdaten.json", function (data) {
+      fetchJSONFile("../uploads/trainingsdaten.geojson", function (data) {
         console.log(data);
         let labels = new Set();
         data.features.forEach((element) => {
@@ -108,13 +114,14 @@ var greenIcon = new LeafIcon({
   iconUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
 });
 
+/*
 function showTrainingsdaten(data) {
   var jsonLayer = L.geoJSON(data).addTo(map);
   alert("Hochladen erfolgreich!");
 
   map.fitBounds(jsonLayer.getBounds());
 }
-
+*/
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
  * Quelle: https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
@@ -232,10 +239,3 @@ function uploadTrainingsdaten() {
   }
 }
  */
-
-// checkt, ob das Dateiformat Geopackage ist
-function getoutput(name) {
-  extension = name.toString().split(".")[1];
-  //console.log(extension);
-  return extension;
-}
