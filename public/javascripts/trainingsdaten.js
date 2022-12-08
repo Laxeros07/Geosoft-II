@@ -32,10 +32,9 @@ function submitFormT(e) {
     .then(function (data) {
       // `data` is the parsed version of the JSON returned from the above endpoint.
       console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
-      console.log(dateiname);
+      //console.log(dateiname);
       //GeoJSON
       if (getoutput(dateiname) == "geojson" || getoutput(dateiname) == "json") {
-        console.log("test");
         var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
         geojsonLayer.addTo(map);
 
@@ -45,7 +44,7 @@ function submitFormT(e) {
           let labels = new Set();
           data.features.forEach((element) => {
             labels.add(element.properties.Label);
-            console.log(labels);
+            //console.log(labels);
           });
         });
       } else {
@@ -235,6 +234,6 @@ function uploadTrainingsdaten() {
 // checkt, ob das Dateiformat Geopackage ist
 function getoutput(name) {
   extension = name.toString().split(".")[1];
-  console.log(extension);
+  //console.log(extension);
   return extension;
 }
