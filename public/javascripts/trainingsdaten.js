@@ -48,11 +48,15 @@ function submitFormT(e) {
     })
     .then(function (data) {
       // `data` is the parsed version of the JSON returned from the above endpoint.
-      console.log(data);
-      var geojsonLayer = new L.GeoJSON.AJAX(
-        "../uploads/trainingsdaten.geojson"
-      );
-      geojsonLayer.addTo(map);
+      console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
+      console.log(dateiname);
+      //GeoJSON
+      if (getoutput(dateiname) == "geojson" || getoutput(dateiname) == "json") {
+        console.log("test");
+        var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
+        geojsonLayer.addTo(map).bindPopup(function (layer) {
+          return layer.feature.properties.Label;
+        });
 
       // this requests the file and executes a callback with the parsed result once it is available
       fetchJSONFile("../uploads/trainingsdaten.geojson", function (data) {
@@ -61,8 +65,23 @@ function submitFormT(e) {
         data.features.forEach((element) => {
           labels.add(element.properties.Label);
           console.log(labels);
+          // Die Polygone werden auf der Karte farblich differenziert
+          const labelsArray = Array.from(labels);
+          for (let index = 0; index < labelsArray.length; index++) {
+            let label = labelsArray[index];
+            console.log(label);
+            color = getRandomColor();
+            L.geoJSON(data, {
+              onEachFeature: addMyData,
+              style: function (feature) {
+                if (feature.properties.Label == label) {
+                  return { color: color };
+                }
+              },
+            }).addTo(map);
+          }
         });
-      });
+      }
     })
     .catch((err) => ("Error occured", err));
 }
