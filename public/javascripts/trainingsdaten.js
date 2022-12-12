@@ -99,8 +99,9 @@ function submitFormT(e) {
           });
         }
         layerControl.addOverlay(L.layerGroup(layerArray), "Trainingspolygone");
-      }).catch((err) => ("Error occured", err));
-    });
+      });
+    })
+    .catch((err) => ("Error occured", err));
 }
 /**
  * Ruft eine lokale JSON Datei auf
