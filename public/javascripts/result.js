@@ -85,74 +85,74 @@ map.on(L.Draw.Event.CREATED, function (e) {
   }
   drawnItems.addLayer(layer);
   // get json
-  console.log(JSON.stringify(drawnItems.toGeoJSON()));
+  console.log(drawnItems.toGeoJSON());
+  //json speichern
   json.push(drawnItems.toGeoJSON());
-  console.log(json);
 });
 
-var dateiname = null;
+/**
+ * Wird aufgerufen wenn der der laden button gedrückt wird
+ */
 function datenAnzeigen() {
-  console.log("hallo");
-  //document.getElementById('bereich1').innerHTML = json.features[0].geometry.properties.label + '</br>' ;
-  auslesen(json);
+  console.log("Tabelle leeren");
+
+  //Tabelle zurücksetzen
+  tbl = document.getElementById("tabelle");
+  tbl.innerHTML = "<tbody><tr><th>Label</th><th>Class_ID</th></tr></tbody>";
+
+  toJson(json);
+}
+
+var data = []; //Array für die Geojson
+/**
+ * Übersichtlicher in ein Geojson speichern
+ */
+function toJson() {
+  data = [];
+  var i = 0;
+  while (i < json.length) {
+    data.push({
+      type: "Feature",
+      properties: {
+        shape: "polygon",
+        label: json[i].features[i].geometry.properties.label,
+        classID: json[i].features[i].geometry.properties.classID,
+        //coordinates:
+      },
+      geometry: {
+        type: "trainingsgebie",
+        coordinates: json[i].features[i].geometry.geometry.coordinates,
+      },
+    });
+    i++;
+  }
+  console.log(data);
+  einlesen(data); //die Werte der Tabelle übergeben
 }
 
 //Punkte und Attribute zur Tabelle hinzufügen
 const table = document.getElementById("tabelle");
 
-function auslesen() {
-  var name = [];
-  i = 0;
-  while (i < json.length) {
-    name.push(
-      json[i].features[i].geometry.properties.label +
-        ":  " +
-        json[i].features[i].geometry.properties.classID +
-        "</br>"
-    );
-    i++;
-  }
-
-  name.forEach((item, i = 0) => {
+/**
+ * Tabelle mit den Daten (Label & Class_ID befüllen)
+ */
+function einlesen() {
+  data.forEach((item) => {
     let row = table.insertRow(-1);
     let cell0 = row.insertCell(0);
     let cell1 = row.insertCell(1);
 
     // Speichern der Nummer und der Attribute in jeder Zeile
-    cell0.innerHTML = name;
-    cell1.innerHTML = "nummer";
+    cell0.innerHTML = item.properties.label;
+    cell1.innerHTML = item.properties.classID;
   });
 
   tabelleFüllen(json);
-
-  document.getElementById("bereich1").innerHTML = name;
-  //document.getElementById("bereich2").innerHTML = nummer;
 }
 
 function tabelleFüllen() {
   //Punkte und Attribute zur Tabelle hinzufügen
   const table = document.getElementById("tabelle");
-
-  /**
-   * Hinzufügen der Gebrige und ihrer Attribute in die Tabelle
-   */
-  json.forEach((item, i = 0) => {
-    let c = item.features.geometry.coordinates; //json[i].features[i].geometry.properties.label
-    let p = item.properties;
-    i++;
-
-    // Erstellen der Zeilen und Zellen pro Gebirge
-    let row = table.insertRow(-1);
-    let cell0 = row.insertCell(0);
-    let cell1 = row.insertCell(1);
-
-    // Speichern der Nummer und der Attribute in jeder Zeile
-    cell0.innerHTML = i;
-    cell1.innerHTML = p.label;
-    cell2.innerHTML = p.classID;
-  });
-
-  console.log(table);
 
   /**
    * Klick-Event-wenn auf Zeile in Tabelle auf Gebirge in Karte zoomen
@@ -166,11 +166,13 @@ function tabelleFüllen() {
       var currentRow = table.rows[i];
       var createClickHandler = function (row) {
         return function () {
-          var cell = row.getElementsByTagName("td")[0];
-          var id = cell.innerHTML;
-          var y = geojson[id - 1].geometry.coordinates[0];
-          var x = geojson[id - 1].geometry.coordinates[1];
-          map.setView([x, y], 10);
+          var cell = row.getElementsByTagName("td")[0].innerHTML;
+          var xy = findXY(cell);
+          console.log(xy);
+          var y = xy[0];
+          console.log(y);
+          var x = xy[1];
+          map.setView([x, y], 20);
           markerArray[id - 1].openPopup();
         };
       };
@@ -179,6 +181,24 @@ function tabelleFüllen() {
     }
   }
   window.onload = addRowHandlers();
+}
+
+/**
+ * Findet die Passenden Coordniaten zu einer Class_ID
+ */
+function findXY(cell) {
+  console.log("sucht");
+  var xy = [];
+  var i = 0;
+  while (data.length > i) {
+    console.log("lauft");
+    if ((data[i].properties.classID = cell)) {
+      xy = data[i].geometry.coordinates[0][1];
+      console.log("gefunden" + xy);
+    }
+    i++;
+  }
+  return xy;
 }
 
 /**

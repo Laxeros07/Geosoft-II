@@ -6,4 +6,8 @@ router.get("/", function (req, res, next) {
   res.render("demo", { title: "Demo" });
 });
 
+router.post("/result", function (req, res, next) {
+  res.render("demo_result", { title: "Demo Result" });
+});
+
 module.exports = router;
