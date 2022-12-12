@@ -7,17 +7,17 @@ L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 18,
 }).addTo(map);
 
-var LeafIcon = L.Icon.extend({
-  options: {
-    shadowUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-    iconSize: [38, 95],
-    shadowSize: [50, 64],
-    iconAnchor: [22, 94],
-    shadowAnchor: [4, 62],
-    popupAnchor: [-3, -76],
-  },
-});
+// var LeafIcon = L.Icon.extend({
+//   options: {
+//     shadowUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+//     iconSize: [38, 95],
+//     shadowSize: [50, 64],
+//     iconAnchor: [22, 94],
+//     shadowAnchor: [4, 62],
+//     popupAnchor: [-3, -76],
+//   },
+// });
 
-var greenIcon = new LeafIcon({
-  iconUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-});
+// var greenIcon = new LeafIcon({
+//   iconUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+// });
