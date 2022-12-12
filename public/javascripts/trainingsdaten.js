@@ -89,16 +89,15 @@ function submitFormT(e) {
                     opacity: 0.65,
                     fillOpacity: 0.65,
                   },
+                }).bindPopup(function (layer) {
+                  return layer.feature.properties.Label;
                 })
-                  .addTo(map)
-                  .bindPopup(function (layer) {
-                    return layer.feature.properties.Label;
-                  })
               );
             }
           });
         }
-        layerControl.addOverlay(L.layerGroup(layerArray), "Trainingspolygone");
+        let group = L.layerGroup(layerArray).addTo(map);
+        layerControl.addOverlay(group, "Trainingspolygone");
       });
     })
     .catch((err) => ("Error occured", err));
