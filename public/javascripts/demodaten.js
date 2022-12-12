@@ -73,44 +73,44 @@ function addMyData(feature, layer) {
 
 addGeotiffToMap("../beispieldaten/sentinelRaster2_umprojiziert.tif");
 
-var info = L.control();
+// var info = L.control();
 
-info.onAdd = function (map) {
-  this._div = L.DomUtil.create("div", "info"); // create a div with a class "info"
-  this.update();
-  return this._div;
-};
+// info.onAdd = function (map) {
+//   this._div = L.DomUtil.create("div", "info"); // create a div with a class "info"
+//   this.update();
+//   return this._div;
+// };
 
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-  this._div.innerHTML =
-    "<h4>Trainingspolygone Münster</h4>" +
-    (props
-      ? "<b>" +
-        props.id +
-        "</b><br />" +
-        props.Label +
-        " people / mi<sup>2</sup>"
-      : "Hover over a state");
-};
+// // method that we will use to update the control based on feature properties passed
+// info.update = function (props) {
+//   this._div.innerHTML =
+//     "<h4>Trainingspolygone Münster</h4>" +
+//     (props
+//       ? "<b>" +
+//         props.id +
+//         "</b><br />" +
+//         props.Label +
+//         " people / mi<sup>2</sup>"
+//       : "Hover over a state");
+// };
 
-info.addTo(map);
+// info.addTo(map);
 
-function highlightFeature(e) {
-  var layer = e.target;
-  layer.setStyle({
-    weight: 5,
-    color: "#666",
-    dashArray: "",
-    fillOpacity: 0.7,
-  });
-  layer.bringToFront();
-  info.update(layer.feature.properties);
-}
+// function highlightFeature(e) {
+//   var layer = e.target;
+//   layer.setStyle({
+//     weight: 5,
+//     color: "#666",
+//     dashArray: "",
+//     fillOpacity: 0.7,
+//   });
+//   layer.bringToFront();
+//   info.update(layer.feature.properties);
+// }
 
-function resetHighlight(e) {
-  geojson.resetStyle(e.target);
-  info.update();
-}
+// function resetHighlight(e) {
+//   geojson.resetStyle(e.target);
+//   info.update();
+// }
 
-var legend = L.control({ position: "bottomright" });
+// var legend = L.control({ position: "bottomright" });
