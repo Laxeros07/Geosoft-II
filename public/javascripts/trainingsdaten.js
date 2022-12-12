@@ -10,8 +10,6 @@ trainingsdatenFiles.addEventListener("change", () => {
 trainingsdatenHochladen.disabled = true;
 trainingsdatenForm.reset();
 
-var trainingspolygone = L.layerGroup().addTo(map);
-
 function submitFormT(e) {
   e.preventDefault();
   let formData = new FormData();
@@ -62,33 +60,38 @@ function submitFormT(e) {
       // this requests the file and executes a callback with the parsed result once it is available
       fetchJSONFile("../uploads/trainingsdaten.geojson", function (data) {
         console.log(data);
+        // Die verschiedenen Labels werden in einem Set gespeichert
         let labels = new Set();
         data.features.forEach((element) => {
           labels.add(element.properties.Label);
-          console.log(labels);
-          L.geoJSON(data).addTo(map);
-          // Die Polygone werden auf der Karte farblich differenziert
-          /*
-          const labelsArray = Array.from(labels);
-          for (let index = 0; index < labelsArray.length; index++) {
-            let label = labelsArray[index];
-            console.log(label);
-            color = getRandomColor();
-            L.geoJSON(data, {
-              onEachFeature: addMyData,
-              style: function (feature) {
-                if (feature.properties.Label == label) {
-                  return { color: color };
-                }
-              },
-            }).addTo(map);
-          }*/
         });
-      });
-    })
-    .catch((err) => ("Error occured", err));
+        // Das Set mit den Labels wird in einen Array umgewandelt
+        const labelsArray = Array.from(labels);
+        console.log(labels);
+        // Für jedes Array wird eine zufällige Frabe erstellt und in der Variabel color gespeichert
+        for (let index = 0; index < labelsArray.length; index++) {
+          let label = labelsArray[index];
+          console.log(label);
+          color = getRandomColor();
+          // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
+          // Farbe zuvor gespeicherte Farbe zugeordnet
+          data.features.forEach((element) => {
+            if (element.properties.Label == label) {
+              L.geoJSON(element, {
+                style: {
+                  color: color,
+                  fillColor: color,
+                  weight: 3,
+                  opacity: 0.65,
+                  fillOpacity: 0.65,
+                },
+              }).addTo(map);
+            }
+          });
+        }
+      }).catch((err) => ("Error occured", err));
+    });
 }
-
 /**
  * Ruft eine lokale JSON Datei auf
  * Quelle: https://stackoverflow.com/questions/14388452/how-do-i-load-a-json-object-from-a-file-with-ajax
@@ -107,10 +110,6 @@ function fetchJSONFile(path, callback) {
   };
   httpRequest.open("GET", path);
   httpRequest.send();
-}
-
-function addMyData(feature, layer) {
-  trainingspolygone.addLayer(layer);
 }
 
 //trainingsdatenInput.addEventListener("change", fileTrainingChange);
