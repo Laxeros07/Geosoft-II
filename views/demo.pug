@@ -4,7 +4,11 @@ block content
     .row.gy-4.gx-lg-3.mt-3 
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
-                h3 Trainingsdaten
+                h3 Demoseite
+                p Klicke auf den Knopf, um eine beispielhafte AoA durchzuführen.
+                form(action="demo/result" method="post")
+                    form-group
+                        button.btn.btn-primary.my-2(type="submit") Skript ausführen
         .col-lg-8.col-xs-12.mb-3
             .card.text-dark.shadow.p-4
                 .leaflet-container#map

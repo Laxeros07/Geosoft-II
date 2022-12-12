@@ -9,13 +9,19 @@ var bbox;
 
 const rasterdatenForm = document.getElementById("rasterdatenForm");
 const rasterdatenFiles = document.getElementById("rasterdatenFiles");
+const rasterdatenHochladen = document.getElementById("rasterdatenHochladen");
 
 rasterdatenForm.addEventListener("submit", submitFormR);
+rasterdatenFiles.addEventListener("change", () => {
+  rasterdatenHochladen.disabled = false;
+});
+rasterdatenHochladen.disabled = true;
+rasterdatenForm.reset();
 
 function submitFormR(e) {
   e.preventDefault();
   let formData = new FormData();
-  formData.append("rasterdaten", rasterdatenFiles.files[0]);
+  formData.append("daten", rasterdatenFiles.files[0]);
   for (var [key, value] of formData.entries()) {
     console.log(key, value);
   }
@@ -24,15 +30,16 @@ function submitFormR(e) {
     method: "POST",
     body: formData,
   })
-    .then((res) => console.log(res))
+    .then((res) => addGeotiffToMap("../uploads/rasterdaten.tif"))
     .catch((err) => ("Error occured", err));
-}
+} /*
 
 /**
  * Wird ausgeführt, wenn eine Datei hochgeladen wurde.
  * Quelle: https://stackoverflow.com/questions/3814231/loading-an-image-to-a-img-from-input-file
  * @param {*} event
  */
+/*
 function fileRasterChange(evt) {
   var tgt = evt.target || window.event.srcElement,
     files = tgt.files;
@@ -124,7 +131,7 @@ function uploadRasterdaten() {
     })
     .catch((error) => {
       console.error("Error:", error);
-    });*/
+    });
 }
 
 function showrasterdaten(data) {
@@ -133,3 +140,4 @@ function showrasterdaten(data) {
 
   map.fitBounds(jsonLayer.getBounds());
 }
+*/
