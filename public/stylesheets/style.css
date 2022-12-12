@@ -53,3 +53,10 @@ a.nav-link {
 dd {
   margin-left: 5px;
 }
+
+.vh-50{
+  height: 50vh !important;
+}
+.vh-75{
+  height: 75vh !important;
+}
