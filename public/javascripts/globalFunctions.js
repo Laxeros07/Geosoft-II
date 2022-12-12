@@ -43,6 +43,8 @@ function addGeotiffToMap(url) {
         });
         layer.addTo(map);
 
+        layerControl.addOverlay(layer, "Rasterbild");
+
         map.fitBounds(layer.getBounds());
       });
     });

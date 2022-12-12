@@ -34,7 +34,7 @@ let trainingspolygone = L.layerGroup().addTo(map);
 //   });
 // }
 
-L.geoJSON(trainingsgebiete, {
+var trainingsgebiete = L.geoJSON(trainingsgebiete, {
   onEachFeature: addMyData,
   style: function (feature) {
     switch (feature.properties.Label) {
@@ -63,6 +63,8 @@ L.geoJSON(trainingsgebiete, {
   .bindPopup(function (layer) {
     return layer.feature.properties.Label;
   });
+
+layerControl.addOverlay(trainingsgebiete, "Trainingspolygone");
 
 // This function is run for every feature found in the geojson file. It adds the feature to the empty layer we created above
 function addMyData(feature, layer) {
