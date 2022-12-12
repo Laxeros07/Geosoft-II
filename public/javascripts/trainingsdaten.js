@@ -67,11 +67,9 @@ function submitFormT(e) {
         });
         // Das Set mit den Labels wird in einen Array umgewandelt
         const labelsArray = Array.from(labels);
-        console.log(labels);
         // Für jedes Array wird eine zufällige Frabe erstellt und in der Variabel color gespeichert
         for (let index = 0; index < labelsArray.length; index++) {
           let label = labelsArray[index];
-          console.log(label);
           color = getRandomColor();
           // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
           // Farbe zuvor gespeicherte Farbe zugeordnet
@@ -85,7 +83,11 @@ function submitFormT(e) {
                   opacity: 0.65,
                   fillOpacity: 0.65,
                 },
-              }).addTo(map);
+              })
+                .addTo(map)
+                .bindPopup(function (layer) {
+                  return layer.feature.properties.Label;
+                });
             }
           });
         }
