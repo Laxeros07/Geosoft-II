@@ -5,7 +5,34 @@
  */
 
 let trainingspolygone = L.layerGroup().addTo(map);
-// fill that layer with data from a geojson file
+
+// let labels = new Set();
+// trainingsgebiete.features.forEach((element) => {
+//   labels.add(element.properties.Label);
+// });
+
+// const labelsArray = Array.from(labels);
+// console.log(labels);
+
+// for (let index = 0; index < labelsArray.length; index++) {
+//   let label = labelsArray[index];
+//   console.log(label);
+//   color = getRandomColor();
+
+//   trainingsgebiete.features.forEach((element) => {
+//     if (element.properties.Label == label) {
+//       L.geoJSON(element, {
+//         style: {
+//           color: color,
+//           fillColor: color,
+//           weight: 3,
+//           opacity: 1,
+//           fillOpacity: 0.65,
+//         },
+//       }).addTo(map);
+//     }
+//   });
+// }
 
 L.geoJSON(trainingsgebiete, {
   onEachFeature: addMyData,
@@ -40,7 +67,6 @@ L.geoJSON(trainingsgebiete, {
 // This function is run for every feature found in the geojson file. It adds the feature to the empty layer we created above
 function addMyData(feature, layer) {
   trainingspolygone.addLayer(layer);
-  // some other code can go here, like adding a popup with layer.bindPopup("Hello")
 }
 
 addGeotiffToMap("../beispieldaten/sentinelRaster2_umprojiziert.tif");
