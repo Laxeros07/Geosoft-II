@@ -51,11 +51,15 @@ function submitFormT(e) {
         getDateityp(dateiname) == "geojson" ||
         getDateityp(dateiname) == "json"
       ) {
-        console.log("test");
-        var geojsonLayer = new L.GeoJSON.AJAX("../uploads/trainingsdaten.json");
+        /*
+        var geojsonLayer = new L.GeoJSON.AJAX(
+          "../uploads/trainingsdaten." + getDateityp(dateiname)
+        );
+        
         geojsonLayer.addTo(map).bindPopup(function (layer) {
           return layer.feature.properties.Label;
         });
+        */
       }
       // this requests the file and executes a callback with the parsed result once it is available
       fetchJSONFile("../uploads/trainingsdaten.geojson", function (data) {
@@ -67,6 +71,7 @@ function submitFormT(e) {
         });
         // Das Set mit den Labels wird in einen Array umgewandelt
         const labelsArray = Array.from(labels);
+        let layerArray = [];
         // Für jedes Array wird eine zufällige Frabe erstellt und in der Variabel color gespeichert
         for (let index = 0; index < labelsArray.length; index++) {
           let label = labelsArray[index];
@@ -75,22 +80,25 @@ function submitFormT(e) {
           // Farbe zuvor gespeicherte Farbe zugeordnet
           data.features.forEach((element) => {
             if (element.properties.Label == label) {
-              L.geoJSON(element, {
-                style: {
-                  color: color,
-                  fillColor: color,
-                  weight: 3,
-                  opacity: 0.65,
-                  fillOpacity: 0.65,
-                },
-              })
-                .addTo(map)
-                .bindPopup(function (layer) {
-                  return layer.feature.properties.Label;
-                });
+              layerArray.push(
+                L.geoJSON(element, {
+                  style: {
+                    color: color,
+                    fillColor: color,
+                    weight: 3,
+                    opacity: 0.65,
+                    fillOpacity: 0.65,
+                  },
+                })
+                  .addTo(map)
+                  .bindPopup(function (layer) {
+                    return layer.feature.properties.Label;
+                  })
+              );
             }
           });
         }
+        layerControl.addOverlay(L.layerGroup(layerArray), "Trainingspolygone");
       }).catch((err) => ("Error occured", err));
     });
 }
