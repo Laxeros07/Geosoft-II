@@ -19,8 +19,8 @@ var satellite = L.tileLayer(
 ).addTo(map);
 
 var baseMaps = {
-  OpenStreetMap: osm,
   Luftbild: satellite,
+  OpenStreetMap: osm,
 };
 
 var layerControl = L.control.layers(baseMaps).addTo(map);
