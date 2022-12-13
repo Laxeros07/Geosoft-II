@@ -2,7 +2,7 @@ extends layout
 
 block content
     .row.gy-4.gx-lg-3.justify-content-md-center.mt-3 
-        .col-lg-6.col-xs-12.mb-3
+        .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
                 h3 Trainingsdaten
                 div
@@ -11,7 +11,7 @@ block content
                             label.col-form-label(for='daten') Trainingsdaten laden
                             input#trainingsdatenFiles.form-control(type='file' name='daten' accept=".json, .geojson, .gpkg")
                         button#trainingsdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
-        .col-lg-6.col-xs-12.mb-3
+        .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
                 h3 Rasterdaten
                 div
@@ -20,21 +20,18 @@ block content
                             label.col-form-label(for='daten') Rasterdaten laden
                             input#rasterdatenFiles.form-control(type='file' name="daten" accept=".tif")
                         button#rasterdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
-        //.col-lg-4.col-xs-12.mb-3
+        .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
-                h3 RSkript
-                form(method='post' action='upload')
+                h3 Klassifizierung
+                form(method='post' action='result')
                     form-group
-                        select.form-control(name='select' value=selected) Skript auswählen
-                            option(value='flaeche') Fläche berechnen
-                            option(value='max') max(1,2,3)
-                    form-group
-                        label.col-form-label(for='radius') Radius
-                        div
-                            input.form-control(type='number' name='radius' value=radius)
-                    button#skriptAusfuehren.btn.btn-primary.my-2 Skript ausführen
-                label(for='ergebnis') Ergebnis
-                textarea.from-control(name = 'ergebnis')=result
+                        select.form-control(name='select' value=selected) Klassifizierungsmethode
+                            option(value='dt') Decision Tree
+                            option(value='rf') Random Forest
+                            option(value='') etc
+                        button#skript.btn.btn-primary.my-2 Skript ausführen
+                        p
+                            small#small Es müssen zunächst Trainingdaten oder ein trainiertes Modell und Rasterdaten hochgeladen werden.
     #test
 
     .col-lg-12.col-sm-12.mb-3
@@ -52,6 +49,7 @@ block content
     script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js") <!-- Skript for Geotiff Import -->
     script(src="https://unpkg.com/georaster") 
     script(src="https://unpkg.com/georaster-layer-for-leaflet") 
+    script(src='/javascripts/klassifizierung.js')
     script(src='/javascripts/trainingsdaten.js')
     script(src='/javascripts/rasterdaten.js')
     script(src='/javascripts/leaflet.js')

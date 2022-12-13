@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var R = require("r-integration");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -9,7 +10,19 @@ router.get("/", function (req, res, next) {
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
-router.post("/", upload.single("trainingsdaten"), uploadFiles);
+//router.post("/", upload.single("trainingsdaten"), uploadFiles);
+
+router.post("/", function (req, res, next) {
+  R.callMethod(
+    "public/rScripts/classification2.r",
+    "klassifizierung_ohne_Modell",
+    {
+      x: "x",
+    }
+  );
+
+  res.render("result", { title: "Result" });
+});
 
 function uploadFiles(req, res) {
   console.log("lol");

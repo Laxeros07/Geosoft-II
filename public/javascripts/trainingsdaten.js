@@ -3,9 +3,17 @@ const trainingsdatenFiles = document.getElementById("trainingsdatenFiles");
 const trainingsdatenHochladen = document.getElementById(
   "trainingsdatenHochladen"
 );
+
 trainingsdatenForm.addEventListener("submit", submitFormT);
+
+// Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
+// Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
 trainingsdatenFiles.addEventListener("change", () => {
   trainingsdatenHochladen.disabled = false;
+  if (document.getElementById("rasterdatenFiles").value != "") {
+    skriptAusfuehren.disabled = false;
+    smallText.style.display = "none";
+  }
 });
 trainingsdatenHochladen.disabled = true;
 trainingsdatenForm.reset();

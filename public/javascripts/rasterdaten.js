@@ -12,8 +12,15 @@ const rasterdatenFiles = document.getElementById("rasterdatenFiles");
 const rasterdatenHochladen = document.getElementById("rasterdatenHochladen");
 
 rasterdatenForm.addEventListener("submit", submitFormR);
+
+// Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
+// Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
 rasterdatenFiles.addEventListener("change", () => {
   rasterdatenHochladen.disabled = false;
+  if (document.getElementById("trainingsdatenFiles").value != "") {
+    skriptAusfuehren.disabled = false;
+    smallText.style.display = "none";
+  }
 });
 rasterdatenHochladen.disabled = true;
 rasterdatenForm.reset();
