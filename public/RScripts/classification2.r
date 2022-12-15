@@ -103,9 +103,8 @@ klassifizierung_ohne_Modell <- function(x) {
 
   # und nochmal in schöner plotten mit sinnvollen Farben
   cols <- c(
-    "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
-    "deepskyblue4", "forestgreen", "brown", "darkgreen", "beige", "sandybrown",
-    "blue3", "red", "magenta", "red", "darkgoldenrod"
+    "lightgreen", "blue", "green", "darkred", "forestgreen",
+    "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
   )
   # plot(prediction_terra,col=cols)
 
