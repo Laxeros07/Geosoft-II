@@ -113,6 +113,7 @@ klassifizierung_ohne_Modell <- function(x) {
     "beige", "sandybrown",
     "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
     "deepskyblue4", "forestgreen", "brown", "darkgreen"
+
   )
   # plot(prediction_terra,col=cols)
 
