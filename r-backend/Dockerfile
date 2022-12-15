@@ -21,6 +21,9 @@ WORKDIR /usr/src/app
 # Copy app code source from our local folder into the docker /usr/src/app working directory
 COPY ./r-backend/plumber.R ./
 
-# RUN R -e "install.packages('broom')"
+RUN R -e "install.packages('terra')"
+RUN R -e "install.packages('sf')"
+RUN R -e "install.packages('caret')"
+RUN R -e "install.packages('raster')"
 
 CMD ["plumber.R"]
