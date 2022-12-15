@@ -10,6 +10,9 @@ library(raster)
 # trainingsdaten <- read_sf("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/trainingsgebiete.geojson")
 # modell <- readRDS("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/RFModel2.RDS")
 
+# zum testen wd so setzen
+# setwd("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/")
+
 rasterdaten <- rast(paste(
   getwd(),
   "/public/uploads/rasterdaten.tif",
@@ -100,30 +103,47 @@ klassifizierung_ohne_Modell <- function(x) {
 
   # und nochmal in schöner plotten mit sinnvollen Farben
   cols <- c(
-    "lightgreen", "blue", "green", "darkred", "forestgreen",
-    "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
+    "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
+    "deepskyblue4", "forestgreen", "brown", "darkgreen", "beige", "sandybrown",
+    "blue3", "red", "magenta", "red", "darkgoldenrod"
   )
   # plot(prediction_terra,col=cols)
 
   # export raster
   # writeRaster(prediction_terra,"prediction.grd",overwrite=TRUE)
-  # writeRaster(prediction_terra, paste(
-  #  getwd(),
-  #  "/public/uploads/prediction.png",
-  #  sep = ""
-  #), overwrite = TRUE)
+
   # return(plot(prediction_terra)) # ,col=cols))
-  
-  tiff(paste(
-    getwd(),
-    "/public/uploads/prediction.tif",
-    sep = ""
-  ))
-  plot(prediction_terra, col=cols, legend=FALSE, axes=FALSE)
-  dev.off()
-  
-  
-  
+
+  # tiff(paste(
+  #  getwd(),
+  # "/public/uploads/prediction.tif",
+  #  sep = ""
+  # ))
+  # plot(prediction_terra,col=cols, legend=FALSE)
+  # dev.off()
+
+  # writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
+  # filename <- paste(normalizePath("D:/Dokumente/Studium"), "\\prediction.tif", sep = "")
+  # stop(getwd())
+  writeRaster(prediction_terra, "C:/Temp/prediction.tif", overwrite = TRUE)
+  # writeRaster(prediction_terra, filename="public/uploads/prediction2.tif", format="GTiff", overwrite=TRUE)
+
+  # library(tmap)
+  # crs(prediction_terra) <- "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+  # map <- tm_shape(prediction_terra,
+  #                raster.downsample = FALSE) +
+  #  tm_raster(palette = cols,title = "LUC")+
+  #  tm_scale_bar(bg.color="white")+
+  #  tm_grid(n.x=4,n.y=4,projection="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")+
+  #  tm_layout(legend.position = c("left","bottom"),
+  #            legend.bg.color = "white",
+  #            legend.bg.alpha = 0.8)#+
+
+  # tmap_save(map, paste(
+  #  getwd(),
+  #  "/public/uploads/map.png",
+  #  sep = ""
+  # ))
 }
 
 
