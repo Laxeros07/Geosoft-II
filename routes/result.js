@@ -24,6 +24,13 @@ router.post("/", function (req, res, next) {
   res.render("result", { title: "Result" });
 });
 
+/**
+ * Aufrufen der Trainingsdatenseit (bearbeiten der seite)
+ */
+router.post("/trainingsdaten", function (req, res, next) {
+  res.render("trainingsdaten", { title: "Demo Result" });
+});
+
 function uploadFiles(req, res) {
   console.log("lol");
   console.log("Hallo");

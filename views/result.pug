@@ -1,45 +1,59 @@
 extends layout
 
 block content
-    .card.gy-4.gx-lg-2.text-center.m-4
-      .card-header
-        ul.nav.nav-tabs.card-header-tabs
-          li.nav-item
-            a.nav-link.active(href='#') Trainingsdaten Anlegen 
-          li.nav-item
-            a.nav-link(href='#') Eigene benutzen
+    
 
-      .card-body.m-3
-        .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
-          .col-lg-8.col-xs-12.mb-3
-                  .card.text-dark.shadow.p-4.h-100
-                    #map
-          .col-lg-4.col-xs-12.mb-3
-                  .card.text-dark.shadow.p-4
-                      div
-                        p#bereich1 
-                        p#bereich2
-                        .card.text-dark.shadow.p-4(style='height: 300px;overflow: scroll;')
-                          table#tabelle.table.table-dark.table-striped.table-hover
-                              tr
-                                  th Label
-                                  th Class_ID
+      .card.gy-4.gx-lg-2.text-center.m-4
+        .card-header
+        
+          ul.nav.nav-tabs.card-header-tabs(data-bs-tabs='tabs')
+            li.nav-item
+              a.nav-link.active(aria-current='true' data-bs-toggle='tab' href='#result') Result
+            li.nav-item
+              a.nav-link(data-bs-toggle='tab' href='#bearbeiten') Trainingsdaten bearbeiten
+
+        form.card-body.tab-content
+
+          #result.tab-pane
+              p.card-text Visualisierung des AOA
+              
+
+          #bearbeiten.tab-pane.active
+            
+            .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
+              .col-lg-8.col-xs-12.mb-3
+                .card.text-dark.shadow.p-4.h-100
+                  #map
+              .col-lg-4.col-xs-12.mb-3
+                
+                .card.text-dark.shadow.p-4(style='height: 300px;overflow: scroll;')
+                  table#tabelle.table.table-dark.table-striped.table-hover
+                    tr
+                      th Label
+                      th Class_ID
                             
-                      
-                  div 
+                
                     form(method='post' action='result')
                       button.btn.btn-primary.my-2(type='submit') Skript ausführen
-                    button.btn.btn-2.my-2.m-2(onclick='geojsonExport()') Export Data
+                    
+                        button.btn.btn-2.my-2.m-2(onclick='geojsonExport()') Export Data
+
+                    form(action="result/trainingsdaten" method="post")
+                      form-group
+                          button.btn.btn-primary.my-2(type="submit") bearbeiten
+
+
           
 
-    script.
-      // Set active Button
-      document.querySelectorAll(".active")[0].classList.remove("active")
-      document.querySelectorAll(".nav-link")[2].classList.add("active")
+      
+
+      script.
+        // Set active Button
+        document.querySelectorAll(".active")[0].classList.remove("active")
+        document.querySelectorAll(".nav-link")[2].classList.add("active")
 
 
 
-
-    script(src='/javascripts/result.js')
+      script(src='/javascripts/result.js')
 
 
