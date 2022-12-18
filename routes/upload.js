@@ -8,7 +8,8 @@ const fs = require("fs");
 const path = require("path");
 
 const directory = path.join(__dirname, "../public/uploads");
-/*fs.readdir(directory, (err, files) => {
+/*
+fs.readdir(directory, (err, files) => {
   if (err) throw err;
 
   for (const file of files) {
@@ -16,8 +17,8 @@ const directory = path.join(__dirname, "../public/uploads");
       if (err) throw err;
     });
   }
-});*/
-
+});
+*/
 var filetype;
 
 const multer = require("multer");

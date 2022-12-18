@@ -5,10 +5,8 @@ library(caret)
 library(raster)
 
 
-## nur zum testen
-# rasterdaten <- rast("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/sentinelRaster2_umprojiziert.tif")
-# trainingsdaten <- read_sf("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/trainingsgebiete.geojson")
-# modell <- readRDS("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/RFModel2.RDS")
+# zum testen wd so setzen
+ setwd("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II")
 
 rasterdaten <- rast(paste(
   getwd(),
@@ -18,6 +16,11 @@ rasterdaten <- rast(paste(
 trainingsdaten <- read_sf(paste(
   getwd(),
   "/public/uploads/trainingsdaten.geojson",
+  sep = ""
+))
+modell <- readRDS(paste(
+  getwd(),
+  "/public/uploads/modell.RDS",
   sep = ""
 ))
 
@@ -85,49 +88,91 @@ klassifizierung_ohne_Modell <- function(x) {
     ntree = 50
   ) # 50 is quite small (default=500). But it runs faster.
   # saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/RFModel2.RDS")
-
+  
   # model
   # plot(model) # see tuning results
   # plot(varImp(model)) # variablenwichtigkeit
 
+  cols <- c(
+    "beige", "sandybrown",
+    "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
+    "deepskyblue4", "forestgreen", "brown", "darkgreen"
+  )
   # klassifizieren
   ### little detour due to terra/raster change
-  prediction <- predict(as(rasterdaten, "Raster"), model)
+  prediction <- predict(as(rasterdaten, "Raster"), model)#, colors(cols))
+  projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-
+  coltab(prediction_terra) <- cols
+  #?predict
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
 
   # und nochmal in schöner plotten mit sinnvollen Farben
   cols <- c(
-    "lightgreen", "blue", "green", "darkred", "forestgreen",
-    "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
+    "beige", "sandybrown",
+    "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
+    "deepskyblue4", "forestgreen", "brown", "darkgreen"
+
   )
   # plot(prediction_terra,col=cols)
 
   # export raster
   # writeRaster(prediction_terra,"prediction.grd",overwrite=TRUE)
-  # writeRaster(prediction_terra, paste(
-  #  getwd(),
-  #  "/public/uploads/prediction.png",
-  #  sep = ""
-  #), overwrite = TRUE)
+
   # return(plot(prediction_terra)) # ,col=cols))
-  
-  tiff(paste(
+
+   #tiff(paste(
+  #  getwd(),
+  # "/public/uploads/prediction.geotiff",
+  #  sep = ""
+  # ))
+  # terra::plot(prediction_terra,col=cols, legend=FALSE, axes = FALSE, buffer=FALSE)
+  # dev.off()
+   ?writeRaster
+   #?terra::plot
+   #prediction_terra
+   #png(paste(
+  #   getwd(),
+  #   "/public/uploads/prediction.geotiff",
+  #   sep = ""
+  # ), bg="transparent")
+  # plot(NULL ,xaxt='n',yaxt='n',bty='n',ylab='',xlab='', xlim=0:1, ylim=0:1)
+  # legend("topleft", legend =prediction_terra$names, pch=16, pt.cex=3, cex=1.5, bty='n',
+  #                      col = cols)
+  #                      mtext("Species", at=0.2, cex=2)
+  # dev.off()
+  # ?terra::plot
+  # writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
+  # filename <- paste(normalizePath("D:/Dokumente/Studium"), "\\prediction.tif", sep = "")
+  # stop(getwd())
+  terra::writeRaster(prediction_terra, paste(
     getwd(),
-    "/public/uploads/prediction.tif",
+    "/public/beispieldaten/prediction.tif",
     sep = ""
-  ))
-  plot(prediction_terra, col=cols, legend=FALSE, axes=FALSE)
-  dev.off()
-  
-  
-  
+  ), overwrite = TRUE)
+  #plot(prediction_terra)
+  #writeRaster(prediction_terra, filename="public/uploads/prediction2.tif", format="GTiff", overwrite=TRUE)
+  # library(tmap)
+  # crs(prediction_terra) <- "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+  # map <- tm_shape(prediction_terra,
+  #                raster.downsample = FALSE) +
+  #  tm_raster(palette = cols,title = "LUC")+
+  #  tm_scale_bar(bg.color="white")+
+  #  tm_grid(n.x=4,n.y=4,projection="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")+
+  #  tm_layout(legend.position = c("left","bottom"),
+  #            legend.bg.color = "white",
+  #            legend.bg.alpha = 0.8)#+
+
+  # tmap_save(map, paste(
+  #  getwd(),
+  #  "/public/uploads/map.png",
+  #  sep = ""
+  # ))
 }
 
 
 
 # zum Testen der Funktionen
 # klassifizierung_mit_Modell(rasterdaten, modell)
-# klassifizierung_ohne_Modell(rasterdaten, trainingsdaten)
+ klassifizierung_ohne_Modell()

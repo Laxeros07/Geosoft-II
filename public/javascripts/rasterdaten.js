@@ -17,15 +17,16 @@ rasterdatenForm.addEventListener("submit", submitFormR);
 // Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
 rasterdatenFiles.addEventListener("change", () => {
   rasterdatenHochladen.disabled = false;
-  if (document.getElementById("trainingsdatenFiles").value != "") {
-    skriptAusfuehren.disabled = false;
-    smallText.style.display = "none";
-  }
 });
 rasterdatenHochladen.disabled = true;
 rasterdatenForm.reset();
 
 function submitFormR(e) {
+  if (document.getElementById("trainingsdatenFiles").value != "") {
+    skriptAusfuehren.disabled = false;
+    smallText.style.display = "none";
+  }
+
   e.preventDefault();
   let formData = new FormData();
   formData.append("daten", rasterdatenFiles.files[0]);

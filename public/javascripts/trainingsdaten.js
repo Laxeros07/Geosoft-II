@@ -10,15 +10,15 @@ trainingsdatenForm.addEventListener("submit", submitFormT);
 // Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
 trainingsdatenFiles.addEventListener("change", () => {
   trainingsdatenHochladen.disabled = false;
-  if (document.getElementById("rasterdatenFiles").value != "") {
-    skriptAusfuehren.disabled = false;
-    smallText.style.display = "none";
-  }
 });
 trainingsdatenHochladen.disabled = true;
 trainingsdatenForm.reset();
 
 function submitFormT(e) {
+  if (document.getElementById("rasterdatenFiles").value != "") {
+    skriptAusfuehren.disabled = false;
+    smallText.style.display = "none";
+  }
   e.preventDefault();
   let formData = new FormData();
 
