@@ -26,6 +26,7 @@ function hideModellForm() {
 }
 
 trainingsdatenForm.addEventListener("submit", submitFormT);
+modellForm.addEventListener("submit", submitFormT);
 
 // Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
 // Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
@@ -34,6 +35,14 @@ trainingsdatenFiles.addEventListener("change", () => {
 });
 trainingsdatenHochladen.disabled = true;
 trainingsdatenForm.reset();
+
+// Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
+// Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
+modelFiles.addEventListener("change", () => {
+  modellHochladen.disabled = false;
+});
+modellHochladen.disabled = true;
+modellForm.reset();
 
 function submitFormT(e) {
   if (document.getElementById("rasterdatenFiles").value != "") {
