@@ -24,6 +24,10 @@ a.nav-link {
   font-size: 20px;
 }
 
+.logo{
+  max-width: 10%;
+}
+
 .btn-1{
   color: #fff;
   background-color: #efd90f !important;
