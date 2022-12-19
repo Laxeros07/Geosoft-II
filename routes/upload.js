@@ -40,6 +40,8 @@ const storage = multer.diskStorage({
       case "tif":
         cb(null, "rasterdaten.tif");
         break;
+      case "RDS":
+        cb(null, "modell.RDS");
     }
   },
 });
