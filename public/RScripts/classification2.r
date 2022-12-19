@@ -3,10 +3,11 @@ library(terra)
 library(sf)
 library(caret)
 library(raster)
+library(CAST)
 
 
 # zum testen wd so setzen
- setwd("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II")
+# setwd("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II")
 
 rasterdaten <- rast(paste(
   getwd(),
@@ -29,6 +30,7 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell) {
   # klassifizieren
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), modell)
+  projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
 
   # erste Visualisierung der Klassifikation:
@@ -43,7 +45,23 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell) {
 
   # export raster
   # writeRaster(prediction_terra,"prediction.grd",overwrite=TRUE)
-  return(plot(prediction_terra)) # ,col=cols))
+  # return(plot(prediction_terra)) # ,col=cols))
+  terra::writeRaster(prediction_terra, paste(
+    getwd(),
+    "/public/uploads/prediction_modell.tif",
+    sep = ""
+  ), overwrite = TRUE)
+  
+  # AOA Berechnungen
+  AOA_klassifikation <- aoa(rasterdaten,model)
+  crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  #plot(AOA_klassifikation$DI)
+  #plot(AOA_klassifikation$AOA)
+  terra::writeRaster(AOA_klassifikation$AOA, paste(
+    getwd(),
+    "/public/uploads/AOA_klassifikation_modell.tif",
+    sep = ""
+  ), overwrite = TRUE)
 }
 
 
@@ -87,12 +105,13 @@ klassifizierung_ohne_Modell <- function(x) {
     importance = TRUE,
     ntree = 50
   ) # 50 is quite small (default=500). But it runs faster.
-  # saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/RFModel2.RDS")
+   #saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
   
   # model
   # plot(model) # see tuning results
   # plot(varImp(model)) # variablenwichtigkeit
 
+  # Farbpalette
   cols <- c(
     "beige", "sandybrown",
     "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
@@ -108,13 +127,6 @@ klassifizierung_ohne_Modell <- function(x) {
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
 
-  # und nochmal in schöner plotten mit sinnvollen Farben
-  cols <- c(
-    "beige", "sandybrown",
-    "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
-    "deepskyblue4", "forestgreen", "brown", "darkgreen"
-
-  )
   # plot(prediction_terra,col=cols)
 
   # export raster
@@ -129,7 +141,7 @@ klassifizierung_ohne_Modell <- function(x) {
   # ))
   # terra::plot(prediction_terra,col=cols, legend=FALSE, axes = FALSE, buffer=FALSE)
   # dev.off()
-   ?writeRaster
+  # ?writeRaster
    #?terra::plot
    #prediction_terra
    #png(paste(
@@ -148,7 +160,7 @@ klassifizierung_ohne_Modell <- function(x) {
   # stop(getwd())
   terra::writeRaster(prediction_terra, paste(
     getwd(),
-    "/public/beispieldaten/prediction.tif",
+    "/public/uploads/prediction.tif",
     sep = ""
   ), overwrite = TRUE)
   #plot(prediction_terra)
@@ -169,10 +181,21 @@ klassifizierung_ohne_Modell <- function(x) {
   #  "/public/uploads/map.png",
   #  sep = ""
   # ))
+  
+  # AOA Berechnungen
+  AOA_klassifikation <- aoa(rasterdaten,model)
+  crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  #plot(AOA_klassifikation$DI)
+  #plot(AOA_klassifikation$AOA)
+  terra::writeRaster(AOA_klassifikation$AOA, paste(
+    getwd(),
+    "/public/uploads/AOA_klassifikation.tif",
+    sep = ""
+  ), overwrite = TRUE)
 }
 
 
 
 # zum Testen der Funktionen
 # klassifizierung_mit_Modell(rasterdaten, modell)
- klassifizierung_ohne_Modell()
+# klassifizierung_ohne_Modell()

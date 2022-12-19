@@ -6,11 +6,18 @@ block content
             .card.text-dark.shadow.p-4.h-100
                 h3 Trainingsdaten
                 div
-                    form#trainingsdatenForm(action="/" method="post")
+                    button#trainingsdaten.btn.btn-primary.my-2(onclick='hideTrainingsdatenForm()') Ich möchte Trainingsdaten hochladen
+                    button#modell.btn.btn-primary.my-2(onclick='hideModellForm()') Ich möchte ein Modell hochladen
+                    form#trainingsdatenForm(style='display:none' action="/" method="post")
                         form-group
                             label.col-form-label(for='daten') Trainingsdaten laden
                             input#trainingsdatenFiles.form-control(type='file' name='daten' accept=".json, .geojson, .gpkg")
                         button#trainingsdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
+                    form#modellForm( style='display:none' action="/" method="post")
+                        form-group
+                            label.col-form-label(for='daten') Modell laden
+                            input#modelFiles.form-control(type='file' name='daten')
+                        button#modellHochladen.btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.text-dark.shadow.p-4.h-100
                 h3 Rasterdaten
