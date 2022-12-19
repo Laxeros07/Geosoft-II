@@ -24,6 +24,18 @@ a.nav-link {
   font-size: 20px;
 }
 
+.logo{
+  max-width: 18%;
+}
+
+.about-image {
+	width: 210px;
+	height: 210px;
+	border-radius: 50%;
+	background-position: center;
+	background-size: cover;
+}
+
 .btn-1{
   color: #fff;
   background-color: #efd90f !important;
