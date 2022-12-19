@@ -1,3 +1,6 @@
+const trainingsdatenKnopf = document.getElementById("trainingsdaten");
+const modellKnopf = document.getElementById("modell");
+
 const trainingsdatenForm = document.getElementById("trainingsdatenForm");
 const trainingsdatenFiles = document.getElementById("trainingsdatenFiles");
 const trainingsdatenHochladen = document.getElementById(
@@ -9,13 +12,17 @@ const modelFiles = document.getElementById("modelFiles");
 const modellHochladen = document.getElementById("modellHochladen");
 
 function hideTrainingsdatenForm() {
-  trainingsdatenForm.style.display = "block";
-  modellForm.style.display = "none"; // <-- Set it to block
+  trainingsdatenForm.style.display = "block"; // <-- Set it to block
+  modellKnopf.style.display = "block"; // <-- Set it to block
+  modellForm.style.display = "none";
+  trainingsdatenKnopf.style.display = "none";
 }
 
 function hideModellForm() {
   modellForm.style.display = "block"; // <-- Set it to block
+  trainingsdatenKnopf.style.display = "block"; // <-- Set it to block
   trainingsdatenForm.style.display = "none";
+  modellKnopf.style.display = "none";
 }
 
 trainingsdatenForm.addEventListener("submit", submitFormT);
