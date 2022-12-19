@@ -21,9 +21,25 @@ WORKDIR /usr/src/app
 # Copy app code source from our local folder into the docker /usr/src/app working directory
 COPY ./r-backend/plumber.R ./
 
-RUN R -e "install.packages('terra')"
-RUN R -e "install.packages('sf')"
-RUN R -e "install.packages('caret')"
-RUN R -e "install.packages('raster')"
+RUN apt-get update -qq && apt-get install -y libcurl4-openssl-dev \
+    libssl-dev \
+    libjq-dev \
+    libprotobuf-dev \
+    protobuf-compiler \
+    make \
+    libgeos-dev \
+    libudunits2-dev \
+    libgdal-dev \
+    gdal-bin \
+    libproj-dev \
+    libv8-dev
+
+RUN R -e "install.packages('plumber', dependencies=TRUE)"
+RUN R -e "install.packages('terra', dependencies=TRUE)"
+RUN R -e "install.packages('sf', dependencies=TRUE)"
+RUN R -e "install.packages('caret', dependencies=TRUE)"
+RUN R -e "install.packages('raster', dependencies=TRUE)"
+RUN R -e "install.packages('RColorBrewer', dependencies=TRUE)"
+RUN R -e "install.packages('httr', dependencies=TRUE)"
 
 CMD ["plumber.R"]
