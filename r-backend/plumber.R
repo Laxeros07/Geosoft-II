@@ -34,7 +34,7 @@ function() {
   library(caret)
   library(raster)
   library(RColorBrewer)
-  return(getwd())
+  # return(getwd()) #/usr/src/app
   rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
   trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
 

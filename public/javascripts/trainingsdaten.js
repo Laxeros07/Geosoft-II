@@ -1,25 +1,38 @@
+// Trainingsdaten:
+const trainingsdatenKnopf = document.getElementById("trainingsdaten");
+// Modell:
+const modellKnopf = document.getElementById("modell");
+// Trainingsdaten:
 const trainingsdatenForm = document.getElementById("trainingsdatenForm");
 const trainingsdatenFiles = document.getElementById("trainingsdatenFiles");
 const trainingsdatenHochladen = document.getElementById(
   "trainingsdatenHochladen"
 );
-
+// Modell:
 const modellForm = document.getElementById("modellForm");
 const modelFiles = document.getElementById("modelFiles");
 const modellHochladen = document.getElementById("modellHochladen");
 
+// Trainingsdaten:
 function hideTrainingsdatenForm() {
-  trainingsdatenForm.style.display = "block";
-  modellForm.style.display = "none"; // <-- Set it to block
+  trainingsdatenForm.style.display = "block"; // <-- Set it to block
+  modellKnopf.style.display = "block"; // <-- Set it to block
+  modellForm.style.display = "none";
+  trainingsdatenKnopf.style.display = "none";
 }
-
+// Modell:
 function hideModellForm() {
   modellForm.style.display = "block"; // <-- Set it to block
+  trainingsdatenKnopf.style.display = "block"; // <-- Set it to block
   trainingsdatenForm.style.display = "none";
+  modellKnopf.style.display = "none";
 }
-
+// Trainingsdaten:
 trainingsdatenForm.addEventListener("submit", submitFormT);
+// Modell:
+modellForm.addEventListener("submit", submitFormM);
 
+// Trainingsdaten:
 // Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
 // Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
 trainingsdatenFiles.addEventListener("change", () => {
@@ -28,6 +41,16 @@ trainingsdatenFiles.addEventListener("change", () => {
 trainingsdatenHochladen.disabled = true;
 trainingsdatenForm.reset();
 
+// Modell:
+// Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
+// Skript Ausführen Button wird aktiviert, wenn Raster- und Modell vorliegen
+modelFiles.addEventListener("change", () => {
+  modellHochladen.disabled = false;
+});
+modellHochladen.disabled = true;
+modellForm.reset();
+
+// Wenn Trainingsdaten hochgeladen wurden
 function submitFormT(e) {
   if (document.getElementById("rasterdatenFiles").value != "") {
     skriptAusfuehren.disabled = false;
@@ -123,6 +146,32 @@ function submitFormT(e) {
       });
     })
     .catch((err) => ("Error occured", err));
+}
+
+// Wenn ein Modell hochgeladen wurde
+function submitFormM(e) {
+  if (document.getElementById("rasterdatenFiles").value != "") {
+    skriptAusfuehren.disabled = false;
+    smallText.style.display = "none";
+  }
+  e.preventDefault();
+  let formData = new FormData();
+
+  formData.append("daten", modelFiles.files[0]);
+  //for (let i = 0; i < files.files.length; i++) {
+  //  formData.append("files", files.files[i]);
+  //}
+  for (var [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
+
+  var dateiname = modelFiles.files[0].name;
+
+  fetch("http://localhost:3000/upload", {
+    method: "POST",
+    body: formData,
+    headers: {},
+  });
 }
 /**
  * Ruft eine lokale JSON Datei auf
