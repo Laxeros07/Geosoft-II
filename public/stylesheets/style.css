@@ -25,7 +25,15 @@ a.nav-link {
 }
 
 .logo{
-  max-width: 10%;
+  max-width: 18%;
+}
+
+.about-image {
+	width: 210px;
+	height: 210px;
+	border-radius: 50%;
+	background-position: center;
+	background-size: cover;
 }
 
 .btn-1{
