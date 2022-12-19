@@ -34,9 +34,12 @@ function() {
   library(caret)
   library(raster)
   library(RColorBrewer)
+  library(httr)
   # return(getwd()) #/usr/src/app
-  rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
-  trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
+  #rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
+  #trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
+  #rasterdaten <- rast(GET("http://localhost:3000/uploads/rasterdaten.tif"))
+  trainingsdaten <- read_sf(GET("AppGeosoft2:7001/uploads/trainingsdaten.geojson"))
 
   ## Variablen definieren
   predictors <- c(

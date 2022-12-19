@@ -12,7 +12,8 @@ var uploadRouter = require("./routes/upload");
 var resultRouter = require("./routes/result");
 var demoRouter = require("./routes/demo");
 var impressumRouter = require("./routes/impressum");
-var trainingsgebieteGeoJSONRouter = require("./routes/trainingsgebieteGeoJSON");
+var trainingsdatenGeoJSONRouter = require("./routes/trainingsdatenGeoJSON");
+var rasterdatenRouter = require("./routes/rasterdaten");
 
 var app = express();
 
@@ -35,7 +36,8 @@ app.use("/upload", uploadRouter);
 app.use("/result", resultRouter);
 app.use("/demo", demoRouter);
 app.use("/impressum", impressumRouter);
-app.use("/trainingsgebieteGeoJSON", trainingsgebieteGeoJSONRouter);
+app.use("/trainingsdatenGeoJSON", trainingsdatenGeoJSONRouter);
+app.use("/rasterdaten", rasterdatenRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -4,7 +4,7 @@ var path = require("path");
 
 router.get("/", function (req, res, next) {
   var options = {
-    root: path.join(__dirname, "public"),
+    root: path.join(__dirname, "../public"),
     dotfiles: "deny",
     headers: {
       "x-timestamp": Date.now(),
@@ -12,7 +12,7 @@ router.get("/", function (req, res, next) {
     },
   };
 
-  var fileName = "../public/uploads/trainingsgebiete.geojson";
+  var fileName = "uploads/rasterdaten.tif";
   res.sendFile(fileName, options, function (err) {
     if (err) {
       next(err);
