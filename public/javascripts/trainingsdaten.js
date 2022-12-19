@@ -4,6 +4,20 @@ const trainingsdatenHochladen = document.getElementById(
   "trainingsdatenHochladen"
 );
 
+const modellForm = document.getElementById("modellForm");
+const modelFiles = document.getElementById("modelFiles");
+const modellHochladen = document.getElementById("modellHochladen");
+
+function hideTrainingsdatenForm() {
+  trainingsdatenForm.style.display = "block";
+  modellForm.style.display = "none"; // <-- Set it to block
+}
+
+function hideModellForm() {
+  modellForm.style.display = "block"; // <-- Set it to block
+  trainingsdatenForm.style.display = "none";
+}
+
 trainingsdatenForm.addEventListener("submit", submitFormT);
 
 // Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
