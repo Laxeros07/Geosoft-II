@@ -81,11 +81,18 @@ function() {
   # model
   # plot(model) # see tuning results
   # plot(varImp(model)) # variablenwichtigkeit
+  
+  cols <- c(
+    "beige", "sandybrown",
+    "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
+    "deepskyblue4", "forestgreen", "brown", "darkgreen"
+  )
 
   # klassifizieren
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), model)
   prediction_terra <- as(prediction, "SpatRaster")
+  coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
@@ -96,9 +103,9 @@ function() {
     "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
   )
   
-  coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
-  levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
-  terra::writeRaster(r, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite=TRUE)
+  #coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
+  #levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
+  terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite=TRUE)
 
   # tiff(paste(
   #  getwd(),
