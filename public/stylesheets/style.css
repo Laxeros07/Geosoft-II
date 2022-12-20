@@ -111,6 +111,10 @@ dd {
   color: #575757;
 }
 
+.darkMode .btn-floating{
+  background-color: white;
+}
+
 
 [data-theme="dark"] {
   background-color: #111 !important;

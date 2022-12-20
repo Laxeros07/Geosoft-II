@@ -5,11 +5,10 @@ services:
         container_name: AppGeosoft2
         build:
           dockerfile: ./Dockerfile
-        expose:
+        ports:
             - '3000:3000'
-
-        depends_on:
-            - mongoservice
+        # depends_on:
+        #     - mongoservice
 
     rservice:
         container_name: RService

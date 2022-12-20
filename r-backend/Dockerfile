@@ -34,13 +34,12 @@ RUN apt-get update -qq && apt-get install -y libcurl4-openssl-dev \
     libproj-dev \
     libv8-dev
 
-RUN R -e "install.packages('plumber')"
-RUN R -e "install.packages('terra')"
-RUN R -e "install.packages('sf')"
-RUN R -e "install.packages('caret')"
-RUN R -e "install.packages('raster')"
-RUN R -e "install.packages('RColorBrewer')"
-RUN R -e "install.packages('httr')"
+RUN R -e "install.packages('plumber', dependencies=TRUE)"
+RUN R -e "install.packages('terra', dependencies=TRUE)"
+RUN R -e "install.packages('sf', dependencies=TRUE)"
+RUN R -e "install.packages('caret', dependencies=TRUE)"
+RUN R -e "install.packages('raster', dependencies=TRUE)"
+RUN R -e "install.packages('RColorBrewer', dependencies=TRUE)"
 
 COPY ./r-backend/plumber.R ./
 

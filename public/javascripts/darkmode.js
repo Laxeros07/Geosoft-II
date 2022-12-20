@@ -16,7 +16,7 @@ function setDarkMode() {
 
     }
     else{
-        setDarkMode.checked = true;
+        setDarkMode.checked = false;
         localStorage.removeItem('theme', 'dark')
     }
 }
