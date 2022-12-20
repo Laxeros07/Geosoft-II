@@ -25,8 +25,14 @@ a.nav-link {
 }
 
 .logo{
-  max-width: 18%;
+  max-width: 25%;
+  margin-top: 2rem;
 }
+
+.row{
+  overflow-x: auto
+}
+
 
 .about-image {
 	width: 210px;
