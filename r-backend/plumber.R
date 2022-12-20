@@ -38,8 +38,8 @@ function() {
   # return(getwd()) #/usr/src/app
   #rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
   #trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
-  rasterdaten <- rast("http//172.17.0.1:3000/uploads/rasterdaten.tif")
-  trainingsdaten <- read_sf("http//172.17.0.1:3000/uploads/trainingsdaten.geojson")
+  rasterdaten <- rast("http://172.17.0.1:3000/uploads/rasterdaten.tif")
+  trainingsdaten <- read_sf("http://172.17.0.1:3000/uploads/trainingsdaten.geojson")
 
   ## Variablen definieren
   predictors <- c(
