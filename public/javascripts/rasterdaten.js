@@ -22,7 +22,10 @@ rasterdatenHochladen.disabled = true;
 rasterdatenForm.reset();
 
 function submitFormR(e) {
-  if (document.getElementById("trainingsdatenFiles").value != "") {
+  if (
+    document.getElementById("trainingsdatenFiles").value != "" ||
+    document.getElementById("modellFiles").value != ""
+  ) {
     skriptAusfuehren.disabled = false;
     smallText.style.display = "none";
   }
