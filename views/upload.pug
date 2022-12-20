@@ -16,7 +16,7 @@ block content
                     form#modellForm( style='display:none' action="/" method="post")
                         form-group
                             label.col-form-label(for='daten') Modell laden
-                            input#modelFiles.form-control(type='file' name='daten')
+                            input#modelFiles.form-control(type='file' name='daten' accept=".RDS")
                         button#modellHochladen.btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.shadow.p-4.h-100
