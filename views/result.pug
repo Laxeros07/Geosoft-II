@@ -8,9 +8,9 @@ block content
         
           ul.nav.nav-tabs.card-header-tabs(data-bs-tabs='tabs')
             li.nav-item
-              a.nav-link.active(aria-current='true' data-bs-toggle='tab' href='#result') Result
+              a.nav-link.active(aria-current='true' data-bs-toggle='tab' href='#bearbeiten') Trainingsdaten bearbeiten
             li.nav-item
-              a.nav-link(data-bs-toggle='tab' href='#bearbeiten') Trainingsdaten bearbeiten
+              a.nav-link(data-bs-toggle='tab' href='#result') result
 
         form.card-body.tab-content
 
@@ -53,7 +53,8 @@ block content
         document.querySelectorAll(".nav-link")[2].classList.add("active")
 
 
-
+      
       script(src='/javascripts/result.js')
+      
 
 

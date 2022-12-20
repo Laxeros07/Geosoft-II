@@ -53,26 +53,10 @@ html
       block content
 
     // Footer
-    footer.py-3.bg-dark.mt-auto.text-center.text-muted
-      .row.gy-4.gx-lg-3.mt-3
-        .col-1.mb-3
-        .col-1.mb-3
-          p.form-check.form-switch
-               input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
-               label.form-check-label(for='switchDark') Darkmode
-          p.custom-control.custom-switch
-               input#darkSwitch.custom-control-input(type='checkbox' role='switch')
-               label.custom-control-label(for='darkSwitch') darkMode
-               // Darkmode
-               script(src='/javascripts/darkmode.js' )
-
-          p.form-check.form-switch
-               input#switchColor.form-check-input(type='checkbox' role='switch')
-               label.form-check-label(for='switchColor') Colorblindmode
-        .col-10.mb-3
+    
     footer.bg-dark.text-center.text-muted.text-lg-start
 
-      .container
+      .container.m-3.px-2
         .row
           .col-sm
             h5.text-uppercase Links
@@ -85,6 +69,18 @@ html
           .col-sm
             img.logo.sm.m-2(src='/images/spaceylogo.png')
           .col-sm
+            p.form-check.form-switch
+                input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
+                label.form-check-label(for='switchDark') Darkmode
+            p.custom-control.custom-switch
+                input#darkSwitch.custom-control-input(type='checkbox' role='switch')
+                label.custom-control-label(for='darkSwitch') darkMode
+                // Darkmode
+                script(src='/javascripts/darkmode.js' )
+            p.form-check.form-switch
+                input#switchColor.form-check-input(type='checkbox' role='switch')
+                label.form-check-label(for='switchColor') Colorblindmode
+          .col-sm
             div
               a.me-4.text-reset(href='')
                 i.bi.bi-github
@@ -92,83 +88,6 @@ html
                 i.bi.bi-envelope-at-fill
               a.me-4.text-reset(href='')
                 i.bi.bi-phone
-    //
-      .container.p-4.m-0
-        // Grid row
-        .row.center
-          // Grid column
-          .col-sm.m-2
-            h5.text-uppercase Links
-            ul.list-unstyled.mb-0
-              li
-                a.text-white(href='http://localhost:3000/impressum') Team
-              li
-                a.text-white(href='#!') get in touch
-          // Grid column
-          // Grid column
-          .col-sm.m-2
-            img.logo.sm(src='/images/spaceylogo.png')
-          // Grid column
-          // Grid column
-          .col-sm.m-2
-            div
-              a.me-4.text-reset(href='')
-                i.bi.bi-github
-              a.me-4.text-reset(href='')
-                i.bi.bi-envelope-at-fill
-              a.me-4.text-reset(href='')
-                i.bi.bi-phone
-    // Grid column
-      
-      section.d-flex.justify-content-center.justify-content-lg-between.p-4.border-bottom
-        // Left
-        
-          
-        .row
-          // Grid column
-          .col-lg-3.col-md-6.mb-4.mb-md-0
-            h5.text-uppercase Links
-            ul.list-unstyled.mb-0
-              li
-                a.text-white(href='http://localhost:3000/impressum') introducing the team 
-              li
-                a.text-white(href='#!') Link 2
-              li
-                a.text-white(href='#!') Link 3
-              li
-                a.text-white(href='#!') Link 4  
-          // Left
-        .text-center.p-4
-          
-          
-          img.logo.sm(src='/images/spaceylogo.png')
-        // Right
-        div
-          a.me-4.text-reset(href='')
-            i.bi.bi-github
-          a.me-4.text-reset(href='')
-            i.bi.bi-envelope-at-fill
-          a.me-4.text-reset(href='')
-            i.bi.bi-phone
-          
-    //
-      .row
-        .col-sm
-          p
-            i.text.white Kontakt:  
-            a.text-white(href='http://localhost:3000/impressum') Apollo 13 Projekt
-          p
-            a.text
-            |             info@apollo13.com
-        .col-sm
-          p
-            img.logo.sm(src='/images/spaceylogo.png')
-          
-        .col-sm
-          p   
-            a.btn.btn-outline-light.btn-floating.m-1(href='#!' role='button')
-              i.bi.bi-github
-
      
     .text-center.p-1(style='background-color:#005288;')
       | &copy; 2023 by:
@@ -177,3 +96,4 @@ html
 
     // Bootstrap core JS
     script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js')
+
