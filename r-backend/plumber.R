@@ -36,10 +36,10 @@ function() {
   library(RColorBrewer)
   library(httr)
   # return(getwd()) #/usr/src/app
-  #rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
-  #trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
-  #rasterdaten <- rast(GET("http://localhost:3000/uploads/rasterdaten.tif"))
-  trainingsdaten <- read_sf(GET("AppGeosoft2:7001/uploads/trainingsdaten.geojson"))
+  # rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
+  # trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
+  # rasterdaten <- rast(GET("http://localhost:3000/uploads/rasterdaten.tif"))
+  trainingsdaten <- read_sf(GET("http://127.0.0.1:3000/uploads/trainingsdaten.geojson"))
 
   ## Variablen definieren
   predictors <- c(
@@ -84,7 +84,7 @@ function() {
   # model
   # plot(model) # see tuning results
   # plot(varImp(model)) # variablenwichtigkeit
-  
+
   cols <- c(
     "beige", "sandybrown",
     "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
@@ -105,10 +105,10 @@ function() {
     "lightgreen", "blue", "green", "darkred", "forestgreen",
     "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
   )
-  
-  #coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
-  #levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
-  terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite=TRUE)
+
+  # coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
+  # levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
+  terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
 
   # tiff(paste(
   #  getwd(),
@@ -121,7 +121,7 @@ function() {
   # writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
   # filename <- paste(normalizePath("D:/Dokumente/Studium"), "\\prediction.tif", sep = "")
   # stop(getwd())
-  #terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
+  # terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
   # plot(prediction_terra,col=cols, legend=FALSE)
 }
 
