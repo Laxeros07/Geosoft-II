@@ -3,7 +3,7 @@ var router = express.Router();
 
 const fs = require("fs");
 const path = require("path");
-
+/*
 const directory = path.join(__dirname, "../public/uploads");
 fs.readdir(directory, (err, files) => {
   if (err) throw err;
@@ -14,7 +14,7 @@ fs.readdir(directory, (err, files) => {
     });
   }
 });
-
+*/
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Home" });
