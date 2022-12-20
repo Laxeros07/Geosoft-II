@@ -12,7 +12,7 @@ html
     script(src='https://unpkg.com/leaflet@1.9.2/dist/leaflet.js' integrity='sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=' crossorigin='')
 
     script(src='/javascripts/globalFunctions.js')
-
+    
     meta(charset='utf-8')
     meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
     meta(name='description' content='')
@@ -23,7 +23,8 @@ html
     script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js")
 
 
-
+    // Darkmode
+    //script(src='/javascripts/darkmode.js' )
 
     // Favicon
     link(rel='icon' sizes='16x16 32x32 48x48 64x64' href='/images/Apollo_64_Kreis_ohneZahl.ico')
@@ -53,8 +54,22 @@ html
 
     // Footer
     footer.py-3.bg-dark.mt-auto.text-center.text-muted
-      
-     
+      .row.gy-4.gx-lg-3.mt-3
+        .col-1.mb-3
+        .col-1.mb-3
+          p.form-check.form-switch
+               input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
+               label.form-check-label(for='switchDark') Darkmode
+          p.custom-control.custom-switch
+               input#darkSwitch.custom-control-input(type='checkbox' role='switch')
+               label.custom-control-label(for='darkSwitch') darkMode
+               // Darkmode
+               script(src='/javascripts/darkmode.js' )
+
+          p.form-check.form-switch
+               input#switchColor.form-check-input(type='checkbox' role='switch')
+               label.form-check-label(for='switchColor') Colorblindmode
+        .col-10.mb-3
           p
             a.text-white(href='http://localhost:3000/impressum') Apollo 13 Projekt
           p
