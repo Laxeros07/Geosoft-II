@@ -25,7 +25,7 @@ a.nav-link {
 }
 
 .logo{
-  max-width: 18%;
+  max-width: 100%;
 }
 
 .about-image {
@@ -103,6 +103,10 @@ dd {
 }
 .darkMode .card .nav-link{
   color: #575757;
+}
+
+.darkMode .btn-floating{
+  background-color: white;
 }
 
 
