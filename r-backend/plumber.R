@@ -28,18 +28,18 @@ function(spec) {
 
 #* Klassifikation ohne Modell
 #* @get /result
+#* @serializer png
 function() {
   library(terra)
   library(sf)
   library(caret)
   library(raster)
   library(RColorBrewer)
-  library(httr)
   # return(getwd()) #/usr/src/app
-  # rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
-  # trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
-  # rasterdaten <- rast(GET("http://localhost:3000/uploads/rasterdaten.tif"))
-  trainingsdaten <- read_sf(GET("http://127.0.0.1:3000/uploads/trainingsdaten.geojson"))
+  #rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
+  #trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
+  rasterdaten <- rast("http://host.docker.internal:3000/uploads/rasterdaten.tif")
+  trainingsdaten <- read_sf("http://host.docker.internal:3000/uploads/trainingsdaten.geojson")
 
   ## Variablen definieren
   predictors <- c(
@@ -108,8 +108,10 @@ function() {
 
   # coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
   # levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
-  terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
+  
+  terra::writeRaster(prediction_terra, "http://host.docker.internal:3000/uploads/prediction.tif", overwrite = TRUE)
 
+  
   # tiff(paste(
   #  getwd(),
   # "/public/uploads/prediction.tif",
