@@ -3,6 +3,7 @@ body {
   text-align: justify;
   font-family: "proxima-nova", sans-serif !important;
   padding-top: 80px;
+  padding-bottom: 80px;
 }
 
 .btn-primary {
@@ -186,4 +187,23 @@ dd {
 .legend i.icon {
   background-size: 18px;
   background-color: rgba(255, 255, 255, 1);
+}
+
+.carousel-control-prev .carousel-control-prev-icon,
+.carousel-control-next .carousel-control-next-icon {
+    outline: black;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.carousel-control-prev .fa-chevron-left,
+.carousel-control-next .fa-chevron-right {
+    color: black;
+}
+
+.carousel-caption {
+  color: black;
+}
+
+.link1:hover {
+  color: #fff !important;
 }

@@ -5,6 +5,8 @@ html
     link(rel='stylesheet' href='/stylesheets/style.css')
     link(rel='stylesheet' href='/stylesheets/leaflet.css')
     //link(rel='stylesheet' href='/stylesheets/bootstrap.css')
+    script(src='https://cdn.jsdelivr.net/npm/pdfjs-dist@2.10.377/build/pdf.min.js')
+
     link(rel='stylesheet' href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous")
     link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css')
 
@@ -47,23 +49,15 @@ html
             li.nav-item
               a.nav-link(href='/result') Result
             li.nav-item
-              a.nav-link(href='/demo') Demo
-            li.nav-item 
-              a.form-check.form-switch
-                  input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
-                  label.form-check-label.text-white(for='switchDark') Darkmode
-                  // Darkmode
-                  script(src='/javascripts/darkmode.js' )
-              a.form-check.form-switch
-                  input#switchColor.form-check-input(type='checkbox' role='switch')
-                  label.form-check-label.text-white(for='switchColor') Colorblindmode              
+              a.nav-link(href='/demo') Demo             
     // Page Content
     .container
       block content
 
     // Footer
     
-    footer.bg-dark.text-center.text-muted.text-lg-start
+    
+    footer.bg-dark.text-center.text-muted.text-lg-start.mt-5
 
       .container.m-3.px-2
         .row
@@ -71,9 +65,9 @@ html
             h5.text-uppercase Links
             ul.list-unstyled.mb-0
               li
-                a.text-white(href='http://localhost:3000/impressum') Team
+                a.link1.text-muted.text-decoration-none(href='http://localhost:3000/impressum') Team
               li
-                a.text-white(href='#!') get in touch
+                a.link1.text-muted.text-decoration-none(href='#!') get in touch
 
           .col-sm
             img.logo.sm.m-2(src='/images/spaceylogo.png')
@@ -81,27 +75,23 @@ html
             p.form-check.form-switch
                 input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
                 label.form-check-label(for='switchDark') Darkmode
-            p.custom-control.custom-switch
-                input#darkSwitch.custom-control-input(type='checkbox' role='switch')
-                label.custom-control-label(for='darkSwitch') darkMode
-                // Darkmode
                 script(src='/javascripts/darkmode.js' )
             p.form-check.form-switch
                 input#switchColor.form-check-input(type='checkbox' role='switch')
                 label.form-check-label(for='switchColor') Colorblindmode
           .col-sm
             div
-              a.me-4.text-reset(href='')
+              a.me-4.text-reset(href='https://github.com/Laxeros07/Geosoft-II')
                 i.bi.bi-github
               a.me-4.text-reset(href='')
                 i.bi.bi-envelope-at-fill
               a.me-4.text-reset(href='')
                 i.bi.bi-phone
      
-    .text-center.p-1(style='background-color:#005288;')
-      | &copy; 2023 by:
-      i.text-white Apollo 13 Projekt
-      // Copyright
+      .text-center.p-1(style='background-color:#005288;')
+        | &copy; 2023 by:
+        i.text-white Apollo 13 Projekt
+        // Copyright
 
     // Bootstrap core JS
     script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js')

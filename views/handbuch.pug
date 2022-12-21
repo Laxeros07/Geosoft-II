@@ -1,0 +1,28 @@
+extends layout 
+
+block content
+    .container
+        ul.nav.nav-tabs.d-flex.justify-content-between.align-items-center.text-dark.p-3
+            li.nav-item
+            a#prev_page.p-1.border.rounded-circle(href='#' title='previous page' data-bs-toggle='tooltip' data-bs-placement='bottom')
+                i.bi.bi-chevron-left
+            input#current_page.d-inline.form-control(type='number' value='1')
+            a#next_page.p-1.border.rounded-circle(href='#' data-bs-toggle='tooltip' data-bs-placement='bottom' title='next page')
+                i.bi.bi-chevron-right
+            // page 1 of 5
+            | Page
+            span#page_num
+            | &#x9;&#x9;&#x9;&#x9;&#x9;of
+            span#page_count
+            li.nav-item
+            button#zoom_in.rounded-circle.p-2.border-0.btn.btn-primary(data-bs-toggle='tooltip' data-bs-placement='bottom' title='zoom in')
+                i.bi.bi-zoom-in
+            button#zoom_out.rounded-circle.p-2.border-0.btn.btn-primary(data-bs-toggle='tooltip' data-bs-placement='bottom' title='zoom out')
+                i.bi.bi-zoom-out
+        // canvas to place the PDF
+        canvas#canvas.d-flex.flex-column.justify-content-center.align-items-center.mx-auto
+        // Bootstap JavaScript and Popper.js
+    script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js' integrity='sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB' crossorigin='anonymous')
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js' integrity='sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13' crossorigin='anonymous')
+       
+    script(src='/javascripts/handbuch.js')
