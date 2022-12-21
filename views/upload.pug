@@ -16,7 +16,7 @@ block content
                     form#modellForm( style='display:none' action="/" method="post")
                         form-group
                             label.col-form-label(for='daten') Modell laden
-                            input#modelFiles.form-control(type='file' name='daten')
+                            input#modelFiles.form-control(type='file' name='daten' accept=".RDS")
                         button#modellHochladen.btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.shadow.p-4.h-100
@@ -32,7 +32,7 @@ block content
                 h3 Klassifizierung
                 form(method='post' action='result')
                     form-group
-                        select.form-select(name='select' value=selected) Klassifizierungsmethode
+                        //select.form-select(name='select' value=selected) Klassifizierungsmethode
                             option(value='dt') Decision Tree
                             option(value='rf') Random Forest
                             option(value='') etc

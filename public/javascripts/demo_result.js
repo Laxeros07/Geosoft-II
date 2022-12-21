@@ -41,3 +41,18 @@ addPredictionAndAoaToMap(
   "../beispieldaten/prediction.tif",
   "../beispieldaten/AOA_klassifikation.tif"
 );
+
+//Legende
+
+/*Legend specific*/
+var legend = L.control({ position: "bottomleft" });
+
+legend.onAdd = function () {
+  var div = L.DomUtil.create("div", "legend");
+  div.innerHTML += "<h4>Tegnforklaring</h4>";
+  div.innerHTML += '<i style="background: #000"></i><span>Gut</span><br>';
+  div.innerHTML += '<i style="background: #fff"></i><span>Schlecht</span><br>';
+  return div;
+};
+
+legend.addTo(map);

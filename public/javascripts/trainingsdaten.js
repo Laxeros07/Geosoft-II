@@ -106,6 +106,7 @@ function submitFormT(e) {
         });
         */
       }
+
       // this requests the file and executes a callback with the parsed result once it is available
       fetchJSONFile("../uploads/trainingsdaten.geojson", function (data) {
         console.log(data);
