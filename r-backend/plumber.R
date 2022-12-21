@@ -26,6 +26,15 @@ function(spec) {
   )
 }
 
+#* Umwandeln von Geopackage zu GeoJSON
+#* @get /convert
+#* @serializer json
+function() {
+  library(sf)
+  data <- st_read("http://host.docker.internal:3000/uploads/trainingsdaten.gpkg")
+  st_write(data, "trainingsdaten.geojson", delete_dsn = TRUE)
+}
+
 #* Klassifikation ohne Modell
 #* @get /result
 #* @serializer png
@@ -36,8 +45,8 @@ function() {
   library(raster)
   library(RColorBrewer)
   # return(getwd()) #/usr/src/app
-  #rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
-  #trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
+  # rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
+  # trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
   rasterdaten <- rast("http://host.docker.internal:3000/uploads/rasterdaten.tif")
   trainingsdaten <- read_sf("http://host.docker.internal:3000/uploads/trainingsdaten.geojson")
 
@@ -108,10 +117,10 @@ function() {
 
   # coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
   # levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
-  
-  terra::writeRaster(prediction_terra, "http://host.docker.internal:3000/uploads/prediction.tif", overwrite = TRUE)
 
-  
+  terra::writeRaster(prediction_terra, "../public/uploads/prediction.tif", overwrite = TRUE)
+
+
   # tiff(paste(
   #  getwd(),
   # "/public/uploads/prediction.tif",
@@ -124,7 +133,7 @@ function() {
   # filename <- paste(normalizePath("D:/Dokumente/Studium"), "\\prediction.tif", sep = "")
   # stop(getwd())
   # terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
-  # plot(prediction_terra,col=cols, legend=FALSE)
+  #plot(prediction_terra, col = cols, legend = FALSE)
 }
 
 
