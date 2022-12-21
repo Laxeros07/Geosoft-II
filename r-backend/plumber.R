@@ -118,7 +118,7 @@ function() {
   # coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
   # levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
 
-  terra::writeRaster(prediction_terra, "../public/uploads/prediction.tif", overwrite = TRUE)
+  #terra::writeRaster(prediction_terra, "../public/uploads/prediction.tif", overwrite = TRUE)
 
 
   # tiff(paste(
@@ -133,7 +133,7 @@ function() {
   # filename <- paste(normalizePath("D:/Dokumente/Studium"), "\\prediction.tif", sep = "")
   # stop(getwd())
   # terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
-  # plot(prediction_terra, col = cols, legend = FALSE)
+  plot(prediction_terra, col = cols)
 }
 
 

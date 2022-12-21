@@ -114,19 +114,3 @@ addGeotiffToMap("../beispieldaten/sentinelRaster2_umprojiziert.tif");
 // }
 
 // var legend = L.control({ position: "bottomright" });
-
-//Legende
-var layerControl = L.control.layers(baseMaps).addTo(map);
-
-/*Legend specific*/
-var legend = L.control({ position: "bottomleft" });
-
-legend.onAdd = function () {
-  var div = L.DomUtil.create("div", "legend");
-  div.innerHTML += "<h4>Tegnforklaring</h4>";
-  div.innerHTML += '<i style="background: #000"></i><span>Schlecht</span><br>';
-  div.innerHTML += '<i style="background: #fff"></i><span>Gut</span><br>';
-  return div;
-};
-
-legend.addTo(map);
