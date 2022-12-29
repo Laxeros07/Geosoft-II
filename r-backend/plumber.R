@@ -31,8 +31,11 @@ function(spec) {
 #* @serializer json
 function() {
   library(sf)
-  data <- st_read("http://host.docker.internal:3000/uploads/trainingsdaten.gpkg")
-  st_write(data, "trainingsdaten.geojson", delete_dsn = TRUE)
+  data <- st_read("http://172.17.0.1:3000/uploads/trainingsdaten.gpkg")
+  #setwd('..')
+  #setwd('..')
+  #setwd('..')
+  st_write(data, "myfiles/trainingsdaten.geojson", delete_dsn = TRUE)
 }
 
 #* Klassifikation ohne Modell
@@ -118,7 +121,7 @@ function() {
   # coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
   # levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
 
-  #terra::writeRaster(prediction_terra, "../public/uploads/prediction.tif", overwrite = TRUE)
+  # terra::writeRaster(prediction_terra, "../public/uploads/prediction.tif", overwrite = TRUE)
 
 
   # tiff(paste(

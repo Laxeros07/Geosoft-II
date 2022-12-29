@@ -4,6 +4,7 @@ var R = require("r-integration");
 const MongoClient = require("mongodb").MongoClient;
 const app = require("../app");
 const request = require("request");
+const process = require("process");
 
 const fs = require("fs");
 const path = require("path");
@@ -24,7 +25,7 @@ var filetype;
 
 const multer = require("multer");
 const storage = multer.diskStorage({
-  destination: "public/uploads",
+  destination: "myfiles",
   filename: (req, file, cb) => {
     console.log(file);
     filetype = file.originalname.toString().split(".")[1];
@@ -67,11 +68,12 @@ router.post("/", upload.single("daten"), uploadFiles);
 function uploadFiles(req, res) {
   console.log("Filetype: " + filetype);
   if (filetype == "gpkg") {
+    /*
     R.callMethod("public/rScripts/gpkgToGeojson_converter.r", "konvertierung", {
       x: "x",
     });
+*/
 
-    /*
     request(
       "http://host.docker.internal:7001/convert",
       { json: true },
@@ -80,38 +82,31 @@ function uploadFiles(req, res) {
           return console.log(err);
         }
         console.log(body);
-        fs.readdir("/", (err, files) => {
+        console.log(process.cwd());
+        fs.readdir("myfiles", (err, files) => {
           files.forEach((file) => {
             console.log(file);
           });
         });
-        var content;
-        fs.readFile("trainingsdaten.geojson", function read(err, data) {
+
+        fs.readFile("myfiles/trainingsdaten.geojson", function read(err, data) {
           if (err) {
             throw err;
           }
-          content = data;
+          res.send({ message: filetype, json: JSON.parse(data) });
         });
-        console.log(content);
-        res.send({ message: filetype, json: content });
-        /*
-        fs.writeFile(
-          "uploads/trainingsdaten.geojson",
-          JSON.stringify(body),
-          function (err) {
-            if (err) {
-              return console.log(err);
-            }
-            console.log("The file was saved!");
-            res.send({ message: filetype });
-          }
-        );
-        
       }
-    );*/
-  } //else {
-  res.send({ message: filetype });
-  //}
+    );
+  } else if (filetype == "geojson" || filetype == "json") {
+    fs.readFile("myfiles/trainingsdaten.geojson", function read(err, data) {
+      if (err) {
+        throw err;
+      }
+      res.send({ message: filetype, json: JSON.parse(data) });
+    });
+  } else {
+    res.send({ message: filetype });
+  }
 }
 
 module.exports = router;

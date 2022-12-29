@@ -43,4 +43,5 @@ RUN R -e "install.packages('RColorBrewer', dependencies=TRUE)"
 
 COPY ./r-backend/plumber.R ./
 
+EXPOSE 7001
 CMD ["plumber.R"]

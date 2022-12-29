@@ -108,43 +108,43 @@ function submitFormT(e) {
       }
 
       // this requests the file and executes a callback with the parsed result once it is available
-      fetchJSONFile("../uploads/trainingsdaten.geojson", function (data) {
-        console.log(data);
-        // Die verschiedenen Labels werden in einem Set gespeichert
-        let labels = new Set();
-        data.features.forEach((element) => {
-          labels.add(element.properties.Label);
-        });
-        // Das Set mit den Labels wird in einen Array umgewandelt
-        const labelsArray = Array.from(labels);
-        let layerArray = [];
-        // Für jedes Array wird eine zufällige Frabe erstellt und in der Variabel color gespeichert
-        for (let index = 0; index < labelsArray.length; index++) {
-          let label = labelsArray[index];
-          color = getRandomColor();
-          // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
-          // Farbe zuvor gespeicherte Farbe zugeordnet
-          data.features.forEach((element) => {
-            if (element.properties.Label == label) {
-              layerArray.push(
-                L.geoJSON(element, {
-                  style: {
-                    color: color,
-                    fillColor: color,
-                    weight: 3,
-                    opacity: 0.65,
-                    fillOpacity: 0.65,
-                  },
-                }).bindPopup(function (layer) {
-                  return layer.feature.properties.Label;
-                })
-              );
-            }
-          });
-        }
-        let group = L.layerGroup(layerArray).addTo(map);
-        layerControl.addOverlay(group, "Trainingspolygone");
+      //fetchJSONFile("../uploads/trainingsdaten.geojson", function (data) {
+
+      // Die verschiedenen Labels werden in einem Set gespeichert
+      let labels = new Set();
+      data.json.features.forEach((element) => {
+        labels.add(element.properties.Label);
       });
+      // Das Set mit den Labels wird in einen Array umgewandelt
+      const labelsArray = Array.from(labels);
+      let layerArray = [];
+      // Für jedes Array wird eine zufällige Frabe erstellt und in der Variabel color gespeichert
+      for (let index = 0; index < labelsArray.length; index++) {
+        let label = labelsArray[index];
+        color = getRandomColor();
+        // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
+        // Farbe zuvor gespeicherte Farbe zugeordnet
+        data.json.features.forEach((element) => {
+          if (element.properties.Label == label) {
+            layerArray.push(
+              L.geoJSON(element, {
+                style: {
+                  color: color,
+                  fillColor: color,
+                  weight: 3,
+                  opacity: 0.65,
+                  fillOpacity: 0.65,
+                },
+              }).bindPopup(function (layer) {
+                return layer.feature.properties.Label;
+              })
+            );
+          }
+        });
+      }
+      let group = L.layerGroup(layerArray).addTo(map);
+      layerControl.addOverlay(group, "Trainingspolygone");
+      //});
     })
     .catch((err) => ("Error occured", err));
 }
