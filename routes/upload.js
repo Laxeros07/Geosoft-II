@@ -75,7 +75,7 @@ function uploadFiles(req, res) {
 */
 
     request(
-      "http://host.docker.internal:7001/convert",
+      "http://172.17.0.1:7001/convert",
       { json: true },
       (err, res2, body) => {
         if (err) {

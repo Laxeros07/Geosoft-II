@@ -31,10 +31,10 @@ function(spec) {
 #* @serializer json
 function() {
   library(sf)
-  data <- st_read("http://172.17.0.1:3000/uploads/trainingsdaten.gpkg")
-  #setwd('..')
-  #setwd('..')
-  #setwd('..')
+  data <- st_read("myfiles/trainingsdaten.gpkg")
+  # setwd('..')
+  # setwd('..')
+  # setwd('..')
   st_write(data, "myfiles/trainingsdaten.geojson", delete_dsn = TRUE)
 }
 
@@ -50,8 +50,8 @@ function() {
   # return(getwd()) #/usr/src/app
   # rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
   # trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
-  rasterdaten <- rast("http://host.docker.internal:3000/uploads/rasterdaten.tif")
-  trainingsdaten <- read_sf("http://host.docker.internal:3000/uploads/trainingsdaten.geojson")
+  rasterdaten <- rast("http://172.17.0.1:3000/uploads/rasterdaten.tif")
+  trainingsdaten <- read_sf("http://172.17.0.1:3000/uploads/trainingsdaten.geojson")
 
   ## Variablen definieren
   predictors <- c(
