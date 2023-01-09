@@ -180,6 +180,7 @@ function submitFormM(e) {
  * @param {*} path
  * @param {*} callback
  */
+/*
 function fetchJSONFile(path, callback) {
   var httpRequest = new XMLHttpRequest();
   httpRequest.onreadystatechange = function () {
@@ -193,7 +194,7 @@ function fetchJSONFile(path, callback) {
   httpRequest.open("GET", path);
   httpRequest.send();
 }
-
+*/
 //trainingsdatenInput.addEventListener("change", fileTrainingChange);
 //trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
 

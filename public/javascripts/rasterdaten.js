@@ -52,11 +52,15 @@ function submitFormR(e) {
     body: formData,
   })
     .then((res) => {
-      //addGeotiffToMap("../uploads/rasterdaten.tif")
-      fetch("http://localhost:3000/rasterdaten.tif", {
+      addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
+      /*fetch("http://localhost:3000/rasterdaten.tif", {
         method: "GET",
         headers: {},
-      }).then((response) => console.log(response));
+      })
+        .then((response) => response.blob())
+        .then((imageBlob) => {
+          console.log(imageBlob);
+        });*/
     })
     .catch((err) => ("Error occured", err));
 } /*
