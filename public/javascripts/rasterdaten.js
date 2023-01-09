@@ -51,7 +51,13 @@ function submitFormR(e) {
     method: "POST",
     body: formData,
   })
-    .then((res) => addGeotiffToMap("../uploads/rasterdaten.tif"))
+    .then((res) => {
+      //addGeotiffToMap("../uploads/rasterdaten.tif")
+      fetch("http://localhost:3000/rasterdaten.tif", {
+        method: "GET",
+        headers: {},
+      }).then((response) => console.log(response));
+    })
     .catch((err) => ("Error occured", err));
 } /*
 
