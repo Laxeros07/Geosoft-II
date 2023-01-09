@@ -25,9 +25,9 @@ block content
                     form#rasterdatenForm(action="/" method="post")
                         form-group
                             label.col-form-label(for='daten') Rasterdaten laden
-                            p Das Satetellitenbild muss im Koordinatensystem 
+                            p Das Satellitenbild muss im Koordinatensystem 
                                 b WGS84 (EPSG 4326) 
-                                | sein
+                                | sein.
                             input#rasterdatenFiles.form-control(type='file' name="daten" accept=".tif")
                         button#rasterdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
