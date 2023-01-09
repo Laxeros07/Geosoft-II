@@ -3,7 +3,7 @@ extends layout
 block content
     
 
-      .card.gy-4.gx-lg-2.text-center.m-4
+      .card.gy-4.gx-lg-2.m-4
         .card-header
         
           ul.nav.nav-tabs.card-header-tabs(data-bs-tabs='tabs')
@@ -53,7 +53,9 @@ block content
         document.querySelectorAll(".nav-link")[2].classList.add("active")
 
 
-      
+      script(src="https://unpkg.com/georaster") 
+      script(src="https://unpkg.com/georaster-layer-for-leaflet") 
+      script(src='/javascripts/leaflet.js')
       script(src='/javascripts/result.js')
       
 

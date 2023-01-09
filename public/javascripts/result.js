@@ -1,13 +1,9 @@
 var json = []; //Geojson Array
 
-// Karte mit Zentrum definieren
-var map = L.map("map").setView([52, 7.6], 10);
-
-mapLink = '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "&copy; " + mapLink + " Contributors",
-  maxZoom: 18,
-}).addTo(map);
+// Add Data to map
+addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
+addPredictionAndAoaToMap("http://localhost:3000/prediction.tif", "");
+addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
 
 var LeafIcon = L.Icon.extend({
   options: {

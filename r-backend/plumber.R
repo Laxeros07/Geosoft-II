@@ -136,7 +136,7 @@ function() {
   # filename <- paste(normalizePath("D:/Dokumente/Studium"), "\\prediction.tif", sep = "")
   # stop(getwd())
   # terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
-  #plot(prediction_terra, col = cols)
+  # plot(prediction_terra, col = cols)
 }
 
 

@@ -1,3 +1,64 @@
+function addGeoJSONToMap(url) {
+  // this requests the file and executes a callback with the parsed result once it is available
+  fetchJSONFile(url, function (data) {
+    // Die verschiedenen Labels werden in einem Set gespeichert
+    let labels = new Set();
+    data.features.forEach((element) => {
+      labels.add(element.properties.Label);
+    });
+    // Das Set mit den Labels wird in einen Array umgewandelt
+    const labelsArray = Array.from(labels);
+    let layerArray = [];
+    // Für jedes Array wird eine zufällige Frabe erstellt und in der Variabel color gespeichert
+    for (let index = 0; index < labelsArray.length; index++) {
+      let label = labelsArray[index];
+      color = getRandomColor();
+      // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
+      // Farbe zuvor gespeicherte Farbe zugeordnet
+      data.features.forEach((element) => {
+        if (element.properties.Label == label) {
+          layerArray.push(
+            L.geoJSON(element, {
+              style: {
+                color: color,
+                fillColor: color,
+                weight: 3,
+                opacity: 0.65,
+                fillOpacity: 0.65,
+              },
+            }).bindPopup(function (layer) {
+              return layer.feature.properties.Label;
+            })
+          );
+        }
+      });
+    }
+    let group = L.layerGroup(layerArray).addTo(map);
+    layerControl.addOverlay(group, "Trainingspolygone");
+  });
+}
+
+/**
+ * Ruft eine lokale JSON Datei auf
+ * Quelle: https://stackoverflow.com/questions/14388452/how-do-i-load-a-json-object-from-a-file-with-ajax
+ * @param {*} path
+ * @param {*} callback
+ */
+
+function fetchJSONFile(path, callback) {
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.onreadystatechange = function () {
+    if (httpRequest.readyState === 4) {
+      if (httpRequest.status === 200) {
+        var data = JSON.parse(httpRequest.responseText);
+        if (callback) callback(data);
+      }
+    }
+  };
+  httpRequest.open("GET", path);
+  httpRequest.send();
+}
+
 function addGeotiffToMap(url) {
   fetch(url)
     .then((response) => response.arrayBuffer())
