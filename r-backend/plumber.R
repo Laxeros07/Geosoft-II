@@ -39,9 +39,10 @@ function() {
 }
 
 #* Klassifikation ohne Modell
+#* @param maske If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function() {
+function(maske) {
   library(terra)
   library(sf)
   library(caret)
@@ -58,6 +59,9 @@ function() {
     "B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11",
     "B12", "B8A"
   )
+
+  # Rasterdaten auf Maske zuschneiden
+  rasterdaten <- crop(rasterdaten, maske)
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
