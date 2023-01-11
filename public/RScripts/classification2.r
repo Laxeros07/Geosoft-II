@@ -7,7 +7,7 @@ library(CAST)
 
 
 # zum testen wd so setzen
-# setwd("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II")
+ setwd("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II")
 
 rasterdaten <- rast(paste(
   getwd(),
@@ -24,6 +24,8 @@ modell <- readRDS(paste(
   "/public/uploads/modell.RDS",
   sep = ""
 ))
+maske <- c(7.54738996178022, 7.65064656833175, 51.9272943715445, 52.0101517816852)
+
 
 ## Ausgabe
 klassifizierung_mit_Modell <- function(rasterdaten, modell) {
@@ -66,12 +68,14 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell) {
 
 
 ## Ausgabe
-klassifizierung_ohne_Modell <- function(x) {
+klassifizierung_ohne_Modell <- function(maske) {
   ## Variablen definieren
   predictors <- c(
     "B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11",
     "B12", "B8A"
   )
+
+  rasterdaten <- crop(rasterdaten, maske)
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -198,4 +202,4 @@ klassifizierung_ohne_Modell <- function(x) {
 
 # zum Testen der Funktionen
 # klassifizierung_mit_Modell(rasterdaten, modell)
-# klassifizierung_ohne_Modell()
+ klassifizierung_ohne_Modell(maske)
