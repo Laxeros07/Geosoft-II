@@ -32,6 +32,7 @@ router.post("/", function (req, res, next) {
         return console.log(err);
       }
       console.log(body);
+      console.log();
       res.render("result", { title: "Result" });
     }
   );
