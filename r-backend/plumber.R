@@ -159,7 +159,7 @@ function() {
   library(RColorBrewer)
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
-  modell <- read_sf("myfiles/modell.RDS")
+  modell <- readRDS("myfiles/modell.RDS")
   # klassifizieren
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), modell)

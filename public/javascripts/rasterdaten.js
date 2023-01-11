@@ -22,6 +22,8 @@ rasterdatenHochladen.disabled = true;
 rasterdatenForm.reset();
 
 function submitFormR(e) {
+  skriptAusfuehren.disabled = false;
+  /*
   if (
     document.getElementById("trainingsdatenFiles") == null &&
     document.getElementById("modellFiles") != null
@@ -38,7 +40,7 @@ function submitFormR(e) {
       skriptAusfuehren.disabled = false;
       smallText.style.display = "none";
     }
-  }
+  }*/
 
   e.preventDefault();
   let formData = new FormData();

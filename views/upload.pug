@@ -1,6 +1,11 @@
 extends layout
 
 block content
+    #loading(style='display:none')
+        figure#loading-image
+            img.img-fluid.loading-image.rounded(src='/images/ajax-loader.gif' alt='Loading...')
+            figcaption
+                b#image-caption Loaaaading...
 
     .row.gy-4.gx-lg-3.justify-content-md-center.mt-3 
         .col-lg-4.col-xs-12.mb-3

@@ -242,11 +242,13 @@ function geojsonExport() {
 }
 
 /////////////////////////////////////////////
+var map2 = L.map("map2").setView([51.96, 7.62], 13);
 mapLink = '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
 var osm2 = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "&copy; " + mapLink + " Contributors",
   maxZoom: 18,
-}).addTo(map);
+}).addTo(map2);
 
 var satellite2 = L.tileLayer(
   "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
@@ -257,7 +259,7 @@ var satellite2 = L.tileLayer(
     attribution:
       'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
   }
-).addTo(map);
+).addTo(map2);
 
 var baseMaps2 = {
   Luftbild: satellite2,
