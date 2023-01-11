@@ -82,12 +82,6 @@ function uploadFiles(req, res) {
           return console.log(err);
         }
         console.log(body);
-        console.log(process.cwd());
-        fs.readdir("myfiles", (err, files) => {
-          files.forEach((file) => {
-            console.log(file);
-          });
-        });
 
         fs.readFile("myfiles/trainingsdaten.geojson", function read(err, data) {
           if (err) {

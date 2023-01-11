@@ -2,7 +2,10 @@ var json = []; //Geojson Array
 
 // Add Data to map
 addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
-addPredictionAndAoaToMap("http://localhost:3000/prediction.tif", "");
+addPredictionAndAoaToMap(
+  "http://localhost:3000/prediction.tif",
+  "http://localhost:3000/AOA_klassifikation.tif"
+);
 addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
 
 var LeafIcon = L.Icon.extend({
