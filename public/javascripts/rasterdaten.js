@@ -52,7 +52,11 @@ function submitFormR(e) {
     body: formData,
   })
     .then((res) => {
-      addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
+      addGeotiffToMap(
+        "http://localhost:3000/rasterdaten.tif",
+        map,
+        layerControl
+      );
     })
     .catch((err) => ("Error occured", err));
 } /*

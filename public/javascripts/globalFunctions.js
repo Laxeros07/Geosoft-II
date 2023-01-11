@@ -1,4 +1,4 @@
-function addGeoJSONToMap(url) {
+function addGeoJSONToMap(url, pMap, pLayerControl) {
   // this requests the file and executes a callback with the parsed result once it is available
   fetchJSONFile(url, function (data) {
     // Die verschiedenen Labels werden in einem Set gespeichert
@@ -33,8 +33,8 @@ function addGeoJSONToMap(url) {
         }
       });
     }
-    let group = L.layerGroup(layerArray).addTo(map);
-    layerControl.addOverlay(group, "Trainingspolygone");
+    let group = L.layerGroup(layerArray).addTo(pMap);
+    pLayerControl.addOverlay(group, "Trainingspolygone");
   });
 }
 
@@ -59,7 +59,7 @@ function fetchJSONFile(path, callback) {
   httpRequest.send();
 }
 
-function addGeotiffToMap(url) {
+function addGeotiffToMap(url, pMap, pLayerControl) {
   fetch(url)
     .then((response) => response.arrayBuffer())
     .then((arrayBuffer) => {
@@ -100,16 +100,16 @@ function addGeotiffToMap(url) {
             ? null
             : `rgb(${values[0]},${values[1]},${values[2]})`,*/
         });
-        layer.addTo(map);
+        layer.addTo(pMap);
 
-        layerControl.addOverlay(layer, "Rasterbild");
+        pLayerControl.addOverlay(layer, "Rasterbild");
 
-        map.fitBounds(layer.getBounds());
+        pMap.fitBounds(layer.getBounds());
       });
     });
 }
 
-function addPredictionAndAoaToMap(predUrl, aoaUrl) {
+function addPredictionAndAoaToMap(predUrl, aoaUrl, pMap, pLayerControl) {
   fetch(predUrl)
     .then((response) => response.arrayBuffer())
     .then((arrayBuffer) => {
@@ -145,11 +145,11 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl) {
             return `rgb(${values[2]}, ${values[1]}, ${values[0]})`;
           },*/,
         });
-        layer.addTo(map);
+        layer.addTo(pMap);
 
-        layerControl.addOverlay(layer, "Klassifikation");
+        pLayerControl.addOverlay(layer, "Klassifikation");
 
-        map.fitBounds(layer.getBounds());
+        pMap.fitBounds(layer.getBounds());
       });
     });
 
@@ -190,7 +190,7 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl) {
         });
         layer.addTo(map);
 
-        layerControl.addOverlay(layer, "AOA");
+        pLayerControl.addOverlay(layer, "AOA");
 
         map.fitBounds(layer.getBounds());
       });

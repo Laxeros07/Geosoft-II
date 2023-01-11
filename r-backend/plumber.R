@@ -39,7 +39,7 @@ function() {
 #* @param maske If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function(maske) {
+function() {
   library(terra)
   library(sf)
   library(caret)
@@ -57,7 +57,7 @@ function(maske) {
   )
 
   # Rasterdaten auf Maske zuschneiden
-  rasterdaten <- crop(rasterdaten, maske)
+  # rasterdaten <- crop(rasterdaten, maske)
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
