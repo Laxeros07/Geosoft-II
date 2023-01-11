@@ -23,31 +23,30 @@ router.post("/", function (req, res, next) {
     }
   );
   */
-  /*
+
   request(
-    "http://host.docker.internal:7001/result",
+    "http://172.17.0.1:7001/result",
     { json: true },
     (err, res2, body) => {
       if (err) {
         return console.log(err);
       }
       console.log(body);
+      console.log();
       res.render("result", { title: "Result" });
     }
-  );*/
+  );
 });
 
 /**
  * Aufrufen der Trainingsdatenseit (bearbeiten der seite)
  */
+/*
 router.post("/trainingsdaten", function (req, res, next) {
   res.render("trainingsdaten", { title: "Demo Result" });
 });
-
+*/
 function uploadFiles(req, res) {
-  console.log("lol");
-  console.log("Hallo");
-  console.log("Ciao");
   res.json({ message: "Successfully uploaded files" });
 }
 

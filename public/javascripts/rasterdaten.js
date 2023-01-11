@@ -23,11 +23,21 @@ rasterdatenForm.reset();
 
 function submitFormR(e) {
   if (
-    document.getElementById("trainingsdatenFiles").value != "" ||
-    document.getElementById("modellFiles").value != ""
+    document.getElementById("trainingsdatenFiles") == null &&
+    document.getElementById("modellFiles") != null
   ) {
-    skriptAusfuehren.disabled = false;
-    smallText.style.display = "none";
+    if (document.getElementById("modellFiles").value) {
+      skriptAusfuehren.disabled = false;
+      smallText.style.display = "none";
+    }
+  } else if (
+    document.getElementById("trainingsdatenFiles") != null &&
+    document.getElementById("modellFiles") == null
+  ) {
+    if (document.getElementById("trainingsdatenFiles").value) {
+      skriptAusfuehren.disabled = false;
+      smallText.style.display = "none";
+    }
   }
 
   e.preventDefault();
@@ -41,7 +51,9 @@ function submitFormR(e) {
     method: "POST",
     body: formData,
   })
-    .then((res) => addGeotiffToMap("../uploads/rasterdaten.tif"))
+    .then((res) => {
+      addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
+    })
     .catch((err) => ("Error occured", err));
 } /*
 

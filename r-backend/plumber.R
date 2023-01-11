@@ -31,30 +31,33 @@ function(spec) {
 #* @serializer json
 function() {
   library(sf)
-  data <- st_read("http://host.docker.internal:3000/uploads/trainingsdaten.gpkg")
-  st_write(data, "trainingsdaten.geojson", delete_dsn = TRUE)
+  data <- st_read("myfiles/trainingsdaten.gpkg")
+  st_write(data, "myfiles/trainingsdaten.geojson", delete_dsn = TRUE)
 }
 
 #* Klassifikation ohne Modell
+#* @param maske If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function() {
+function(maske) {
   library(terra)
   library(sf)
   library(caret)
   library(raster)
   library(RColorBrewer)
-  # return(getwd()) #/usr/src/app
-  # rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif") # nolint
-  # trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson") # nolint
-  rasterdaten <- rast("http://host.docker.internal:3000/uploads/rasterdaten.tif")
-  trainingsdaten <- read_sf("http://host.docker.internal:3000/uploads/trainingsdaten.geojson")
+  library(CAST)
+
+  rasterdaten <- rast("myfiles/rasterdaten.tif")
+  trainingsdaten <- read_sf("myfiles/trainingsdaten.geojson")
 
   ## Variablen definieren
   predictors <- c(
     "B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11",
     "B12", "B8A"
   )
+
+  # Rasterdaten auf Maske zuschneiden
+  rasterdaten <- crop(rasterdaten, maske)
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -115,10 +118,18 @@ function() {
     "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
   )
 
+  terra::writeRaster(prediction_terra, "myfiles/prediction.tif", overwrite = TRUE)
+
+  # AOA Berechnungen
+  AOA_klassifikation <- aoa(rasterdaten, model)
+  crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  # plot(AOA_klassifikation$DI)
+  # plot(AOA_klassifikation$AOA)
+  terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
   # coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
   # levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
 
-  #terra::writeRaster(prediction_terra, "../public/uploads/prediction.tif", overwrite = TRUE)
+
 
 
   # tiff(paste(
@@ -133,9 +144,51 @@ function() {
   # filename <- paste(normalizePath("D:/Dokumente/Studium"), "\\prediction.tif", sep = "")
   # stop(getwd())
   # terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
-  plot(prediction_terra, col = cols)
+  # plot(prediction_terra, col = cols)
 }
 
+#* Klassifikation ohne Modell
+#* @get /resultModell
+#* @serializer png
+function() {
+  library(terra)
+  library(sf)
+  library(caret)
+  library(raster)
+  library(CAST)
+  library(RColorBrewer)
+
+  rasterdaten <- rast("myfiles/rasterdaten.tif")
+  modell <- read_sf("myfiles/modell.RDS")
+  # klassifizieren
+  ### little detour due to terra/raster change
+  prediction <- predict(as(rasterdaten, "Raster"), modell)
+  projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  prediction_terra <- as(prediction, "SpatRaster")
+  coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
+
+  # erste Visualisierung der Klassifikation:
+  # plot(prediction_terra)
+
+  # und nochmal in schöner plotten mit sinnvollen Farben
+  cols <- c(
+    "lightgreen", "blue", "green", "darkred", "forestgreen",
+    "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
+  )
+  # plot(prediction_terra,col=cols)
+
+  # export raster
+  # writeRaster(prediction_terra,"prediction.grd",overwrite=TRUE)
+  # return(plot(prediction_terra)) # ,col=cols))
+  terra::writeRaster(prediction_terra, "myfiles/prediction.tif", overwrite = TRUE)
+
+  # AOA Berechnungen
+  AOA_klassifikation <- aoa(rasterdaten, model)
+  crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  # plot(AOA_klassifikation$DI)
+  # plot(AOA_klassifikation$AOA)
+  terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
+}
 
 # root <- pr("plumber.R")
 # root

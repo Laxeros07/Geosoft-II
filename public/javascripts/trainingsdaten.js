@@ -108,43 +108,43 @@ function submitFormT(e) {
       }
 
       // this requests the file and executes a callback with the parsed result once it is available
-      fetchJSONFile("../uploads/trainingsdaten.geojson", function (data) {
-        console.log(data);
-        // Die verschiedenen Labels werden in einem Set gespeichert
-        let labels = new Set();
-        data.features.forEach((element) => {
-          labels.add(element.properties.Label);
-        });
-        // Das Set mit den Labels wird in einen Array umgewandelt
-        const labelsArray = Array.from(labels);
-        let layerArray = [];
-        // Für jedes Array wird eine zufällige Frabe erstellt und in der Variabel color gespeichert
-        for (let index = 0; index < labelsArray.length; index++) {
-          let label = labelsArray[index];
-          color = getRandomColor();
-          // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
-          // Farbe zuvor gespeicherte Farbe zugeordnet
-          data.features.forEach((element) => {
-            if (element.properties.Label == label) {
-              layerArray.push(
-                L.geoJSON(element, {
-                  style: {
-                    color: color,
-                    fillColor: color,
-                    weight: 3,
-                    opacity: 0.65,
-                    fillOpacity: 0.65,
-                  },
-                }).bindPopup(function (layer) {
-                  return layer.feature.properties.Label;
-                })
-              );
-            }
-          });
-        }
-        let group = L.layerGroup(layerArray).addTo(map);
-        layerControl.addOverlay(group, "Trainingspolygone");
+      //fetchJSONFile("../uploads/trainingsdaten.geojson", function (data) {
+
+      // Die verschiedenen Labels werden in einem Set gespeichert
+      let labels = new Set();
+      data.json.features.forEach((element) => {
+        labels.add(element.properties.Label);
       });
+      // Das Set mit den Labels wird in einen Array umgewandelt
+      const labelsArray = Array.from(labels);
+      let layerArray = [];
+      // Für jedes Array wird eine zufällige Frabe erstellt und in der Variabel color gespeichert
+      for (let index = 0; index < labelsArray.length; index++) {
+        let label = labelsArray[index];
+        color = getRandomColor();
+        // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
+        // Farbe zuvor gespeicherte Farbe zugeordnet
+        data.json.features.forEach((element) => {
+          if (element.properties.Label == label) {
+            layerArray.push(
+              L.geoJSON(element, {
+                style: {
+                  color: color,
+                  fillColor: color,
+                  weight: 3,
+                  opacity: 0.65,
+                  fillOpacity: 0.65,
+                },
+              }).bindPopup(function (layer) {
+                return layer.feature.properties.Label;
+              })
+            );
+          }
+        });
+      }
+      let group = L.layerGroup(layerArray).addTo(map);
+      layerControl.addOverlay(group, "Trainingspolygone");
+      //});
     })
     .catch((err) => ("Error occured", err));
 }
@@ -174,12 +174,45 @@ function submitFormM(e) {
     headers: {},
   });
 }
+
+var drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+
+//Leaflet draw control Bar
+var drawControl = new L.Control.Draw({
+  position: "topright",
+  draw: {
+    rectangle: true,
+    circle: false,
+    marker: false,
+    polyline: false,
+    circlemarker: false,
+    polygon: false,
+  },
+  edit: {
+    featureGroup: drawnItems,
+  },
+});
+map.addControl(drawControl);
+var maske;
+map.on("draw:created", function (e) {
+  layer = e.layer;
+  maske = [
+    layer._bounds._southWest.lng,
+    layer._bounds._northEast.lng,
+    layer._bounds._southWest.lat,
+    layer._bounds._northEast.lat,
+  ];
+  console.log(maske);
+  drawnItems.addLayer(layer);
+});
 /**
  * Ruft eine lokale JSON Datei auf
  * Quelle: https://stackoverflow.com/questions/14388452/how-do-i-load-a-json-object-from-a-file-with-ajax
  * @param {*} path
  * @param {*} callback
  */
+/*
 function fetchJSONFile(path, callback) {
   var httpRequest = new XMLHttpRequest();
   httpRequest.onreadystatechange = function () {
@@ -193,7 +226,7 @@ function fetchJSONFile(path, callback) {
   httpRequest.open("GET", path);
   httpRequest.send();
 }
-
+*/
 //trainingsdatenInput.addEventListener("change", fileTrainingChange);
 //trainingsdatenHochladen.addEventListener("click", uploadTrainingsdaten);
 

@@ -6,9 +6,10 @@ services:
         build:
           dockerfile: ./Dockerfile
         ports:
-            - '3000:4000'
-        #volumes:
-        #    - data:/uploads
+            - '3000:3000'
+        volumes:
+            - mydata:/usr/src/app/myfiles
+            #- mydata:/public/uploads:/usr/src/app
         # depends_on:
         #     - mongoservice
 
@@ -19,11 +20,11 @@ services:
         ports:
             - '7001:8000'
         restart: always
-        #volumes:
-        #    - data:/uploads
+        volumes:
+            - mydata:/usr/src/app/myfiles
     
-#volumes:
-#    data:
+volumes:
+    mydata:
 
 
     # mongoservice:

@@ -14,7 +14,7 @@ html
     script(src='https://unpkg.com/leaflet@1.9.2/dist/leaflet.js' integrity='sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=' crossorigin='')
 
     script(src='/javascripts/globalFunctions.js')
-    
+
     meta(charset='utf-8')
     meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
     meta(name='description' content='')
@@ -55,8 +55,8 @@ html
       block content
 
     // Footer
-    
-    
+
+
     footer.bg-dark.text-center.text-muted.text-lg-start.mt-5
 
       .container.m-3.px-2
@@ -65,7 +65,7 @@ html
             h5.text-uppercase Links
             ul.list-unstyled.mb-0
               li
-                a.link1.text-muted.text-decoration-none(href='http://localhost:3000/impressum') Team
+                a.link1.text-muted.text-decoration-none(href='/impressum') Team
               li
                 a.link1.text-muted.text-decoration-none(href='#!') get in touch
 
@@ -73,12 +73,12 @@ html
             img.logo.sm.m-2(src='/images/spaceylogo.png')
           .col-sm
             p.form-check.form-switch
-                input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
-                label.form-check-label(for='switchDark') Darkmode
-                script(src='/javascripts/darkmode.js' )
-            p.form-check.form-switch
-                input#switchColor.form-check-input(type='checkbox' role='switch')
-                label.form-check-label(for='switchColor') Colorblindmode
+              input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
+              label.form-check-label(for='switchDark') Darkmode
+              script(src='/javascripts/darkmode.js' )
+            p.form-check.form-switch(style="display:none")
+              input#switchColor.form-check-input(type='checkbox' role='switch')
+              label.form-check-label(for='switchColor') Colorblindmode
           .col-sm
             div
               a.me-4.text-reset(href='https://github.com/Laxeros07/Geosoft-II')
@@ -87,9 +87,9 @@ html
                 i.bi.bi-envelope-at-fill
               a.me-4.text-reset(href='')
                 i.bi.bi-phone
-     
-      .text-center.p-1(style='background-color:#005288;')
-        | &copy; 2023 by:
+
+      .text-center.p-1.text-white(style='background-color:#005288;')
+        | &copy; 2023 by: 
         i.text-white Apollo 13 Projekt
         // Copyright
 

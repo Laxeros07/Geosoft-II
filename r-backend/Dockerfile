@@ -40,7 +40,9 @@ RUN R -e "install.packages('sf', dependencies=TRUE)"
 RUN R -e "install.packages('caret', dependencies=TRUE)"
 RUN R -e "install.packages('raster', dependencies=TRUE)"
 RUN R -e "install.packages('RColorBrewer', dependencies=TRUE)"
+RUN R -e "install.packages('CAST', dependencies=TRUE)"
 
 COPY ./r-backend/plumber.R ./
 
+EXPOSE 7001
 CMD ["plumber.R"]
