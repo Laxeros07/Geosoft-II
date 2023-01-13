@@ -1,9 +1,18 @@
 var json = []; //Geojson Array
 
 // Add Data to map
-addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
-addPredictionAndAoaToMap("http://localhost:3000/prediction.tif", "");
-addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
+addGeotiffToMap("http://localhost:3000/rasterdaten.tif", map, layerControl);
+addPredictionAndAoaToMap(
+  "http://localhost:3000/prediction.tif",
+  "http://localhost:3000/AOA_klassifikation.tif",
+  map,
+  layerControl
+);
+addGeoJSONToMap(
+  "http://localhost:3000/trainingsdaten.geojson",
+  map,
+  layerControl
+);
 
 var LeafIcon = L.Icon.extend({
   options: {
@@ -233,29 +242,45 @@ function geojsonExport() {
 }
 
 /////////////////////////////////////////////
-
-var map2 = L.map("map2").setView([52, 7.6], 10);
-
+var map2 = L.map("map2").setView([51.96, 7.62], 13);
 mapLink = '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+
+var osm2 = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "&copy; " + mapLink + " Contributors",
   maxZoom: 18,
 }).addTo(map2);
 
-var LeafIcon = L.Icon.extend({
-  options: {
-    shadowUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-    iconSize: [38, 95],
-    shadowSize: [50, 64],
-    iconAnchor: [22, 94],
-    shadowAnchor: [4, 62],
-    popupAnchor: [-3, -76],
-  },
-});
+var satellite2 = L.tileLayer(
+  "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+  {
+    id: "mapbox/satellite-v9",
+    tileSize: 512,
+    zoomOffset: -1,
+    attribution:
+      'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+  }
+).addTo(map2);
 
-var greenIcon = new LeafIcon({
-  iconUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-});
+var baseMaps2 = {
+  Luftbild: satellite2,
+  OpenStreetMap: osm2,
+};
+
+var layerControl2 = L.control.layers(baseMaps2).addTo(map2);
+
+// Add Data to map
+addGeotiffToMap("http://localhost:3000/rasterdaten.tif", map2, layerControl2);
+addPredictionAndAoaToMap(
+  "http://localhost:3000/prediction.tif",
+  "http://localhost:3000/AOA_klassifikation.tif",
+  map2,
+  layerControl2
+);
+addGeoJSONToMap(
+  "http://localhost:3000/trainingsdaten.geojson",
+  map2,
+  layerControl2
+);
 
 var drawnItems = new L.FeatureGroup();
 map2.addLayer(drawnItems);

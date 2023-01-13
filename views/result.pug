@@ -8,17 +8,14 @@ block content
         
           ul.nav.nav-tabs.card-header-tabs(data-bs-tabs='tabs')
             li.nav-item
-              a.nav-link.active(aria-current='true' data-bs-toggle='tab' href='#bearbeiten') Trainingsdaten bearbeiten
+              a.nav-link(data-bs-toggle='tab' href='#bearbeiten') Trainingsdaten bearbeiten
             li.nav-item
-              a.nav-link(data-bs-toggle='tab' href='#result') result
+              a.nav-link.active(aria-current='true' data-bs-toggle='tab' href='#result') result
+            
 
         form.card-body.tab-content
 
-          #result.tab-pane
-              p.card-text Visualisierung des AOA
-              #map2
-
-          #bearbeiten.tab-pane.active
+          #bearbeiten.tab-pane
             
             .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
               .col-lg-8.col-xs-12.mb-3
@@ -41,6 +38,10 @@ block content
                     form(action="result/trainingsdaten" method="post")
                       form-group
                           button.btn.btn-primary.my-2(type="submit") bearbeiten
+
+          #result.tab-pane.active
+              p.card-text Visualisierung des AOA
+              #map2
 
 
           

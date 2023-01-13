@@ -1,3 +1,6 @@
+/**
+ * Quelle: https://pspdfkit.com/blog/2021/how-to-build-a-bootstrap5-pdf-viewer-with-pdfjs/
+ */
 // script.js
 const tooltipTriggerList = [].slice.call(
   document.querySelectorAll('[data-bs-toggle="tooltip"]')

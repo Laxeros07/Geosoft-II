@@ -22,6 +22,8 @@ rasterdatenHochladen.disabled = true;
 rasterdatenForm.reset();
 
 function submitFormR(e) {
+  skriptAusfuehren.disabled = false;
+  /*
   if (
     document.getElementById("trainingsdatenFiles") == null &&
     document.getElementById("modellFiles") != null
@@ -38,7 +40,7 @@ function submitFormR(e) {
       skriptAusfuehren.disabled = false;
       smallText.style.display = "none";
     }
-  }
+  }*/
 
   e.preventDefault();
   let formData = new FormData();
@@ -52,15 +54,11 @@ function submitFormR(e) {
     body: formData,
   })
     .then((res) => {
-      addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
-      /*fetch("http://localhost:3000/rasterdaten.tif", {
-        method: "GET",
-        headers: {},
-      })
-        .then((response) => response.blob())
-        .then((imageBlob) => {
-          console.log(imageBlob);
-        });*/
+      addGeotiffToMap(
+        "http://localhost:3000/rasterdaten.tif",
+        map,
+        layerControl
+      );
     })
     .catch((err) => ("Error occured", err));
 } /*

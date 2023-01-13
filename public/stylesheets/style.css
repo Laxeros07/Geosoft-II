@@ -143,7 +143,9 @@ dd {
   color: #575757;
 }
 
-*Legend specific*/ .leaflet-control {
+/*Legend specific*/
+
+.leaflet-control{
   background: white;
   background: rgba(255, 255, 255, 0.8);
 }

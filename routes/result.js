@@ -9,6 +9,8 @@ router.get("/", function (req, res, next) {
 });
 
 const multer = require("multer");
+const { rawListeners } = require("../app");
+const { urlencoded } = require("express");
 const upload = multer({ dest: "uploads/" });
 
 //router.post("/", upload.single("trainingsdaten"), uploadFiles);
@@ -24,18 +26,22 @@ router.post("/", function (req, res, next) {
   );
   */
 
-  request(
-    "http://172.17.0.1:7001/result",
-    { json: true },
-    (err, res2, body) => {
-      if (err) {
-        return console.log(err);
-      }
-      console.log(body);
-      console.log();
-      res.render("result", { title: "Result" });
+  let url;
+  switch (req.body.id) {
+    case "trainingsdaten":
+      url = "http://172.17.0.1:7001/result";
+      break;
+    case "modell":
+      url = "http://172.17.0.1:7001/resultModell";
+      break;
+  }
+
+  request(url, { json: true }, (err, res2, body) => {
+    if (err) {
+      return console.log(err);
     }
-  );
+    res.render("result", { title: "Result" });
+  });
 });
 
 /**

@@ -34,10 +34,10 @@ block content
                 div
                     form#rasterdatenForm(action="/" method="post")
                         form-group
-                            label.col-form-label(for='daten') Rasterdaten laden
                             p Das Satellitenbild muss im Koordinatensystem 
                                 b WGS84 (EPSG 4326) 
                                 | sein.
+                            label.col-form-label(for='daten') Rasterdaten laden
                             input#rasterdatenFiles.form-control(type='file' name="daten" accept=".tif")
                         button#rasterdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
         .col-lg-4.col-xs-12.mb-3
@@ -49,14 +49,14 @@ block content
                             option(value='dt') Decision Tree
                             option(value='rf') Random Forest
                             option(value='') etc
-                        select.form-select(name='select' value=selected) Bounding-Box 
+                        //select.form-select(name='select' value=selected) Bounding-Box
+                        input#idInput(name="id" style="display:none") 
                         button#skript.btn.btn-primary.my-2 Skript ausführen
                         p
                             small#small Es müssen zunächst Trainingdaten oder ein trainiertes Modell und Rasterdaten hochgeladen werden.
-    #test
 
     .col-lg-12.col-sm-12.mb-3
-        .card.shadow.p-4.vh-50
+        .card.shadow.p-4
             .leaflet-container#map
 
 
