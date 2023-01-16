@@ -2,28 +2,32 @@ extends layout
 
 block content
     #loading(style='display:none')
-        figure#loading-image
-            img.img-fluid.loading-image.rounded(src='/images/ajax-loader.gif' alt='Loading...')
-            figcaption
-                b#image-caption Loaaaading...
-
+        div
+            figure#loading-image
+                img.img-fluid(src='/images/loading_bg.png')
+                img#loading-image.figure-img.img-fluid.loading-image(src='/images/ajax-loader.gif') 
+                figcaption#image-caption.figure-caption.mt-6 Loaaaading...
     .row.gy-4.gx-lg-3.justify-content-md-center.mt-3 
         .col-lg-4.col-xs-12.mb-3
             .card.shadow.p-4.h-100
                 h3 Trainingsdaten
                 div
-                    button#trainingsdaten.btn.btn-primary.my-2(onclick='hideTrainingsdatenForm()') Ich möchte Trainingsdaten hochladen
-                    button#modell.btn.btn-primary.my-2(onclick='hideModellForm()') Ich möchte ein Modell hochladen
                     form#trainingsdatenForm(style='display:none' action="/" method="post")
                         form-group
-                            label.col-form-label(for='daten') Trainingsdaten laden
-                            input#trainingsdatenFiles.form-control(type='file' name='daten' accept=".json, .geojson, .gpkg")
+                            label.col-form-label(for='daten') 
+                            b Trainingspolygone 
+                            |laden:
+                            input#trainingsdatenFiles.form-control.mt-2(type='file' name='daten' accept=".json, .geojson, .gpkg")
                         button#trainingsdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
                     form#modellForm( style='display:none' action="/" method="post")
                         form-group
-                            label.col-form-label(for='daten') Modell laden
-                            input#modelFiles.form-control(type='file' name='daten' accept=".RDS")
+                            label.col-form-label(for='daten') 
+                            b Modell 
+                            |laden:
+                            input#modelFiles.form-control.mt-2(type='file' name='daten' accept=".RDS")
                         button#modellHochladen.btn.btn-primary.my-2(type='submit') Hochladen
+                    button#trainingsdaten.btn.btn-primary.my-2(onclick='hideTrainingsdatenForm()') Ich möchte Trainingspolygone hochladen
+                    button#modell.btn.btn-primary.my-2(onclick='hideModellForm()') Ich möchte ein Modell hochladen                    
         .col-lg-4.col-xs-12.mb-3
             .card.shadow.p-4.h-100
                 h3 Rasterdaten

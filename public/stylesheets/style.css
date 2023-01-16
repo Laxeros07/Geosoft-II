@@ -234,4 +234,5 @@ dd {
 
 #image-caption {
   font-size: larger;
+  position: inherit;
 }
