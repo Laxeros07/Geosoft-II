@@ -46,6 +46,8 @@ function() {
   library(raster)
   library(RColorBrewer)
   library(CAST)
+  library(cowplot)
+  library(tidyterra)
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   trainingsdaten <- read_sf("myfiles/trainingsdaten.geojson")
@@ -110,6 +112,18 @@ function() {
   prediction_terra <- as(prediction, "SpatRaster")
   coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
 
+  # Prediction Legende exportieren
+  legend_plot <- ggplot()+
+    geom_spatraster(data=prediction_terra)+
+    scale_fill_manual(values=brewer.pal(n = 10, name = "RdBu"), na.value=NA)
+  legend <- get_legend(legend_plot)
+  
+  ggsave(paste(
+    getwd(),
+    "/public/uploads/legend.png",
+    sep = ""
+  ), plot= legend)
+
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
 
@@ -162,6 +176,8 @@ function() {
   library(raster)
   library(CAST)
   library(RColorBrewer)
+  library(cowplot)
+  library(tidyterra)
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   modell <- readRDS("myfiles/modell.RDS")
@@ -175,6 +191,18 @@ function() {
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
+
+  # Prediction Legende exportieren
+  legend_plot <- ggplot()+
+    geom_spatraster(data=prediction_terra)+
+    scale_fill_manual(values=brewer.pal(n = 10, name = "RdBu"), na.value=NA)
+  legend <- get_legend(legend_plot)
+  
+  ggsave(paste(
+    getwd(),
+    "/public/uploads/legend.png",
+    sep = ""
+  ), plot= legend)
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
