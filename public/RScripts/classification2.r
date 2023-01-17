@@ -55,7 +55,7 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell) {
   ), overwrite = TRUE)
   
   # AOA Berechnungen
-  AOA_klassifikation <- aoa(rasterdaten,model)
+  AOA_klassifikation <- aoa(rasterdaten,modell)
   crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   #plot(AOA_klassifikation$DI)
   #plot(AOA_klassifikation$AOA)
@@ -189,11 +189,22 @@ klassifizierung_ohne_Modell <- function(maske) {
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten,model)
   crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  crs(AOA_klassifikation$DI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   #plot(AOA_klassifikation$DI)
   #plot(AOA_klassifikation$AOA)
+  
   terra::writeRaster(AOA_klassifikation$AOA, paste(
     getwd(),
     "/public/uploads/AOA_klassifikation.tif",
+    sep = ""
+  ), overwrite = TRUE)
+  
+  # DI Berechnungen
+  maxDI <- selectHighest(AOA_klassifikation$DI, 10000)
+  crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeRaster(maxDI, paste(
+    getwd(),
+    "/public/uploads/DI.tif",
     sep = ""
   ), overwrite = TRUE)
 }

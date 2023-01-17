@@ -123,6 +123,7 @@ function() {
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten, model)
   crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  crs(AOA_klassifikation$DI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   # plot(AOA_klassifikation$DI)
   # plot(AOA_klassifikation$AOA)
   terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
@@ -147,7 +148,8 @@ function() {
   # plot(prediction_terra, col = cols)
 }
 
-#* Klassifikation ohne Modell
+#* Klassifikation mit Modell
+#* @param maske If provided, Zuschnitt fuer die Rasterdaten
 #* @get /resultModell
 #* @serializer png
 function() {
@@ -160,6 +162,10 @@ function() {
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   modell <- readRDS("myfiles/modell.RDS")
+
+  # Rasterdaten auf Maske zuschneiden
+  # rasterdaten <- crop(rasterdaten, maske)
+
   # klassifizieren
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), modell)
@@ -183,8 +189,9 @@ function() {
   terra::writeRaster(prediction_terra, "myfiles/prediction.tif", overwrite = TRUE)
 
   # AOA Berechnungen
-  AOA_klassifikation <- aoa(rasterdaten, model)
+  AOA_klassifikation <- aoa(rasterdaten, modell)
   crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  crs(AOA_klassifikation$DI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   # plot(AOA_klassifikation$DI)
   # plot(AOA_klassifikation$AOA)
   terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
