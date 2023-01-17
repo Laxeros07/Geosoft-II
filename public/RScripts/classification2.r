@@ -56,6 +56,7 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell) {
   
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten,modell)
+  crs(AOA_klassifikation$DI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   #plot(AOA_klassifikation$DI)
   #plot(AOA_klassifikation$AOA)

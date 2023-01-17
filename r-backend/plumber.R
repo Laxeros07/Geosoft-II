@@ -91,7 +91,7 @@ function() {
     importance = TRUE,
     ntree = 50
   ) # 50 is quite small (default=500). But it runs faster.
-  # saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/beispieldaten/RFModel2.RDS")
+  saveRDS(model, "myfiles/RFModel2.RDS")
 
   # model
   # plot(model) # see tuning results
@@ -106,6 +106,7 @@ function() {
   # klassifizieren
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), model)
+  projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
 
@@ -130,8 +131,10 @@ function() {
   # coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
   # levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
 
-
-
+  # DI Berechnungen
+  maxDI <- selectHighest(AOA_klassifikation$DI, 10000)
+  crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeRaster(maxDI, "myfiles/maxDI", overwrite = TRUE)
 
   # tiff(paste(
   #  getwd(),
@@ -195,6 +198,11 @@ function() {
   # plot(AOA_klassifikation$DI)
   # plot(AOA_klassifikation$AOA)
   terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
+
+  # DI Berechnungen
+  maxDI <- selectHighest(AOA_klassifikation$DI, 10000)
+  crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeRaster(maxDI, "myfiles/maxDI", overwrite = TRUE)
 }
 
 # root <- pr("plumber.R")
