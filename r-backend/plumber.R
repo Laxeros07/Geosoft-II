@@ -36,16 +36,18 @@ function() {
 }
 
 #* Klassifikation ohne Modell
-#* @param maske If provided, Zuschnitt fuer die Rasterdaten
+#* @param ymin,ymax,xmin,xmax If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function() {
+function(ymin,ymax,xmin,xmax) {
   library(terra)
   library(sf)
   library(caret)
   library(raster)
   library(RColorBrewer)
   library(CAST)
+  
+  maske <- c(ymin,ymax,xmin,xmax)
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   trainingsdaten <- read_sf("myfiles/trainingsdaten.geojson")
@@ -57,7 +59,9 @@ function() {
   )
 
   # Rasterdaten auf Maske zuschneiden
-  # rasterdaten <- crop(rasterdaten, maske)
+  #if(!is.null(maske)){
+  #  rasterdaten <- crop(rasterdaten, maske)
+  #}
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -123,8 +127,6 @@ function() {
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten, model)
   crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  # plot(AOA_klassifikation$DI)
-  # plot(AOA_klassifikation$AOA)
   terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
   # coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
   # levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
