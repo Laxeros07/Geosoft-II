@@ -13,7 +13,6 @@ var resultRouter = require("./routes/result");
 var demoRouter = require("./routes/demo");
 var impressumRouter = require("./routes/impressum");
 var handbuchRouter = require("./routes/handbuch");
-
 var app = express();
 
 app.use(bodyParser.json({ limit: "500mb" }));
