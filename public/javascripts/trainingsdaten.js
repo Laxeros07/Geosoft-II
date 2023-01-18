@@ -1,3 +1,6 @@
+// Bounding Box Layer
+var boundingBox = null;
+
 // Trainingsdaten:
 const trainingsdatenKnopf = document.getElementById("trainingsdaten");
 // Modell:
@@ -177,37 +180,6 @@ function submitFormM(e) {
   });
 }
 
-var drawnItems = new L.FeatureGroup();
-map.addLayer(drawnItems);
-
-//Leaflet draw control Bar
-var drawControl = new L.Control.Draw({
-  position: "topright",
-  draw: {
-    rectangle: true,
-    circle: false,
-    marker: false,
-    polyline: false,
-    circlemarker: false,
-    polygon: false,
-  },
-  edit: {
-    featureGroup: drawnItems,
-  },
-});
-map.addControl(drawControl);
-var maske;
-map.on("draw:created", function (e) {
-  layer = e.layer;
-  maske = [
-    layer._bounds._southWest.lng,
-    layer._bounds._northEast.lng,
-    layer._bounds._southWest.lat,
-    layer._bounds._northEast.lat,
-  ];
-  console.log(maske);
-  drawnItems.addLayer(layer);
-});
 /**
  * Ruft eine lokale JSON Datei auf
  * Quelle: https://stackoverflow.com/questions/14388452/how-do-i-load-a-json-object-from-a-file-with-ajax

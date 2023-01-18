@@ -236,3 +236,8 @@ dd {
   font-size: larger;
   position: inherit;
 }
+
+.disabled{
+  background-color: rgb(233, 236, 239) !important;
+  color: rgb(33, 37, 41) !important;
+}
