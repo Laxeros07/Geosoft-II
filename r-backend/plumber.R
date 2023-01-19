@@ -48,13 +48,21 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   library(CAST)
   library(cowplot)
   library(tidyterra)
+  
+  #ymin <- 51.950635
+  #ymax <- 51.998432
+  #xmin <- 7.560220
+  #xmax <- 7.638644
 
   maske_raster <- c(xmin, xmax, ymin, ymax)
-  maske_training <- c(xmin,ymin,xmax,ymax)
+  maske_training <- c(xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax)
+  
+  class(maske_raster) <- "numeric"
+  class(maske_training) <- "numeric"
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   trainingsdaten <- read_sf("myfiles/trainingsdaten.geojson")
-  #trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson")
+  #trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/beispieldaten/trainingsdaten.geojson")
   #rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif")
 
   ## Variablen definieren
@@ -68,7 +76,7 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
 
   # Daten auf Maske zuschneiden
   if(!(is.na(ymin) || is.na(ymax) || is.na(xmin) || is.na(xmax))){
-    rasterdaten <- crop(rasterdaten, maske_raster)
+    rasterdaten <- crop(rasterdaten, ext(maske_raster))
     sf_use_s2(FALSE)
     trainingsdaten2 <- st_make_valid(trainingsdaten)
     trainingsdaten <- st_crop(trainingsdaten2, maske_training)
@@ -128,7 +136,7 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
     scale_fill_manual(values = brewer.pal(n = 10, name = "RdBu"), na.value = NA)
   legend <- get_legend(legend_plot)
 
-  ggsave("myfiles/legend.png", plot = legend)
+  ggsave("myfiles/legend.png", plot = legend, width=1.7, height=2.7)
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
@@ -186,13 +194,20 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   library(tidyterra)
 
   maske_raster <- c(xmin, xmax, ymin, ymax)
+  maske_training <- c(xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax)
+  
+  class(maske_raster) <- "numeric"
+  class(maske_training) <- "numeric"
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   modell <- readRDS("myfiles/modell.RDS")
 
   # Daten auf Maske zuschneiden
   if(!(is.na(ymin) || is.na(ymax) || is.na(xmin) || is.na(xmax))){
-    rasterdaten <- crop(rasterdaten, maske_raster)
+    rasterdaten <- crop(rasterdaten, ext(maske_raster))
+    sf_use_s2(FALSE)
+    trainingsdaten2 <- st_make_valid(trainingsdaten)
+    trainingsdaten <- st_crop(trainingsdaten2, maske_training)
   }
 
   # klassifizieren
@@ -208,11 +223,7 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
     scale_fill_manual(values = brewer.pal(n = 10, name = "RdBu"), na.value = NA)
   legend <- get_legend(legend_plot)
 
-  ggsave(paste(
-    getwd(),
-    "/public/uploads/legend.png",
-    sep = ""
-  ), plot = legend)
+  ggsave("myfiles/legend.png", plot = legend)
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)

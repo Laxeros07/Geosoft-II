@@ -1,13 +1,13 @@
 var json = []; //Geojson Array
 
 // Add Data to map
-addGeotiffToMap("http://localhost:3000/rasterdaten.tif", map, layerControl);
 addPredictionAndAoaToMap(
   "http://localhost:3000/prediction.tif",
   "http://localhost:3000/AOA_klassifikation.tif",
   map,
   layerControl
 );
+addGeotiffToMap("http://localhost:3000/rasterdaten.tif", map, layerControl);
 addGeoJSONToMap(
   "http://localhost:3000/trainingsdaten.geojson",
   map,
@@ -251,13 +251,10 @@ var osm2 = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map2);
 
 var satellite2 = L.tileLayer(
-  "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+  "http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
   {
-    id: "mapbox/satellite-v9",
-    tileSize: 512,
-    zoomOffset: -1,
-    attribution:
-      'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 20,
+    subdomains: ["mt0", "mt1", "mt2", "mt3"],
   }
 ).addTo(map2);
 
@@ -269,13 +266,13 @@ var baseMaps2 = {
 var layerControl2 = L.control.layers(baseMaps2).addTo(map2);
 
 // Add Data to map
-addGeotiffToMap("http://localhost:3000/rasterdaten.tif", map2, layerControl2);
 addPredictionAndAoaToMap(
   "http://localhost:3000/prediction.tif",
   "http://localhost:3000/AOA_klassifikation.tif",
   map2,
   layerControl2
 );
+addGeotiffToMap("http://localhost:3000/rasterdaten.tif", map2, layerControl2);
 addGeoJSONToMap(
   "http://localhost:3000/trainingsdaten.geojson",
   map2,
@@ -297,3 +294,13 @@ legend.onAdd = function () {
 };
 
 legend.addTo(map2);
+
+var legend2 = L.control({ position: "bottomleft" });
+
+legend2.onAdd = function () {
+  var img = L.DomUtil.create("img", "legend");
+  img.src += "http://localhost:3000/legend.png";
+  return img;
+};
+
+legend2.addTo(map2);

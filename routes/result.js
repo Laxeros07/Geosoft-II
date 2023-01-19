@@ -64,11 +64,11 @@ router.post("/", function (req, res, next) {
   console.log(url);
 
   request(url, { json: true }, (err, res2, body) => {
+    console.log(res2.body);
+    console.log(body);
     if (err) {
       return console.log(err);
     }
-    console.log(res2.body);
-    console.log(body);
     res.render("result", { title: "Result" });
   });
 });
