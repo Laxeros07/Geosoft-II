@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var R = require("r-integration");
 var request = require("request");
+var JSZip = require("jszip");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
