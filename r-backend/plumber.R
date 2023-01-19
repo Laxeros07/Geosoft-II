@@ -39,7 +39,7 @@ function() {
 #* @param ymin,ymax,xmin,xmax If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function(ymin, ymax, xmin, xmax) {
+function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   library(terra)
   library(sf)
   library(caret)
@@ -49,24 +49,28 @@ function(ymin, ymax, xmin, xmax) {
   library(cowplot)
   library(tidyterra)
 
-  maske <- c(ymin, ymax, xmin, xmax)
+  maske <- c(xmin, xmax, ymin, ymax)
+  #maske <- c(7.560219795026106,7.638643866490124,51.95063459971502,51.99843151987271)
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   trainingsdaten <- read_sf("myfiles/trainingsdaten.geojson")
+  #trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/trainingsdaten.geojson")
+  #rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif")
 
   ## Variablen definieren
   predictors <- c(
     "B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11",
     "B12", "B8A"
   )
-
-  # Rasterdaten auf Maske zuschneiden
-  # if(!is.null(maske)){
-  #  rasterdaten <- crop(rasterdaten, maske)
-  # }
-
+  
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
+
+  # Rasterdaten auf Maske zuschneiden
+  if(!(is.na(ymin) || is.na(ymax) || is.na(xmin) || is.na(xmax))){
+    rasterdaten <- crop(rasterdaten, maske)
+    #trainingsdaten <- st_crop(trainingsdaten, c(ymin=ymin, xmin=xmin, ymax=ymax, xmax=xmax))
+  }
 
   # Daten mergen
   extr <<- extract(rasterdaten, trainingsdaten)
@@ -122,11 +126,7 @@ function(ymin, ymax, xmin, xmax) {
     scale_fill_manual(values = brewer.pal(n = 10, name = "RdBu"), na.value = NA)
   legend <- get_legend(legend_plot)
 
-  ggsave(paste(
-    getwd(),
-    "/public/uploads/legend.png",
-    sep = ""
-  ), plot = legend)
+  ggsave("myfiles/legend.png", plot = legend)
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
