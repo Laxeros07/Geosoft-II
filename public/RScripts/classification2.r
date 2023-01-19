@@ -30,9 +30,13 @@ modell <- readRDS(paste(
 maske_raster <- c(7.55738996178022, 7.64064656833175, 51.9372943715445, 52.0001517816852)
 maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.64064656833175, ymax =52.0001517816852)
 
+class(maske_raster) <- "numeric"
+class(maske_raster)
+plot(ext(maske_training))
+
 sf_use_s2(FALSE)
-test1 <- st_make_valid(trainingsdaten)
-test2 <- st_crop(test1, maske_training)
+trainingsdaten2 <- st_make_valid(trainingsdaten)
+trainingsdaten <- st_crop(trainingsdaten2, maske_training)
 
 ## Ausgabe
 klassifizierung_mit_Modell <- function(rasterdaten, modell) {
@@ -77,14 +81,14 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell) {
 
 
 ## Ausgabe
-klassifizierung_ohne_Modell <- function(maske) {
+klassifizierung_ohne_Modell <- function(maske_raster) {
   ## Variablen definieren
   predictors <- c(
     "B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11",
     "B12", "B8A"
   )
 
-  rasterdaten <- crop(rasterdaten, maske)
+  rasterdaten <- crop(rasterdaten, maske_raster)
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -110,14 +114,21 @@ klassifizierung_ohne_Modell <- function(maske) {
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
 
-
+?train
+  baumAnzahl <- 40
+  baumTiefe <- 100
+  if(is.null(baumAnzahl)){
+    baumAnzahl == 50
+  }
   #### Modelltraining
   model <- train(trainDat[, predictors],
     trainDat$Label,
     method = "rf",
     importance = TRUE,
-    ntree = 50
+    ntree = baumAnzahl,  # Anzahl der Bäume
+    maxnodes = baumTiefe,   # Tiefe der Bäume
   ) # 50 is quite small (default=500). But it runs faster.
+  model
    #saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
   saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
   #?saveRDS
@@ -184,12 +195,13 @@ klassifizierung_ohne_Modell <- function(maske) {
     geom_spatraster(data=prediction_terra)+
     scale_fill_manual(values=brewer.pal(n = 10, name = "RdBu"), na.value=NA)
   legend <- get_legend(legend_plot)
-  
+  plot(legend)
+  ?ggsave
   ggsave(paste(
     getwd(),
     "/public/uploads/legend.png",
     sep = ""
-  ), plot= legend)
+  ), plot= legend, width = 2, height = 3)
   
   
   #plot(prediction_terra)
