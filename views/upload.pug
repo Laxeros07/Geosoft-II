@@ -18,6 +18,12 @@ block content
                             b Trainingspolygone 
                             |laden:
                             input#trainingsdatenFiles.form-control.mt-2(type='file' name='daten' accept=".json, .geojson, .gpkg")
+                            label.col-form-label(for="anzahl")
+                                |Anzahl der Bäume für random forest: 
+                            input.form-control(name="anzahl" type="number" min="0" max="1000" step="1")
+                            label.col-form-label(for="tiefe")
+                                |Tiefe der Bäume für random forest: 
+                            input.form-control(name="tiefe" type="number" min="0" max="1000" step="1")
                         button#trainingsdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
                     form#modellForm( style='display:none' action="/" method="post")
                         form-group
