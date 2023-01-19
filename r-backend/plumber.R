@@ -49,8 +49,8 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   library(cowplot)
   library(tidyterra)
 
-  maske <- c(xmin, xmax, ymin, ymax)
-  #maske <- c(7.560219795026106,7.638643866490124,51.95063459971502,51.99843151987271)
+  maske_raster <- c(xmin, xmax, ymin, ymax)
+  maske_training <- c(xmin,ymin,xmax,ymax)
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   trainingsdaten <- read_sf("myfiles/trainingsdaten.geojson")
@@ -66,10 +66,12 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
 
-  # Rasterdaten auf Maske zuschneiden
+  # Daten auf Maske zuschneiden
   if(!(is.na(ymin) || is.na(ymax) || is.na(xmin) || is.na(xmax))){
-    rasterdaten <- crop(rasterdaten, maske)
-    #trainingsdaten <- st_crop(trainingsdaten, c(ymin=ymin, xmin=xmin, ymax=ymax, xmax=xmax))
+    rasterdaten <- crop(rasterdaten, maske_raster)
+    sf_use_s2(FALSE)
+    trainingsdaten2 <- st_make_valid(trainingsdaten)
+    trainingsdaten <- st_crop(trainingsdaten2, maske_training)
   }
 
   # Daten mergen
@@ -173,7 +175,7 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
 #* @param maske If provided, Zuschnitt fuer die Rasterdaten
 #* @get /resultModell
 #* @serializer png
-function() {
+function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   library(terra)
   library(sf)
   library(caret)
@@ -183,11 +185,15 @@ function() {
   library(cowplot)
   library(tidyterra)
 
+  maske_raster <- c(xmin, xmax, ymin, ymax)
+
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   modell <- readRDS("myfiles/modell.RDS")
 
-  # Rasterdaten auf Maske zuschneiden
-  # rasterdaten <- crop(rasterdaten, maske)
+  # Daten auf Maske zuschneiden
+  if(!(is.na(ymin) || is.na(ymax) || is.na(xmin) || is.na(xmax))){
+    rasterdaten <- crop(rasterdaten, maske_raster)
+  }
 
   # klassifizieren
   ### little detour due to terra/raster change

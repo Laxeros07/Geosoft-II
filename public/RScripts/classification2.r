@@ -30,7 +30,6 @@ modell <- readRDS(paste(
 maske_raster <- c(7.55738996178022, 7.64064656833175, 51.9372943715445, 52.0001517816852)
 maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.64064656833175, ymax =52.0001517816852)
 
-rasterdaten <- crop(rasterdaten, maske_raster)
 sf_use_s2(FALSE)
 test1 <- st_make_valid(trainingsdaten)
 test2 <- st_crop(test1, maske_training)
