@@ -36,31 +36,51 @@ function() {
 }
 
 #* Klassifikation ohne Modell
-#* @param maske If provided, Zuschnitt fuer die Rasterdaten
+#* @param ymin,ymax,xmin,xmax If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function() {
+function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
   library(terra)
   library(sf)
   library(caret)
   library(raster)
   library(RColorBrewer)
   library(CAST)
+  library(cowplot)
+  library(tidyterra)
+  
+  #ymin <- 51.950635
+  #ymax <- 51.998432
+  #xmin <- 7.560220
+  #xmax <- 7.638644
+
+  maske_raster <- c(xmin, xmax, ymin, ymax)
+  maske_training <- c(xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax)
+  
+  class(maske_raster) <- "numeric"
+  class(maske_training) <- "numeric"
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   trainingsdaten <- read_sf("myfiles/trainingsdaten.geojson")
+  #trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/beispieldaten/trainingsdaten.geojson")
+  #rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif")
 
   ## Variablen definieren
   predictors <- c(
     "B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11",
     "B12", "B8A"
   )
-
-  # Rasterdaten auf Maske zuschneiden
-  # rasterdaten <- crop(rasterdaten, maske)
-
+  
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
+
+  # Daten auf Maske zuschneiden
+  if(!(is.na(ymin) || is.na(ymax) || is.na(xmin) || is.na(xmax))){
+    rasterdaten <- crop(rasterdaten, ext(maske_raster))
+    sf_use_s2(FALSE)
+    trainingsdaten2 <- st_make_valid(trainingsdaten)
+    trainingsdaten <- st_crop(trainingsdaten2, maske_training)
+  }
 
   # Daten mergen
   extr <<- extract(rasterdaten, trainingsdaten)
@@ -85,11 +105,15 @@ function() {
 
 
   #### Modelltraining
+  if(is.null(baumAnzahl)){
+    baumAnzahl == 50
+  }
   model <- train(trainDat[, predictors],
     trainDat$Label,
     method = "rf",
     importance = TRUE,
-    ntree = 50
+    ntree = baumAnzahl,
+    maxnodes = baumTiefe
   ) # 50 is quite small (default=500). But it runs faster.
   saveRDS(model, "myfiles/RFModel2.RDS")
 
@@ -106,9 +130,17 @@ function() {
   # klassifizieren
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), model)
-  projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
+
+  # Prediction Legende exportieren
+  legend_plot <- ggplot() +
+    geom_spatraster(data = prediction_terra) +
+    scale_fill_manual(values = brewer.pal(n = 10, name = "RdBu"), na.value = NA)
+  legend <- get_legend(legend_plot)
+
+  ggsave("myfiles/legend.png", plot = legend, width=1.7, height=2.7)
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
@@ -124,7 +156,7 @@ function() {
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten, model)
   crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  crs(AOA_klassifikation$DI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  crs(AOA_klassifikation$DI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   # plot(AOA_klassifikation$DI)
   # plot(AOA_klassifikation$AOA)
   terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
@@ -133,7 +165,7 @@ function() {
 
   # DI Berechnungen
   maxDI <- selectHighest(AOA_klassifikation$DI, 10000)
-  crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  crs(maxDI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   terra::writeRaster(maxDI, "myfiles/maxDI", overwrite = TRUE)
 
   # tiff(paste(
@@ -155,19 +187,32 @@ function() {
 #* @param maske If provided, Zuschnitt fuer die Rasterdaten
 #* @get /resultModell
 #* @serializer png
-function() {
+function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   library(terra)
   library(sf)
   library(caret)
   library(raster)
   library(CAST)
   library(RColorBrewer)
+  library(cowplot)
+  library(tidyterra)
+
+  maske_raster <- c(xmin, xmax, ymin, ymax)
+  maske_training <- c(xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax)
+  
+  class(maske_raster) <- "numeric"
+  class(maske_training) <- "numeric"
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   modell <- readRDS("myfiles/modell.RDS")
 
-  # Rasterdaten auf Maske zuschneiden
-  # rasterdaten <- crop(rasterdaten, maske)
+  # Daten auf Maske zuschneiden
+  if(!(is.na(ymin) || is.na(ymax) || is.na(xmin) || is.na(xmax))){
+    rasterdaten <- crop(rasterdaten, ext(maske_raster))
+    sf_use_s2(FALSE)
+    trainingsdaten2 <- st_make_valid(trainingsdaten)
+    trainingsdaten <- st_crop(trainingsdaten2, maske_training)
+  }
 
   # klassifizieren
   ### little detour due to terra/raster change
@@ -175,6 +220,14 @@ function() {
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
+
+  # Prediction Legende exportieren
+  legend_plot <- ggplot() +
+    geom_spatraster(data = prediction_terra) +
+    scale_fill_manual(values = brewer.pal(n = 10, name = "RdBu"), na.value = NA)
+  legend <- get_legend(legend_plot)
+
+  ggsave("myfiles/legend.png", plot = legend)
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
@@ -194,14 +247,14 @@ function() {
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten, modell)
   crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  crs(AOA_klassifikation$DI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  crs(AOA_klassifikation$DI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   # plot(AOA_klassifikation$DI)
   # plot(AOA_klassifikation$AOA)
   terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
 
   # DI Berechnungen
   maxDI <- selectHighest(AOA_klassifikation$DI, 10000)
-  crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  crs(maxDI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   terra::writeRaster(maxDI, "myfiles/maxDI", overwrite = TRUE)
 }
 

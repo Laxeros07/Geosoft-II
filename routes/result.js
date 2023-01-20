@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var R = require("r-integration");
 var request = require("request");
+var JSZip = require("jszip");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -26,17 +27,45 @@ router.post("/", function (req, res, next) {
   );
   */
 
-  let url;
+  let url = "http://172.17.0.1:7001/";
+  let bbSplit = "";
+  console.log("bb: " + req.body.bb);
+  if (req.body.bb != "") {
+    bbSplit = req.body.bb.split(",");
+  }
   switch (req.body.id) {
     case "trainingsdaten":
-      url = "http://172.17.0.1:7001/result";
+      bbSplit != ""
+        ? (url +=
+            "result?ymin=" +
+            bbSplit[2] +
+            "&ymax=" +
+            bbSplit[3] +
+            "&xmin=" +
+            bbSplit[0] +
+            "&xmax=" +
+            bbSplit[1])
+        : (url += "result");
       break;
     case "modell":
-      url = "http://172.17.0.1:7001/resultModell";
+      bbSplit != ""
+        ? (url +=
+            "resultModell?ymin=" +
+            bbSplit[2] +
+            "&ymax=" +
+            bbSplit[3] +
+            "&xmin=" +
+            bbSplit[0] +
+            "&xmax=" +
+            bbSplit[1])
+        : (url += "resultModell");
       break;
   }
+  console.log(url);
 
   request(url, { json: true }, (err, res2, body) => {
+    console.log(res2.body);
+    console.log(body);
     if (err) {
       return console.log(err);
     }

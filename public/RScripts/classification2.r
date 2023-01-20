@@ -4,6 +4,9 @@ library(sf)
 library(caret)
 library(raster)
 library(CAST)
+library(cowplot)
+library(tidyterra)
+library(RColorBrewer)
 
 
 # zum testen wd so setzen
@@ -24,8 +27,16 @@ modell <- readRDS(paste(
   "/public/uploads/modell.RDS",
   sep = ""
 ))
-maske <- c(7.54738996178022, 7.65064656833175, 51.9272943715445, 52.0101517816852)
+maske_raster <- c(7.55738996178022, 7.64064656833175, 51.9372943715445, 52.0001517816852)
+maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.64064656833175, ymax =52.0001517816852)
 
+class(maske_raster) <- "numeric"
+class(maske_raster)
+plot(ext(maske_training))
+
+sf_use_s2(FALSE)
+trainingsdaten2 <- st_make_valid(trainingsdaten)
+trainingsdaten <- st_crop(trainingsdaten2, maske_training)
 
 ## Ausgabe
 klassifizierung_mit_Modell <- function(rasterdaten, modell) {
@@ -34,6 +45,7 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell) {
   prediction <- predict(as(rasterdaten, "Raster"), modell)
   projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
+  coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
@@ -56,8 +68,8 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell) {
   
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten,modell)
-  crs(AOA_klassifikation$DI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  crs(AOA_klassifikation$DI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   #plot(AOA_klassifikation$DI)
   #plot(AOA_klassifikation$AOA)
   terra::writeRaster(AOA_klassifikation$AOA, paste(
@@ -69,14 +81,14 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell) {
 
 
 ## Ausgabe
-klassifizierung_ohne_Modell <- function(maske) {
+klassifizierung_ohne_Modell <- function(maske_raster) {
   ## Variablen definieren
   predictors <- c(
     "B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11",
     "B12", "B8A"
   )
 
-  rasterdaten <- crop(rasterdaten, maske)
+  rasterdaten <- crop(rasterdaten, maske_raster)
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -102,16 +114,24 @@ klassifizierung_ohne_Modell <- function(maske) {
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
 
-
+?train
+  baumAnzahl <- 40
+  baumTiefe <- 100
+  if(is.null(baumAnzahl)){
+    baumAnzahl == 50
+  }
   #### Modelltraining
   model <- train(trainDat[, predictors],
     trainDat$Label,
     method = "rf",
     importance = TRUE,
-    ntree = 50
+    ntree = baumAnzahl,  # Anzahl der Bäume
+    maxnodes = baumTiefe   # Tiefe der Bäume
   ) # 50 is quite small (default=500). But it runs faster.
+  model
    #saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
-  
+  saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
+  #?saveRDS
   # model
   # plot(model) # see tuning results
   # plot(varImp(model)) # variablenwichtigkeit
@@ -127,7 +147,8 @@ klassifizierung_ohne_Modell <- function(maske) {
   prediction <- predict(as(rasterdaten, "Raster"), model)#, colors(cols))
   projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  coltab(prediction_terra) <- cols
+  coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
+  #coltab(prediction_terra) <- cols
   #?predict
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
@@ -168,6 +189,21 @@ klassifizierung_ohne_Modell <- function(maske) {
     "/public/uploads/prediction.tif",
     sep = ""
   ), overwrite = TRUE)
+  
+  # Prediction Legende exportieren
+  legend_plot <- ggplot()+
+    geom_spatraster(data=prediction_terra)+
+    scale_fill_manual(values=brewer.pal(n = 10, name = "RdBu"), na.value=NA)
+  legend <- get_legend(legend_plot)
+  plot(legend)
+  ?ggsave
+  ggsave(paste(
+    getwd(),
+    "/public/uploads/legend.png",
+    sep = ""
+  ), plot= legend, width = 2, height = 3)
+  
+  
   #plot(prediction_terra)
   #writeRaster(prediction_terra, filename="public/uploads/prediction2.tif", format="GTiff", overwrite=TRUE)
   # library(tmap)
@@ -205,7 +241,7 @@ klassifizierung_ohne_Modell <- function(maske) {
   crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   terra::writeRaster(maxDI, paste(
     getwd(),
-    "/public/uploads/DI.tif",
+    "/public/uploads/maxDI.tif",
     sep = ""
   ), overwrite = TRUE)
 }

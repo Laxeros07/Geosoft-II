@@ -18,6 +18,12 @@ block content
                             b Trainingspolygone 
                             |laden:
                             input#trainingsdatenFiles.form-control.mt-2(type='file' name='daten' accept=".json, .geojson, .gpkg")
+                            label.col-form-label(for="anzahl")
+                                |Anzahl der Bäume für random forest: 
+                            input.form-control(name="anzahl" type="number" min="0" max="1000" step="1")
+                            label.col-form-label(for="tiefe")
+                                |Tiefe der Bäume für random forest: 
+                            input.form-control(name="tiefe" type="number" min="0" max="1000" step="1")
                         button#trainingsdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
                     form#modellForm( style='display:none' action="/" method="post")
                         form-group
@@ -45,11 +51,8 @@ block content
                 h3 Klassifizierung
                 form(method='post' action='result')
                     form-group
-                        //select.form-select(name='select' value=selected) Klassifizierungsmethode
-                            option(value='dt') Decision Tree
-                            option(value='rf') Random Forest
-                            option(value='') etc
-                        //select.form-select(name='select' value=selected) Bounding-Box
+                        label.col-form-label(for='bb') Boundingbox
+                        textarea#bb.form-control.disabled(name="bb" readonly="readonly" style="font-size: 0.8rem")
                         input#idInput(name="id" style="display:none") 
                         button#skript.btn.btn-primary.my-2 Skript ausführen
                         p
