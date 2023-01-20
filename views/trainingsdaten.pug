@@ -8,21 +8,23 @@ block bearbeiten
         #map
     .col-lg-4.col-xs-12.mb-3
 
-      .card.shadow.p-4(style='height: 300px;overflow: scroll;')
-        table#tabelle.table.table-dark.table-striped.table-hover
-          tr
-            th Label
-            th Class_ID
-
-          form(method='post' action='result')
-            button.btn.btn-primary.my-2(type='submit') Skript ausführen
-
-              button.btn.btn-2.my-2.m-2(onclick='geojsonExport()') Export Data
-
-          form(action="result/trainingsdaten" method="post")
-            form-group
-              button.btn.btn-primary.my-2(type="submit") bearbeiten
-
+      .card.shadow.p-4(style='height: 300px;')
+        .row.gy-4.gx-lg-2.mt-2
+          .col-lg-6.col-md-12.mb-3
+            form(method='post' action='result')
+              a.btn.btn-primary.my-2(type='submit') Skript ausführen
+          .col-lg-6.col-md-12.mb-3
+            form(method='post' action='result')
+              a.btn.btn-primary.my-2(onclick='geojsonExport()') Export Data
+        .row.gy-4.gx-lg-2.mt-2
+          .col-lg-6.col-md-12.mb-3
+            form(action="result/trainingsdaten" method="post")
+              a.btn.btn-primary.my-2(type="submit") bearbeiten
+        .row.gy-4.gx-lg-2.mt-2
+          table#tabelle.table.table-dark.table-striped.table-hover
+            tr
+              th Label
+              th Class_ID
   script.
     // Set active Button
     document.getElementById("ergebnisTab").classList.remove("active")
