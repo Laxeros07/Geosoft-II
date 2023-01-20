@@ -24,13 +24,7 @@ legend2.addTo(map);
 // Add Data to map
 addPredictionAndAoaToMap(
   "http://localhost:3000/prediction.tif",
-  "http://localhost:3000/AOA_klassifikation.tif",
-  map,
-  layerControl
+  "http://localhost:3000/AOA_klassifikation.tif"
 );
-addGeotiffToMap("http://localhost:3000/rasterdaten.tif", map, layerControl);
-addGeoJSONToMap(
-  "http://localhost:3000/trainingsdaten.geojson",
-  map,
-  layerControl
-);
+addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
+addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
