@@ -39,7 +39,7 @@ function() {
 #* @param ymin,ymax,xmin,xmax If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
+function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
   library(terra)
   library(sf)
   library(caret)
@@ -105,11 +105,15 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
 
 
   #### Modelltraining
+  if(is.null(baumAnzahl)){
+    baumAnzahl == 50
+  }
   model <- train(trainDat[, predictors],
     trainDat$Label,
     method = "rf",
     importance = TRUE,
-    ntree = 50
+    ntree = baumAnzahl,
+    maxnodes = baumTiefe
   ) # 50 is quite small (default=500). But it runs faster.
   saveRDS(model, "myfiles/RFModel2.RDS")
 

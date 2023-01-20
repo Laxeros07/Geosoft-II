@@ -126,7 +126,7 @@ klassifizierung_ohne_Modell <- function(maske_raster) {
     method = "rf",
     importance = TRUE,
     ntree = baumAnzahl,  # Anzahl der Bäume
-    maxnodes = baumTiefe,   # Tiefe der Bäume
+    maxnodes = baumTiefe   # Tiefe der Bäume
   ) # 50 is quite small (default=500). But it runs faster.
   model
    #saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
