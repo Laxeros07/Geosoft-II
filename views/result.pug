@@ -48,24 +48,25 @@ block content
             .card.shadow.p-4.h-100
               h3 Download
               | Wähle Dateien zum herunterladen aus:
-              .form-check.mt-3(action="#" id="download_form")
-                input#klassificatoin.form-check-input(type='checkbox' data-url="http://localhost:3000/prediction.tif" value='')
-                label.form-check-label(for='flexCheckDefault')
-                  | Klassifikation
-                .form-check
-                input#aoa.form-check-input(type='checkbox' data-url="http://localhost:3000/AOA_klassifikation.tif" value='')
-                label.form-check-label(for='flexCheckChecked')
-                  | Area of Applicability
-                .form-check
-                input#polygone.form-check-input(type='checkbox' data-url="http://localhost:3000/trainingsdaten.geojson" value='')
-                label.form-check-label(for='flexCheckChecked')
-                  | Trainingspolygone
-                .form-check
-                input#model.form-check-input(type='checkbox' value='')
-                label.form-check-label(for='flexCheckChecked')
-                  | Modell
-              p.mt-3
-                button#download.btn.btn-primary Herunterladen
+              form#downloadForm.form-check.mt-3(action="/" method="post")
+                form-group
+                  input#klassifikation.form-check-input(type='checkbox' name="prediction_datei" value='myfiles/prediction.tif')
+                  label.form-check-label(for='flexCheckDefault')
+                    | Klassifikation
+                  .form-check
+                  input#aoa.form-check-input(type='checkbox' name= "aoa_datei" value='myfiles/AOA_klassifikatoin.tif')
+                  label.form-check-label(for='flexCheckChecked')
+                    | Area of Applicability
+                  .form-check
+                  input#polygone.form-check-input(type='checkbox' name= "trainingsdaten_datei" value='myfiles/trainingsdaten.geojson')
+                  label.form-check-label(for='flexCheckChecked')
+                    | Trainingspolygone
+                  .form-check
+                  input#modell.form-check-input(type='checkbox' name="modell_datei" value='modell.RDS')
+                  label.form-check-label(for='flexCheckChecked')
+                    | Modell
+                p
+                button#downloadKnopf.btn.btn-primary.mt-3(type= "submit") Herunterladen
 
 
 
