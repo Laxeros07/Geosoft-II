@@ -15,7 +15,11 @@ const { urlencoded } = require("express");
 const upload = multer({ dest: "uploads/" });
 
 //router.post("/", upload.single("trainingsdaten"), uploadFiles);
-
+/*
+router.post("/bearbeiten", function (req, res, next) {
+  res.render("trainingsdaten", { title: "Trainingsdaten bearbeiten" });
+});
+*/
 router.post("/", function (req, res, next) {
   /*
   R.callMethod(
