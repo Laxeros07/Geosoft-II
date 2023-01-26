@@ -1,4 +1,4 @@
-function addGeoJSONToMap(url, pMap, pLayerControl) {
+function addGeoJSONToMap(url) {
   // this requests the file and executes a callback with the parsed result once it is available
   fetchJSONFile(url, function (data) {
     // Die verschiedenen Labels werden in einem Set gespeichert
@@ -33,8 +33,8 @@ function addGeoJSONToMap(url, pMap, pLayerControl) {
         }
       });
     }
-    let group = L.layerGroup(layerArray).addTo(pMap);
-    pLayerControl.addOverlay(group, "Trainingspolygone");
+    let group = L.layerGroup(layerArray).addTo(map);
+    layerControl.addOverlay(group, "Trainingspolygone");
   });
 }
 
@@ -59,7 +59,7 @@ function fetchJSONFile(path, callback) {
   httpRequest.send();
 }
 
-function addGeotiffToMap(url, pMap, pLayerControl) {
+function addGeotiffToMap(url) {
   fetch(url)
     .then((response) => response.arrayBuffer())
     .then((arrayBuffer) => {
@@ -100,16 +100,16 @@ function addGeotiffToMap(url, pMap, pLayerControl) {
             ? null
             : `rgb(${values[0]},${values[1]},${values[2]})`,*/
         });
-        layer.addTo(pMap);
+        layer.addTo(map);
 
-        pLayerControl.addOverlay(layer, "Rasterbild");
+        layerControl.addOverlay(layer, "Rasterbild");
 
-        pMap.fitBounds(layer.getBounds());
+        map.fitBounds(layer.getBounds());
       });
     });
 }
 
-function addPredictionAndAoaToMap(predUrl, aoaUrl, pMap, pLayerControl) {
+function addPredictionAndAoaToMap(predUrl, aoaUrl) {
   fetch(predUrl)
     .then((response) => response.arrayBuffer())
     .then((arrayBuffer) => {
@@ -145,11 +145,11 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl, pMap, pLayerControl) {
             return `rgb(${values[2]}, ${values[1]}, ${values[0]})`;
           },*/,
         });
-        layer.addTo(pMap);
+        layer.addTo(map);
 
-        pLayerControl.addOverlay(layer, "Klassifikation");
+        layerControl.addOverlay(layer, "Klassifikation");
 
-        pMap.fitBounds(layer.getBounds());
+        map.fitBounds(layer.getBounds());
       });
     });
 
@@ -163,11 +163,11 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl, pMap, pLayerControl) {
           georaster: georaster,
           resolution: 256,
         });
-        layer.addTo(pMap);
+        layer.addTo(map);
 
-        pLayerControl.addOverlay(layer, "AOA");
+        layerControl.addOverlay(layer, "AOA");
 
-        pMap.fitBounds(layer.getBounds());
+        map.fitBounds(layer.getBounds());
       });
     });
 }
