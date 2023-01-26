@@ -151,9 +151,6 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   if(is.na(baumTiefe)){
     baumTiefe <- 100
   }
-  #if(is.na(baumTiefe)){
-  #  baumTiefe <- 100
-  #}
   #### Modelltraining
   model <- train(trainDat[, predictors],
     trainDat$Label,
@@ -280,7 +277,20 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   ), overwrite = TRUE)
 }
 
-
+aoa_alt <- rast(paste(
+  getwd(),
+  "/public/uploads/AOA_klassifikation.tif",
+  sep = ""
+))
+aoa_neu <- rast(paste(
+  getwd(),
+  "/public/uploads/AOA_klassifikation_modell.tif",
+  sep = ""
+))
+test <- aoa_neu - aoa_alt
+test
+plot(aoa_alt) # 1=gut 0=schlecht
+plot(test) # 1=Verbesserung der AOA 0=keine Veränderung -1=Verschlechterung
 
 # zum Testen der Funktionen
  klassifizierung_mit_Modell(rasterdaten, modell, maske_raster)
