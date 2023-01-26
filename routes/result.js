@@ -104,7 +104,11 @@ router.post("/", function (req, res, next) {
           zip.file("model.RDS", file);
         });
     }
-    var blob = zip.generateAsync({ type: "blob" });
+    console.log("zip:");
+    console.log(zip.files);
+    var blob = zip.generateAsync({ type: "nodebuffer" });
+    console.log("blob:");
+    console.log(blob.files);
     //saveAs(blob, "hello.zip");
     res.send({ download: blob });
   }
