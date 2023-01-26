@@ -27,25 +27,17 @@ modell <- readRDS(paste(
   "/public/uploads/modell.RDS",
   sep = ""
 ))
-maske_raster <- c(7.55738996178022, 7.64064656833175, 51.9372943715445, 52.0001517816852)
-maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.64064656833175, ymax =52.0001517816852)
-baumAnzahl <- NA
-baumTiefe <- NA
+maske <- c(7.54738996178022, 7.65064656833175, 51.9272943715445, 52.0101517816852)
 
 
 ## Ausgabe
-klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
-  
-  # Rasterdaten zuschneiden
-  rasterdaten <- crop(rasterdaten, maske_raster)
-  
+klassifizierung_mit_Modell <- function(rasterdaten, modell) {
   # klassifizieren
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), modell)
-  projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  farben <- brewer.pal(n = 12, name = "Paired")
-  coltab(prediction_terra) <- farben#[0:10]
+  coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
@@ -65,44 +57,23 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
     "/public/uploads/prediction_modell.tif",
     sep = ""
   ), overwrite = TRUE)
-  
-  # Prediction Legende exportieren
-  legend_plot <- ggplot()+
-    geom_spatraster(data=prediction_terra)+
-    scale_fill_manual(values=farben[2:12], na.value=NA)
-  legend <- get_legend(legend_plot)
-  
-  ggsave(paste(
-    getwd(),
-    "/public/uploads/legend.png",
-    sep = ""
-  ), plot= legend, width = 2, height = 3)
-  
+
   # AOA Berechnungen
-  AOA_klassifikation <- aoa(rasterdaten,modell)
-  crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  crs(AOA_klassifikation$DI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  #plot(AOA_klassifikation$DI)
-  #plot(AOA_klassifikation$AOA)
+  AOA_klassifikation <- aoa(rasterdaten, modell)
+  crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  crs(AOA_klassifikation$DI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  # plot(AOA_klassifikation$DI)
+  # plot(AOA_klassifikation$AOA)
   terra::writeRaster(AOA_klassifikation$AOA, paste(
     getwd(),
     "/public/uploads/AOA_klassifikation_modell.tif",
-    sep = ""
-  ), overwrite = TRUE)
-  
-  # DI Berechnungen
-  maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
-  crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, paste(
-    getwd(),
-    "/public/uploads/maxDI.tif",
     sep = ""
   ), overwrite = TRUE)
 }
 
 
 ## Ausgabe
-klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe) {
+klassifizierung_ohne_Modell <- function(maske) {
   ## Variablen definieren
   predictors <- c(
     "B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11",
@@ -111,11 +82,11 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
 
   # Rasterdaten zuschneiden
   rasterdaten <- crop(rasterdaten, maske_raster)
-  
+
   # Trainingsdaten zuschneiden
   class(maske_raster) <- "numeric"
-  #class(maske_raster)
-  #plot(ext(maske_training))
+  # class(maske_raster)
+  # plot(ext(maske_training))
   sf_use_s2(FALSE)
   trainingsdaten2 <- st_make_valid(trainingsdaten)
   trainingsdaten <- st_crop(trainingsdaten2, ext(maske_training))
@@ -145,31 +116,24 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
 
-  # Hyperparameter für Modelltraining abfragen
-  if(is.na(baumAnzahl)){
-    baumAnzahl <- 50
-  }
-  if(is.na(baumTiefe)){
-    baumTiefe <- 100
-  }
+
   #### Modelltraining
   model <- train(trainDat[, predictors],
     trainDat$Label,
     method = "rf",
     importance = TRUE,
-    ntree = baumAnzahl,  # Anzahl der Bäume
-    maxnodes = baumTiefe   # Tiefe der Bäume
+    ntree = 50
   ) # 50 is quite small (default=500). But it runs faster.
-  
+
   model <- train(trainDat[, predictors],
-                 trainDat$Label,
-                 method="rpart", 
-                 trControl = trainControl(method = "cv")   # Classification Tree Algorithmus
+    trainDat$Label,
+    method = "rpart",
+    trControl = trainControl(method = "cv") # Classification Tree Algorithmus
   ) # nicht so gut wie rf Algorithmus
-  #model
-   #saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
+  # model
+  # saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
   saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
-  #?saveRDS
+  # ?saveRDS
   # model
   # plot(model) # see tuning results
   # plot(varImp(model)) # variablenwichtigkeit
@@ -182,13 +146,12 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   )
   # klassifizieren
   ### little detour due to terra/raster change
-  prediction <- predict(as(rasterdaten, "Raster"), model)#, colors(cols))
-  projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  prediction <- predict(as(rasterdaten, "Raster"), model) # , colors(cols))
+  projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  farben <- brewer.pal(n = 12, name = "Paired")
-  coltab(prediction_terra) <- farben#[0:10]
-  #coltab(prediction_terra) <- cols
-
+  coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
+  # coltab(prediction_terra) <- cols
+  # ?predict
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
 
@@ -199,7 +162,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
 
   # return(plot(prediction_terra)) # ,col=cols))
 
-   #tiff(paste(
+  # tiff(paste(
   #  getwd(),
   # "/public/uploads/prediction.geotiff",
   #  sep = ""
@@ -207,9 +170,9 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # terra::plot(prediction_terra,col=cols, legend=FALSE, axes = FALSE, buffer=FALSE)
   # dev.off()
   # ?writeRaster
-   #?terra::plot
-   #prediction_terra
-   #png(paste(
+  # ?terra::plot
+  # prediction_terra
+  # png(paste(
   #   getwd(),
   #   "/public/uploads/prediction.geotiff",
   #   sep = ""
@@ -228,22 +191,22 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     "/public/uploads/prediction.tif",
     sep = ""
   ), overwrite = TRUE)
-  
+
   # Prediction Legende exportieren
-  legend_plot <- ggplot()+
-    geom_spatraster(data=prediction_terra)+
-    scale_fill_manual(values=farben[2:12], na.value=NA)
+  legend_plot <- ggplot() +
+    geom_spatraster(data = prediction_terra) +
+    scale_fill_manual(values = brewer.pal(n = 10, name = "RdBu"), na.value = NA)
   legend <- get_legend(legend_plot)
 
   ggsave(paste(
     getwd(),
     "/public/uploads/legend.png",
     sep = ""
-  ), plot= legend, width = 2, height = 3)
-  
-  
-  #plot(prediction_terra)
-  #writeRaster(prediction_terra, filename="public/uploads/prediction2.tif", format="GTiff", overwrite=TRUE)
+  ), plot = legend)
+
+
+  # plot(prediction_terra)
+  # writeRaster(prediction_terra, filename="public/uploads/prediction2.tif", format="GTiff", overwrite=TRUE)
   # library(tmap)
   # crs(prediction_terra) <- "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
   # map <- tm_shape(prediction_terra,
@@ -260,58 +223,45 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   #  "/public/uploads/map.png",
   #  sep = ""
   # ))
-  
+
   # Abfrage, ob bereits eine AOA gerechnet wurde
-  if(file.exists(paste(
+  if (file.exists(paste(
     getwd(),
     "/public/uploads/AOA_klassifikation.tif",
     sep = ""
-  ))){
-    AOA_klassifikation_alt<- rast(paste(
+  ))) {
+    AOA_klassifikation_alt <- rast(paste(
       getwd(),
       "/public/uploads/AOA_klassifikation.tif",
       sep = ""
     ))
   } else {
-  # AOA Berechnungen
-  AOA_klassifikation <- aoa(rasterdaten,model)
-  crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  crs(AOA_klassifikation$DI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  #plot(AOA_klassifikation$DI)
-  #plot(AOA_klassifikation$AOA)
-  
-  terra::writeRaster(AOA_klassifikation$AOA, paste(
-    getwd(),
-    "/public/uploads/AOA_klassifikation.tif",
-    sep = ""
-  ), overwrite = TRUE)
-  
-  # DI Berechnungen
-  maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
-  crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, paste(
-    getwd(),
-    "/public/uploads/maxDI.tif",
-    sep = ""
-  ), overwrite = TRUE)
+    # AOA Berechnungen
+    AOA_klassifikation <- aoa(rasterdaten, model)
+    crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+    crs(AOA_klassifikation$DI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+    # plot(AOA_klassifikation$DI)
+    # plot(AOA_klassifikation$AOA)
+
+    terra::writeRaster(AOA_klassifikation$AOA, paste(
+      getwd(),
+      "/public/uploads/AOA_klassifikation.tif",
+      sep = ""
+    ), overwrite = TRUE)
+
+    # DI Berechnungen
+    maxDI <- selectHighest(AOA_klassifikation$DI, 10000)
+    crs(maxDI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+    terra::writeRaster(maxDI, paste(
+      getwd(),
+      "/public/uploads/maxDI.tif",
+      sep = ""
+    ), overwrite = TRUE)
   }
 }
 
-aoa_alt <- rast(paste(
-  getwd(),
-  "/public/uploads/AOA_klassifikation.tif",
-  sep = ""
-))
-aoa_neu <- rast(paste(
-  getwd(),
-  "/public/uploads/AOA_klassifikation_modell.tif",
-  sep = ""
-))
-test <- aoa_neu - aoa_alt
-test
-plot(aoa_alt) # 1=gut 0=schlecht
-plot(test) # 1=Verbesserung der AOA 0=keine Veränderung -1=Verschlechterung
+
 
 # zum Testen der Funktionen
- klassifizierung_mit_Modell(rasterdaten, modell, maske_raster)
- klassifizierung_ohne_Modell(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe)
+# klassifizierung_mit_Modell(rasterdaten, modell)
+klassifizierung_ohne_Modell(maske)

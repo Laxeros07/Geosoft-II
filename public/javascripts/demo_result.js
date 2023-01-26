@@ -39,7 +39,8 @@ function addMyData(feature, layer) {
 
 addPredictionAndAoaToMap(
   "../beispieldaten/prediction.tif",
-  "../beispieldaten/AOA_klassifikation.tif"
+  "../beispieldaten/AOA_klassifikation.tif",
+  map
 );
 
 //Legende
