@@ -29,6 +29,7 @@ router.post("/", function (req, res, next) {
   if (req.body.bb) {
     let url = "http://172.17.0.1:7001/";
     let bbSplit = "";
+    console.log("bb: " + req.body.bb);
     if (req.body.bb != "") {
       bbSplit = req.body.bb.split(",");
     }
@@ -37,32 +38,34 @@ router.post("/", function (req, res, next) {
         bbSplit != ""
           ? (url +=
               "result?ymin=" +
-              bbSplit[0] +
-              "&ymax=" +
-              bbSplit[1] +
-              "&xmin=" +
               bbSplit[2] +
+              "&ymax=" +
+              bbSplit[3] +
+              "&xmin=" +
+              bbSplit[0] +
               "&xmax=" +
-              bbSplit[3])
+              bbSplit[1])
           : (url += "result");
         break;
       case "modell":
         bbSplit != ""
           ? (url +=
               "resultModell?ymin=" +
-              bbSplit[0] +
-              "&ymax=" +
-              bbSplit[1] +
-              "&xmin=" +
               bbSplit[2] +
+              "&ymax=" +
+              bbSplit[3] +
+              "&xmin=" +
+              bbSplit[0] +
               "&xmax=" +
-              bbSplit[3])
+              bbSplit[1])
           : (url += "resultModell");
         break;
     }
     console.log(url);
 
     request(url, { json: true }, (err, res2, body) => {
+      console.log(res2.body);
+      console.log(body);
       if (err) {
         return console.log(err);
       }
