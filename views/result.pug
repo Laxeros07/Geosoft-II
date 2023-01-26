@@ -5,60 +5,37 @@ block result
   .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
     .col-lg-8.col-xs-12.mb-3
       .card.shadow.p-4.h-100
-        #map
-    .col-lg-4.col-xs-12.mb-3
-
-      .card.shadow.p-4(style='height: 300px;overflow: scroll;')
-        table#tabelle.table.table-dark.table-striped.table-hover
-          tr
-            th Label
-            th Class_ID
-
-
-          form(method='post' action='result')
-            button.btn.btn-primary.my-2(type='submit') Skript ausführen
-
-              button.btn.btn-2.my-2.m-2(onclick='geojsonExport()') Export Data
-
-          form(action="result/trainingsdaten" method="post")
-            form-group
-              button.btn.btn-primary.my-2(type="submit") bearbeiten
-
-#result.tab-pane.active
-  .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
-    .col-lg-8.col-xs-12.mb-3
-      .card.shadow.p-4.h-100
         h3 Visualisierung von Klassifikation und AOA
-          .leaflet-container.mt-3#map2
+          .leaflet-container.mt-3
+            #map
     .col-lg-4.col-xs-12.mb-3
       .card.shadow.p-4.h-100
         h3 Download
         | Wähle Dateien zum herunterladen aus:
-        form#downloadForm.form-check.mt-3(action="/" method="post")
-          form-group
-            input#klassifikation.form-check-input(type='checkbox' name="prediction_datei" value='myfiles/prediction.tif')
-            label.form-check-label(for='flexCheckDefault')
-              | Klassifikation
-            .form-check
-            input#aoa.form-check-input(type='checkbox' name= "aoa_datei" value='myfiles/AOA_klassifikatoin.tif')
-            label.form-check-label(for='flexCheckChecked')
-              | Area of Applicability
-            .form-check
-            input#polygone.form-check-input(type='checkbox' name= "trainingsdaten_datei" value='myfiles/trainingsdaten.geojson')
-            label.form-check-label(for='flexCheckChecked')
-              | Trainingspolygone
-            .form-check
-            input#modell.form-check-input(type='checkbox' name="modell_datei" value='modell.RDS')
-            label.form-check-label(for='flexCheckChecked')
-              | Modell
-          p
-          button#downloadKnopf.btn.btn-primary.mt-3(type= "submit") Herunterladen
+        .form-check.mt-3(action="#" id="download_form")
+          input#klassificatoin.form-check-input(type='checkbox' data-url="http://localhost:3000/prediction.tif" value='')
+          label.form-check-label(for='flexCheckDefault')
+            | Klassifikation
+          .form-check
+          input#aoa.form-check-input(type='checkbox' data-url="http://localhost:3000/AOA_klassifikation.tif" value='')
+          label.form-check-label(for='flexCheckChecked')
+            | Area of Applicability
+          .form-check
+          input#polygone.form-check-input(type='checkbox' data-url="http://localhost:3000/trainingsdaten.geojson" value='')
+          label.form-check-label(for='flexCheckChecked')
+            | Trainingspolygone
+          .form-check
+          input#model.form-check-input(type='checkbox' value='')
+          label.form-check-label(for='flexCheckChecked')
+            | Modell
+        p.mt-3
+          button#download.btn.btn-primary Herunterladen
 
-script.
-  // Set active Button
-  document.getElementById("trainingsdatenTab").classList.remove("active")
-  document.getElementById("ergebnisTab").classList.add("active")
+  script.
+    // Set active Button
+    document.getElementById("trainingsdatenTab").classList.remove("active")
+    document.getElementById("ergebnisTab").classList.add("active")
 
 
-script(src='/javascripts/result.js')
-script(src='/javascripts/download.js')
+  script(src='/javascripts/result.js')
+  script(src='/javascripts/download.js')

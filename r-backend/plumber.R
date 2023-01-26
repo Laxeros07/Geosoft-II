@@ -80,6 +80,10 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
     sf_use_s2(FALSE)
     trainingsdaten2 <- st_make_valid(trainingsdaten)
     trainingsdaten <- st_crop(trainingsdaten2, maske_training)
+  } else {
+    sf_use_s2(FALSE)
+    trainingsdaten2 <- st_make_valid(trainingsdaten)
+    trainingsdaten <- st_crop(trainingsdaten2, ext(rasterdaten))
   }
 
   # Daten mergen

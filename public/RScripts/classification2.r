@@ -118,7 +118,8 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   #plot(ext(maske_training))
   sf_use_s2(FALSE)
   trainingsdaten2 <- st_make_valid(trainingsdaten)
-  trainingsdaten <- st_crop(trainingsdaten2, maske_training)
+  trainingsdaten <- st_crop(trainingsdaten2, ext(maske_training))
+  plot(trainingsdaten)
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -159,6 +160,12 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     ntree = baumAnzahl,  # Anzahl der Bäume
     maxnodes = baumTiefe   # Tiefe der Bäume
   ) # 50 is quite small (default=500). But it runs faster.
+  
+  model <- train(trainDat[, predictors],
+                 trainDat$Label,
+                 method="rpart", 
+                 trControl = trainControl(method = "cv")   # Classification Tree Algorithmus
+  ) # nicht so gut wie rf Algorithmus
   #model
    #saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
   saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
@@ -254,6 +261,18 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   #  sep = ""
   # ))
   
+  # Abfrage, ob bereits eine AOA gerechnet wurde
+  if(file.exists(paste(
+    getwd(),
+    "/public/uploads/AOA_klassifikation.tif",
+    sep = ""
+  ))){
+    AOA_klassifikation_alt<- rast(paste(
+      getwd(),
+      "/public/uploads/AOA_klassifikation.tif",
+      sep = ""
+    ))
+  } else {
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten,model)
   crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
@@ -275,6 +294,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     "/public/uploads/maxDI.tif",
     sep = ""
   ), overwrite = TRUE)
+  }
 }
 
 aoa_alt <- rast(paste(
