@@ -41,8 +41,6 @@ RUN R -e "install.packages('caret', dependencies=TRUE)"
 RUN R -e "install.packages('raster', dependencies=TRUE)"
 RUN R -e "install.packages('RColorBrewer', dependencies=TRUE)"
 RUN R -e "install.packages('CAST', dependencies=TRUE)"
-RUN R -e "install.packages('cowplot', dependencies=TRUE)"
-RUN R -e "install.packages('tidyterra', dependencies=TRUE)"
 
 COPY ./r-backend/plumber.R ./
 

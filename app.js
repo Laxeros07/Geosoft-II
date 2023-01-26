@@ -13,7 +13,6 @@ var resultRouter = require("./routes/result");
 var demoRouter = require("./routes/demo");
 var impressumRouter = require("./routes/impressum");
 var handbuchRouter = require("./routes/handbuch");
-var bearbeitenRouter = require("./routes/trainingsdatenBearbeiten");
 var app = express();
 
 app.use(bodyParser.json({ limit: "500mb" }));
@@ -37,7 +36,6 @@ app.use("/result", resultRouter);
 app.use("/demo", demoRouter);
 app.use("/impressum", impressumRouter);
 app.use("/handbuch", handbuchRouter);
-app.use("/result/bearbeiten", bearbeitenRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
