@@ -275,6 +275,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
       sep = ""
     ))
   }
+
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten,model)
   crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
@@ -305,6 +306,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
       sep = ""
     ), overwrite = TRUE)
   } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
+
 }
 
 #aoa_alt <- rast(paste(
