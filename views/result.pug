@@ -1,89 +1,64 @@
-extends layout
+extends tabs
 
-block content
+block result
 
+  .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
+    .col-lg-8.col-xs-12.mb-3
+      .card.shadow.p-4.h-100
+        #map
+    .col-lg-4.col-xs-12.mb-3
 
-  .card.gy-4.gx-lg-2.m-4
-    .card-header
-
-      ul.nav.nav-tabs.card-header-tabs(data-bs-tabs='tabs')
-        li.nav-item
-          a.nav-link.active(aria-current='true' data-bs-toggle='tab' href='#result') Ergebnis
-        li.nav-item
-          a.nav-link(data-bs-toggle='tab' href='#bearbeiten') Trainingsdaten bearbeiten                     
-
-    form.card-body.tab-content
-
-      #bearbeiten.tab-pane
-
-        .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
-          .col-lg-8.col-xs-12.mb-3
-            .card.shadow.p-4.h-100
-              #map
-          .col-lg-4.col-xs-12.mb-3
-
-            .card.shadow.p-4(style='height: 300px;overflow: scroll;')
-              table#tabelle.table.table-dark.table-striped.table-hover
-                tr
-                  th Label
-                  th Class_ID
+      .card.shadow.p-4(style='height: 300px;overflow: scroll;')
+        table#tabelle.table.table-dark.table-striped.table-hover
+          tr
+            th Label
+            th Class_ID
 
 
-                form(method='post' action='result')
-                  button.btn.btn-primary.my-2(type='submit') Skript ausführen
+          form(method='post' action='result')
+            button.btn.btn-primary.my-2(type='submit') Skript ausführen
 
-                    button.btn.btn-2.my-2.m-2(onclick='geojsonExport()') Export Data
+              button.btn.btn-2.my-2.m-2(onclick='geojsonExport()') Export Data
 
-                form(action="result/trainingsdaten" method="post")
-                  form-group
-                    button.btn.btn-primary.my-2(type="submit") bearbeiten
+          form(action="result/trainingsdaten" method="post")
+            form-group
+              button.btn.btn-primary.my-2(type="submit") bearbeiten
 
-      #result.tab-pane.active
-        .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
-          .col-lg-8.col-xs-12.mb-3
-            .card.shadow.p-4.h-100
-              h3 Visualisierung von Klassifikation und AOA
-                .leaflet-container.mt-3#map2
-          .col-lg-4.col-xs-12.mb-3
-            .card.shadow.p-4.h-100
-              h3 Download
-              | Wähle Dateien zum herunterladen aus:
-              form#downloadForm.form-check.mt-3(action="/" method="post")
-                form-group
-                  input#klassifikation.form-check-input(type='checkbox' name="prediction_datei" value='myfiles/prediction.tif')
-                  label.form-check-label(for='flexCheckDefault')
-                    | Klassifikation
-                  .form-check
-                  input#aoa.form-check-input(type='checkbox' name= "aoa_datei" value='myfiles/AOA_klassifikatoin.tif')
-                  label.form-check-label(for='flexCheckChecked')
-                    | Area of Applicability
-                  .form-check
-                  input#polygone.form-check-input(type='checkbox' name= "trainingsdaten_datei" value='myfiles/trainingsdaten.geojson')
-                  label.form-check-label(for='flexCheckChecked')
-                    | Trainingspolygone
-                  .form-check
-                  input#modell.form-check-input(type='checkbox' name="modell_datei" value='modell.RDS')
-                  label.form-check-label(for='flexCheckChecked')
-                    | Modell
-                p
-                button#downloadKnopf.btn.btn-primary.mt-3(type= "submit") Herunterladen
+#result.tab-pane.active
+  .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
+    .col-lg-8.col-xs-12.mb-3
+      .card.shadow.p-4.h-100
+        h3 Visualisierung von Klassifikation und AOA
+          .leaflet-container.mt-3#map2
+    .col-lg-4.col-xs-12.mb-3
+      .card.shadow.p-4.h-100
+        h3 Download
+        | Wähle Dateien zum herunterladen aus:
+        form#downloadForm.form-check.mt-3(action="/" method="post")
+          form-group
+            input#klassifikation.form-check-input(type='checkbox' name="prediction_datei" value='myfiles/prediction.tif')
+            label.form-check-label(for='flexCheckDefault')
+              | Klassifikation
+            .form-check
+            input#aoa.form-check-input(type='checkbox' name= "aoa_datei" value='myfiles/AOA_klassifikatoin.tif')
+            label.form-check-label(for='flexCheckChecked')
+              | Area of Applicability
+            .form-check
+            input#polygone.form-check-input(type='checkbox' name= "trainingsdaten_datei" value='myfiles/trainingsdaten.geojson')
+            label.form-check-label(for='flexCheckChecked')
+              | Trainingspolygone
+            .form-check
+            input#modell.form-check-input(type='checkbox' name="modell_datei" value='modell.RDS')
+            label.form-check-label(for='flexCheckChecked')
+              | Modell
+          p
+          button#downloadKnopf.btn.btn-primary.mt-3(type= "submit") Herunterladen
 
-
-
-
-
-  script.
-    // Set active Button
-    document.querySelectorAll(".active")[0].classList.remove("active")
-    document.querySelectorAll(".nav-link")[2].classList.add("active")
+script.
+  // Set active Button
+  document.getElementById("trainingsdatenTab").classList.remove("active")
+  document.getElementById("ergebnisTab").classList.add("active")
 
 
-  script(src="https://unpkg.com/georaster") 
-  script(src="https://unpkg.com/georaster-layer-for-leaflet") 
-  script(src='/javascripts/leaflet.js')
-  script(src='/javascripts/result.js')
-  scrpt(src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript")
-  script(src="https://cdn.jsdelivr.net/npm/jszip")
-  script(src='/javascripts/download.js')
-
-
+script(src='/javascripts/result.js')
+script(src='/javascripts/download.js')

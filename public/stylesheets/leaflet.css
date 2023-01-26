@@ -37,3 +37,7 @@ body {
       filter:var(--map-tiles-filter, none);
 }
 }
+
+.legend{
+  width: 150px;
+}
