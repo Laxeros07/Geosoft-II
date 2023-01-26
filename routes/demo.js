@@ -7,6 +7,7 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/result", function (req, res, next) {
+  res.send(test);
   res.render("demo_result", { title: "Demo Result" });
 });
 

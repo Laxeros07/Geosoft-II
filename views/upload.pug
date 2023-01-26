@@ -18,6 +18,12 @@ block content
                             b Trainingspolygone 
                             |laden:
                             input#trainingsdatenFiles.form-control.mt-2(type='file' name='daten' accept=".json, .geojson, .gpkg")
+                            label.col-form-label(for="anzahl")
+                                |Anzahl der Bäume für random forest: 
+                            input.form-control(name="anzahl" type="number" min="0" max="1000" step="1")
+                            label.col-form-label(for="tiefe")
+                                |Tiefe der Bäume für random forest: 
+                            input.form-control(name="tiefe" type="number" min="0" max="1000" step="1")
                         button#trainingsdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
                     form#modellForm( style='display:none' action="/" method="post")
                         form-group
@@ -26,8 +32,8 @@ block content
                             |laden:
                             input#modelFiles.form-control.mt-2(type='file' name='daten' accept=".RDS")
                         button#modellHochladen.btn.btn-primary.my-2(type='submit') Hochladen
-                    button#trainingsdaten.btn.btn-primary.my-2(onclick='hideTrainingsdatenForm()') Ich möchte Trainingspolygone hochladen
-                    button#modell.btn.btn-primary.my-2(onclick='hideModellForm()') Ich möchte ein Modell hochladen                    
+                    button#trainingsdaten.btn.btn-primary.my-2.mx-1(onclick='hideTrainingsdatenForm()') Ich möchte Trainingspolygone hochladen
+                    button#modell.btn.btn-primary.my-2.mx-1(onclick='hideModellForm()') Ich möchte ein Modell hochladen                    
         .col-lg-4.col-xs-12.mb-3
             .card.shadow.p-4.h-100
                 h3 Rasterdaten

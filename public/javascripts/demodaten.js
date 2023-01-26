@@ -71,11 +71,7 @@ function addMyData(feature, layer) {
   trainingspolygone.addLayer(layer);
 }
 
-addGeotiffToMap(
-  "../beispieldaten/sentinelRaster2_umprojiziert.tif",
-  map,
-  layerControl
-);
+addGeotiffToMap("../beispieldaten/sentinelRaster2_umprojiziert.tif");
 
 // var info = L.control();
 
