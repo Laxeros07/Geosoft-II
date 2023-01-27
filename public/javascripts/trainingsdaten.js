@@ -23,6 +23,7 @@ function hideTrainingsdatenForm() {
   modellForm.style.display = "none";
   trainingsdatenKnopf.style.display = "none";
   document.getElementById("idInput").value = "trainingsdaten";
+  document.getElementById("baeume").style.display = "block";
 }
 // Modell:
 function hideModellForm() {
@@ -31,6 +32,7 @@ function hideModellForm() {
   trainingsdatenForm.style.display = "none";
   modellKnopf.style.display = "none";
   document.getElementById("idInput").value = "modell";
+  document.getElementById("baeume").style.display = "none";
 }
 // Trainingsdaten:
 trainingsdatenForm.addEventListener("submit", submitFormT);

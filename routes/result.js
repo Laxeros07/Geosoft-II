@@ -30,41 +30,61 @@ router.post("/", function (req, res, next) {
     }
   );
   */
-
-  let url = "http://172.17.0.1:7001/";
+  let url;
   let bbSplit = "";
   console.log("bb: " + req.body.bb);
   if (req.body.bb != "") {
+    //Es wurde eine Boundingbox angegeben
+    url = "http://172.17.0.1:7001/";
     bbSplit = req.body.bb.split(",");
+  } else {
+    //Es wurde keine Boundingbox angegeben
+    url = "http://172.17.0.1:7001/result?";
   }
+
+  //Zusammenbauen der Url mit den Parametern
   switch (req.body.id) {
     case "trainingsdaten":
-      bbSplit != ""
-        ? (url +=
-            "result?ymin=" +
-            bbSplit[2] +
-            "&ymax=" +
-            bbSplit[3] +
-            "&xmin=" +
-            bbSplit[0] +
-            "&xmax=" +
-            bbSplit[1])
-        : (url += "result");
+      url += "result?";
+      if (bbSplit != "") {
+        //Boundingbox
+        url +=
+          "ymin=" +
+          bbSplit[2] +
+          "&ymax=" +
+          bbSplit[3] +
+          "&xmin=" +
+          bbSplit[0] +
+          "&xmax=" +
+          bbSplit[1] +
+          "&";
+      }
       break;
     case "modell":
-      bbSplit != ""
-        ? (url +=
-            "resultModell?ymin=" +
-            bbSplit[2] +
-            "&ymax=" +
-            bbSplit[3] +
-            "&xmin=" +
-            bbSplit[0] +
-            "&xmax=" +
-            bbSplit[1])
-        : (url += "resultModell");
+      url += "resultModell?";
+      if (bbSplit != "") {
+        //Boundingbox
+        url +=
+          "ymin=" +
+          bbSplit[2] +
+          "ymax=" +
+          bbSplit[3] +
+          "xmin=" +
+          bbSplit[0] +
+          "xmax=" +
+          bbSplit[1] +
+          "&";
+      }
       break;
   }
+  if (req.body.anzahl != "" && req.body.id == "trainingsdaten") {
+    url += "baumAnzahl=" + req.body.anzahl + "&";
+  }
+  if (req.body.tiefe != "" && req.body.id == "trainingsdaten") {
+    url += "baumTiefe=" + req.body.tiefe;
+  }
+
+  console.log("URL:");
   console.log(url);
 
   request(url, { json: true }, (err, res2, body) => {
