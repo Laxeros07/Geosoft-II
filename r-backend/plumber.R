@@ -110,9 +110,13 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
   if(is.na(baumAnzahl)){
     baumAnzahl <- 50  # 50 is quite small (default=500). But it runs faster.
   }
+  class(baumAnzahl) <- "numeric"
+  
   if(is.na(baumTiefe)){
     baumTiefe <- 100
   }
+  class(baumTiefe) <- "numeric"
+  
   #### Modelltraining
   model <- train(trainDat[, predictors],
     trainDat$Label,
