@@ -112,9 +112,13 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
   if(is.na(baumAnzahl)){
     baumAnzahl <- 50  # 50 is quite small (default=500). But it runs faster.
   }
+  class(baumAnzahl) <- "numeric"
+  
   if(is.na(baumTiefe)){
     baumTiefe <- 100
   }
+  class(baumTiefe) <- "numeric"
+  
   #### Modelltraining
   model <- train(trainDat[, predictors],
     trainDat$Label,
@@ -173,7 +177,7 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
   # DI Berechnungen
   maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, "myfiles/maxDI", overwrite = TRUE)
+  terra::writeRaster(maxDI, "myfiles/maxDI.tif", overwrite = TRUE)
 
   # AOA Differenz berechnen
   if(AOA_Differenz_nötig == TRUE){
