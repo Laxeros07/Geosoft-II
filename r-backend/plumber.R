@@ -67,9 +67,7 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
 
   ## Variablen definieren
   predictors <- c(
-    "B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11",
-    "B12", "B8A"
-  )
+    "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B10", "B11", "B12")
   
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -80,6 +78,10 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
     sf_use_s2(FALSE)
     trainingsdaten2 <- st_make_valid(trainingsdaten)
     trainingsdaten <- st_crop(trainingsdaten2, maske_training)
+  } else {
+    sf_use_s2(FALSE)
+    trainingsdaten2 <- st_make_valid(trainingsdaten)
+    trainingsdaten <- st_crop(trainingsdaten2, ext(rasterdaten))
   }
 
   # Daten mergen
@@ -104,17 +106,25 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
 
 
-  #### Modelltraining
-  if(is.null(baumAnzahl)){
-    baumAnzahl == 50
+ # Hyperparameter für Modelltraining abfragen
+  if(is.na(baumAnzahl)){
+    baumAnzahl <- 50  # 50 is quite small (default=500). But it runs faster.
   }
+  class(baumAnzahl) <- "numeric"
+  
+  if(is.na(baumTiefe)){
+    baumTiefe <- 100
+  }
+  class(baumTiefe) <- "numeric"
+  
+  #### Modelltraining
   model <- train(trainDat[, predictors],
     trainDat$Label,
     method = "rf",
     importance = TRUE,
     ntree = baumAnzahl,
     maxnodes = baumTiefe
-  ) # 50 is quite small (default=500). But it runs faster.
+  )
   saveRDS(model, "myfiles/RFModel2.RDS")
 
   # model
@@ -132,26 +142,25 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
   prediction <- predict(as(rasterdaten, "Raster"), model)
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
+  farben <- brewer.pal(n = 12, name = "Paired")
+  coltab(prediction_terra) <- farben#[0:10]
+
+  terra::writeRaster(prediction_terra, "myfiles/prediction.tif", overwrite = TRUE)
 
   # Prediction Legende exportieren
   legend_plot <- ggplot() +
     geom_spatraster(data = prediction_terra) +
-    scale_fill_manual(values = brewer.pal(n = 10, name = "RdBu"), na.value = NA)
+    scale_fill_manual(values=farben[2:12], na.value=NA)
   legend <- get_legend(legend_plot)
 
   ggsave("myfiles/legend.png", plot = legend, width=1.7, height=2.7)
 
-  # erste Visualisierung der Klassifikation:
-  # plot(prediction_terra)
-
-  # und nochmal in schöner plotten mit sinnvollen Farben
-  cols <- c(
-    "lightgreen", "blue", "green", "darkred", "forestgreen",
-    "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
-  )
-
-  terra::writeRaster(prediction_terra, "myfiles/prediction.tif", overwrite = TRUE)
+  # Abfrage, ob bereits eine AOA gerechnet wurde
+  AOA_Differenz_nötig <- FALSE
+  if(file.exists("myfiles/AOA_klassifikation.tif")){
+    AOA_Differenz_nötig <- TRUE
+    AOA_klassifikation_alt<- rast("myfiles/AOA_klassifikation.tif")
+  }
 
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten, model)
@@ -164,9 +173,17 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA, baumAnzahl=NA, baumTiefe=NA) {
   # levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
 
   # DI Berechnungen
-  maxDI <- selectHighest(AOA_klassifikation$DI, 10000)
+  maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, "myfiles/maxDI", overwrite = TRUE)
+  terra::writeRaster(maxDI, "myfiles/maxDI.tif", overwrite = TRUE)
+
+  # AOA Differenz berechnen
+  if(AOA_Differenz_nötig == TRUE){
+    AOA_klassifikation_alt <- crop(AOA_klassifikation_alt, ext(AOA_klassifikation$AOA))
+    AOA_klassifikation$AOA <- crop(AOA_klassifikation$AOA, ext(AOA_klassifikation_alt))
+    differenz <- AOA_klassifikation$AOA - AOA_klassifikation_alt
+    terra::writeRaster(differenz, "myfiles/AOADifferenz.tif", overwrite = TRUE)
+  } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
 
   # tiff(paste(
   #  getwd(),
@@ -209,9 +226,6 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   # Daten auf Maske zuschneiden
   if(!(is.na(ymin) || is.na(ymax) || is.na(xmin) || is.na(xmax))){
     rasterdaten <- crop(rasterdaten, ext(maske_raster))
-    sf_use_s2(FALSE)
-    trainingsdaten2 <- st_make_valid(trainingsdaten)
-    trainingsdaten <- st_crop(trainingsdaten2, maske_training)
   }
 
   # klassifizieren
@@ -219,15 +233,8 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   prediction <- predict(as(rasterdaten, "Raster"), modell)
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
-
-  # Prediction Legende exportieren
-  legend_plot <- ggplot() +
-    geom_spatraster(data = prediction_terra) +
-    scale_fill_manual(values = brewer.pal(n = 10, name = "RdBu"), na.value = NA)
-  legend <- get_legend(legend_plot)
-
-  ggsave("myfiles/legend.png", plot = legend)
+  farben <- brewer.pal(n = 12, name = "Paired")
+  coltab(prediction_terra) <- farben#[0:10]
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
@@ -244,6 +251,21 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   # return(plot(prediction_terra)) # ,col=cols))
   terra::writeRaster(prediction_terra, "myfiles/prediction.tif", overwrite = TRUE)
 
+  # Prediction Legende exportieren
+  legend_plot <- ggplot() +
+    geom_spatraster(data = prediction_terra) +
+    scale_fill_manual(values=farben[2:12], na.value=NA)
+  legend <- get_legend(legend_plot)
+
+  ggsave("myfiles/legend.png", plot = legend, width=1.7, height=2.7)
+
+  # Abfrage, ob bereits eine AOA gerechnet wurde
+  AOA_Differenz_nötig <- FALSE
+  if(file.exists("myfiles/AOA_klassifikation.tif")){
+    AOA_Differenz_nötig <- TRUE
+    AOA_klassifikation_alt<- rast("myfiles/AOA_klassifikation.tif")
+  }
+
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten, modell)
   crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
@@ -253,9 +275,16 @@ function(ymin=NA, ymax=NA, xmin=NA, xmax=NA) {
   terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
 
   # DI Berechnungen
-  maxDI <- selectHighest(AOA_klassifikation$DI, 10000)
+  maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, "myfiles/maxDI", overwrite = TRUE)
+  terra::writeRaster(maxDI, "myfiles/maxDI.tif", overwrite = TRUE)
+
+  # AOA Differenz berechnen
+  if(AOA_Differenz_nötig == TRUE){
+    differenz <- AOA_klassifikation$AOA - AOA_klassifikation_alt
+    terra::writeRaster(differenz, "myfiles/AOADifferenz.tif", overwrite = TRUE)
+  } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
+
 }
 
 # root <- pr("plumber.R")
