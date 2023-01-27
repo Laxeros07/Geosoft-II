@@ -27,6 +27,7 @@ modell <- readRDS(paste(
   "/public/uploads/modell.RDS",
   sep = ""
 ))
+
 maske_raster <- c(7.55738996178022, 7.64064656833175, 51.9372943715445, 52.0001517816852)
 maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.64064656833175, ymax =52.0001517816852)
 baumAnzahl <- NA
@@ -105,9 +106,7 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
 klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe) {
   ## Variablen definieren
   predictors <- c(
-    "B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11",
-    "B12", "B8A"
-  )
+    "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B10", "B11", "B12")
 
   # Rasterdaten zuschneiden
   rasterdaten <- crop(rasterdaten, maske_raster)
@@ -300,6 +299,8 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   
   # AOA Differenz berechnen
   if(AOA_Differenz_nötig == TRUE){
+    AOA_klassifikation_alt <- crop(AOA_klassifikation_alt, ext(AOA_klassifikation$AOA))
+    AOA_klassifikation$AOA <- crop(AOA_klassifikation$AOA, ext(AOA_klassifikation_alt))
     differenz <- AOA_klassifikation$AOA - AOA_klassifikation_alt
     terra::writeRaster(differenz, paste(
       getwd(),
@@ -307,9 +308,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
       sep = ""
     ), overwrite = TRUE)
   } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
-
 }
-
 #aoa_alt <- rast(paste(
 #  getwd(),
 #  "/public/uploads/AOA_klassifikation.tif",
