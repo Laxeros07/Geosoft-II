@@ -262,17 +262,20 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # ))
   
   # Abfrage, ob bereits eine AOA gerechnet wurde
+  AOA_Differenz_nötig <- FALSE
   if(file.exists(paste(
     getwd(),
     "/public/uploads/AOA_klassifikation.tif",
     sep = ""
   ))){
+    AOA_Differenz_nötig <- TRUE
     AOA_klassifikation_alt<- rast(paste(
       getwd(),
       "/public/uploads/AOA_klassifikation.tif",
       sep = ""
     ))
-  } else {
+  }
+
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten,model)
   crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
@@ -284,7 +287,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     getwd(),
     "/public/uploads/AOA_klassifikation.tif",
     sep = ""
-  ), overwrite = TRUE)
+  ), overwrite = TRUE) # 1=gute AOA; 0=schlechte AOA
   
   # DI Berechnungen
   maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
@@ -294,23 +297,33 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     "/public/uploads/maxDI.tif",
     sep = ""
   ), overwrite = TRUE)
-  }
+  
+  # AOA Differenz berechnen
+  if(AOA_Differenz_nötig == TRUE){
+    differenz <- AOA_klassifikation$AOA - AOA_klassifikation_alt
+    terra::writeRaster(differenz, paste(
+      getwd(),
+      "/public/uploads/AOADifferenz.tif",
+      sep = ""
+    ), overwrite = TRUE)
+  } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
+
 }
 
-aoa_alt <- rast(paste(
-  getwd(),
-  "/public/uploads/AOA_klassifikation.tif",
-  sep = ""
-))
-aoa_neu <- rast(paste(
-  getwd(),
-  "/public/uploads/AOA_klassifikation_modell.tif",
-  sep = ""
-))
-test <- aoa_neu - aoa_alt
-test
-plot(aoa_alt) # 1=gut 0=schlecht
-plot(test) # 1=Verbesserung der AOA 0=keine Veränderung -1=Verschlechterung
+#aoa_alt <- rast(paste(
+#  getwd(),
+#  "/public/uploads/AOA_klassifikation.tif",
+#  sep = ""
+#))
+#aoa_neu <- rast(paste(
+#  getwd(),
+#  "/public/uploads/AOA_klassifikation_modell.tif",
+#  sep = ""
+#))
+#test <- aoa_neu - aoa_alt
+#test
+#plot(aoa_alt) # 1=gut 0=schlecht
+#plot(test) # 1=Verbesserung der AOA 0=keine Veränderung -1=Verschlechterung
 
 # zum Testen der Funktionen
  klassifizierung_mit_Modell(rasterdaten, modell, maske_raster)
