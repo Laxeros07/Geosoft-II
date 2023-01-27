@@ -14,19 +14,15 @@ block content
                 div
                     form#trainingsdatenForm(style='display:none' action="/" method="post")
                         form-group
+                            p Wichtig: Trainingspolygone dürfen nicht mehr als 11 verschiedene Klassen enthalten!
                             label.col-form-label(for='daten') 
                             b Trainingspolygone 
                             |laden:
                             input#trainingsdatenFiles.form-control.mt-2(type='file' name='daten' accept=".json, .geojson, .gpkg")
-                            label.col-form-label(for="anzahl")
-                                |Anzahl der Bäume für random forest: 
-                            input.form-control(name="anzahl" type="number" min="0" max="1000" step="1")
-                            label.col-form-label(for="tiefe")
-                                |Tiefe der Bäume für random forest: 
-                            input.form-control(name="tiefe" type="number" min="0" max="1000" step="1")
                         button#trainingsdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
                     form#modellForm( style='display:none' action="/" method="post")
                         form-group
+                            p Wichtig: Das Modell darf nicht mehr als 11 verschiedene Klassen kennen!
                             label.col-form-label(for='daten') 
                             b Modell 
                             |laden:
@@ -40,9 +36,13 @@ block content
                 div
                     form#rasterdatenForm(action="/" method="post")
                         form-group
-                            p Das Satellitenbild muss im Koordinatensystem 
-                                b WGS84 (EPSG 4326) 
-                                | sein.
+                            p Das Satellitenbild muss folgendes besitzen:
+                            p - Koordinatensystem 
+                                b WGS84 (EPSG 4326)  
+                            p - (wie es z.B. bei Sentinel 2 Standard ist)                          
+                                b 12 Kanäle 
+                            p - folgende Namen der Kanäle: 
+                                b B02, B03, B04, B05, B06, B07, B08, B8A, B09, B10, B11, B12.
                             label.col-form-label(for='daten') Rasterdaten laden
                             input#rasterdatenFiles.form-control(type='file' name="daten" accept=".tif")
                         button#rasterdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
@@ -51,6 +51,13 @@ block content
                 h3 Klassifizierung
                 form(method='post' action='result')
                     form-group
+                        #baeume(style="display: none")
+                            label.col-form-label(for="anzahl")
+                                |Anzahl der Bäume für random forest: 
+                            input.form-control(name="anzahl" type="number" min="0" max="1000" step="1")
+                            label.col-form-label(for="tiefe")
+                                |Tiefe der Bäume für random forest: 
+                            input.form-control(name="tiefe" type="number" min="0" max="1000" step="1")
                         label.col-form-label(for='bb') Boundingbox
                         textarea#bb.form-control.disabled(name="bb" readonly="readonly" style="font-size: 0.8rem")
                         input#idInput(name="id" style="display:none") 
@@ -68,11 +75,8 @@ block content
         document.querySelectorAll(".active")[0].classList.remove("active");
         document.querySelectorAll(".nav-link")[1].classList.add("active");
 
-
-    script(src="https://cdn.jsdelivr.net/npm/geotiff") <!-- Skript for Geotiff Import -->
-    script(src="https://cdn.jsdelivr.net/npm/leaflet-geotiff") <!-- Skript for Geotiff Import -->
     script(src="https://unpkg.com/georaster") 
-    script(src="https://unpkg.com/georaster-layer-for-leaflet")
+    script(src="https://unpkg.com/georaster-layer-for-leaflet") 
     script(src='/javascripts/leaflet.js') 
     script(src='/javascripts/klassifizierung.js')
     script(src='/javascripts/trainingsdaten.js')
