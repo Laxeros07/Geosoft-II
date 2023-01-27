@@ -30,16 +30,12 @@ router.post("/", function (req, res, next) {
     }
   );
   */
-  let url;
+  let url = "http://172.17.0.1:7001/";
   let bbSplit = "";
   console.log("bb: " + req.body.bb);
   if (req.body.bb != "") {
     //Es wurde eine Boundingbox angegeben
-    url = "http://172.17.0.1:7001/";
     bbSplit = req.body.bb.split(",");
-  } else {
-    //Es wurde keine Boundingbox angegeben
-    url = "http://172.17.0.1:7001/result?";
   }
 
   //Zusammenbauen der Url mit den Parametern
