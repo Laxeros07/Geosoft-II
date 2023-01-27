@@ -298,6 +298,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     sep = ""
   ), overwrite = TRUE)
   
+  # AOA Differenz berechnen
   if(AOA_Differenz_nötig == TRUE){
     differenz <- AOA_klassifikation$AOA - AOA_klassifikation_alt
     terra::writeRaster(differenz, paste(
