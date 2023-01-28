@@ -31,11 +31,12 @@ router.post("/", function (req, res, next) {
     }
   );
   */
+  console.log(req.body.bb);
   if (req.body.bb) {
     let url = "http://172.17.0.1:7001/";
     let bbSplit = "";
     console.log("bb: " + req.body.bb);
-    if (req.body.bb != "") {
+    if (req.body.bb != "-") {
       //Es wurde eine Boundingbox angegeben
       bbSplit = req.body.bb.split(",");
     }
