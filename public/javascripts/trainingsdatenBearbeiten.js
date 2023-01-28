@@ -1,12 +1,12 @@
 var json = []; //Geojson Array
 
 // Add Data to map
+addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
+addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
 addPredictionAndAoaToMap(
   "http://localhost:3000/prediction.tif",
   "http://localhost:3000/AOA_klassifikation.tif"
 );
-addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
-addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
 
 var LeafIcon = L.Icon.extend({
   options: {
@@ -42,33 +42,21 @@ var drawControl = new L.Control.Draw({
 });
 map.addControl(drawControl);
 
-map.on("draw:created", function (e) {
-  var type = e.layerType,
-    layer = e.layer;
-
-  if (type === "marker") {
-    layer.bindPopup("ascacacsdcascscsd");
-  }
-
-  drawnItems.addLayer(layer);
-});
-
 //Popup Name
 var getName = function (layer) {
-  var name = prompt("Geben Sie den Namen der Geometrie ein", "Geometrie Name");
+  var name = prompt("Geben Sie den Namen der Geometrie ein:", "Geometrie Name");
   return name;
 };
 
 //popup Id
 var getID = function (layer) {
   var classID = prompt(
-    "Geben Sie die Identifikationsnummer der Geometrie ein",
+    "Geben Sie die Identifikationsnummer der Geometrie ein:",
     "Klassen_Identifikation"
   );
   return classID;
 };
 
-map.addControl(drawControl);
 map.on(L.Draw.Event.CREATED, function (e) {
   var layer = e.layer,
     feature = (layer.feature = layer.feature || {});
