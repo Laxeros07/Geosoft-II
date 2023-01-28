@@ -55,13 +55,13 @@ map.on("draw:created", function (e) {
 
 //Popup Name
 var getName = function (layer) {
-  var name = prompt("please, enter the geometry name", "geometry name");
+  var name = prompt("Geben Sie den Namen der Geometrie ein", "Geometrie Name");
   return name;
 };
 
 //popup Id
 var getID = function (layer) {
-  var classID = prompt("please, enter the geometry ClassID", "ClassID");
+  var classID = prompt("Geben Sie die Identifikationsnummer der Geometrie ein", "Klassen_Identifikation");
   return classID;
 };
 
