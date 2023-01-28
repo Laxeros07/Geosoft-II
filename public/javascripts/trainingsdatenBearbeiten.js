@@ -89,7 +89,8 @@ function datenAnzeigen() {
 
   //Tabelle zurücksetzen
   tbl = document.getElementById("tabelle");
-  tbl.innerHTML = "<tbody><tr><th>Label</th><th>Class_ID</th></tr></tbody>";
+  tbl.innerHTML =
+    "<tbody><tr><th>Id</th><th>Label</th><th>Class_ID</th></tr></tbody>";
 
   toJson(json);
 }
@@ -131,10 +132,12 @@ function einlesen() {
     let row = table.insertRow(-1);
     let cell0 = row.insertCell(0);
     let cell1 = row.insertCell(1);
+    let cell2 = row.insertCell(2);
 
     // Speichern der Nummer und der Attribute in jeder Zeile
-    cell0.innerHTML = item.properties.Label;
-    cell1.innerHTML = item.properties.ClassID;
+    cell0.innerHTML = item.properties.id;
+    cell1.innerHTML = item.properties.Label;
+    cell2.innerHTML = item.properties.ClassID;
   });
 
   tabelleFüllen(json);
@@ -182,8 +185,8 @@ function findXY(cell) {
   var i = 0;
   while (data.length > i) {
     console.log("lauft");
-    if ((data[i].properties.classID = cell)) {
-      xy = data[i].geometry.coordinates[0][1];
+    if (data[i].properties.id == cell) {
+      xy = data[i].geometry.coordinates[0][0][1];
       console.log("gefunden" + xy);
     }
     i++;
