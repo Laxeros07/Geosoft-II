@@ -28,3 +28,5 @@ addPredictionAndAoaToMap(
   "http://localhost:3000/AOA_klassifikation.tif"
 );
 addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
+
+map.createPane('labels');

@@ -1,3 +1,7 @@
+var rasterLayer;
+var klassifikationLayer;
+var aoaLayer;
+
 function addGeoJSONToMap(url) {
   // this requests the file and executes a callback with the parsed result once it is available
   fetchJSONFile(url, function (data) {
@@ -66,7 +70,7 @@ function addGeotiffToMap(url) {
       parseGeoraster(arrayBuffer).then((georaster) => {
         console.log("georaster:", georaster);
 
-        var layer = new GeoRasterLayer({
+        rasterLayer = new GeoRasterLayer({
           georaster: georaster,
           resolution: 256,
           pixelValuesToColorFn: (values) => {
@@ -100,11 +104,18 @@ function addGeotiffToMap(url) {
             ? null
             : `rgb(${values[0]},${values[1]},${values[2]})`,*/
         });
-        layer.addTo(map);
+        // map.createPane("rasterPane");
+        // map.getPane("rasterPane").style.zIndex = 600;
+        // layer.pane = "rasterpane";
+        // rasterLayer.setZIndex(500);
+        rasterLayer.addTo(map);
+        rasterLayer.bringToBack();
+        //layer.addTo(map);
 
-        layerControl.addOverlay(layer, "Rasterbild");
+        layerControl.addOverlay(rasterLayer, "Rasterbild");
 
-        map.fitBounds(layer.getBounds());
+        map.fitBounds(rasterLayer.getBounds());
+        setOrder();
       });
     });
 }
@@ -116,7 +127,7 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl) {
       parseGeoraster(arrayBuffer).then((georaster) => {
         console.log("georaster:", georaster);
 
-        var layer = new GeoRasterLayer({
+        klassifikationLayer = new GeoRasterLayer({
           georaster: georaster,
           resolution: 256 /**,
           pixelValuesToColorFn: (values) => {
@@ -145,11 +156,16 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl) {
             return `rgb(${values[2]}, ${values[1]}, ${values[0]})`;
           },*/,
         });
-        layer.addTo(map);
+        // map.createPane("predictionPane");
+        // map.getPane("predictionPane").style.zIndex = 700;
+        // layer.pane = "predictionPane";
+        // klassifikationLayer.setZIndex(600);
+        klassifikationLayer.addTo(map);
 
-        layerControl.addOverlay(layer, "Klassifikation");
+        layerControl.addOverlay(klassifikationLayer, "Klassifikation");
 
-        map.fitBounds(layer.getBounds());
+        map.fitBounds(klassifikationLayer.getBounds());
+        setOrder();
       });
     });
 
@@ -159,15 +175,19 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl) {
       parseGeoraster(arrayBuffer).then((georaster) => {
         console.log("georaster:", georaster);
 
-        var layer = new GeoRasterLayer({
+        aoaLayer = new GeoRasterLayer({
           georaster: georaster,
           resolution: 256,
         });
-        layer.addTo(map);
+        // map.createPane("aoaPane");
+        // map.getPane("aoaPane").style.zIndex = 1000;
+        // aoaLayer.pane = "aoaPane";
+        aoaLayer.addTo(map);
 
-        layerControl.addOverlay(layer, "AOA");
+        layerControl.addOverlay(aoaLayer, "AOA");
 
-        map.fitBounds(layer.getBounds());
+        map.fitBounds(aoaLayer.getBounds());
+        setOrder();
       });
     });
 }
@@ -186,4 +206,11 @@ function getDateityp(name) {
   extension = name.toString().split(".")[1];
   //console.log(extension);
   return extension;
+}
+
+function setOrder() {
+  rasterLayer.bringToBack();
+  osm.bringToBack();
+  satellite.bringToBack();
+  aoaLayer.bringToFront();
 }
