@@ -28,3 +28,5 @@ addPredictionAndAoaToMap(
 );
 addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
 addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
+
+map.createPane('labels');
