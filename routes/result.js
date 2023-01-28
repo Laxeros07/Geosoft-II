@@ -3,6 +3,7 @@ var router = express.Router();
 var R = require("r-integration");
 var request = require("request");
 var JSZip = require("jszip");
+var zip = require("express-zip");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -30,67 +31,121 @@ router.post("/", function (req, res, next) {
     }
   );
   */
-  let url = "http://172.17.0.1:7001/";
-  let bbSplit = "";
-  console.log("bb: " + req.body.bb);
-  if (req.body.bb != "") {
-    //Es wurde eine Boundingbox angegeben
-    bbSplit = req.body.bb.split(",");
-  }
-
-  //Zusammenbauen der Url mit den Parametern
-  switch (req.body.id) {
-    case "trainingsdaten":
-      url += "result?";
-      if (bbSplit != "") {
-        //Boundingbox
-        url +=
-          "ymin=" +
-          bbSplit[2] +
-          "&ymax=" +
-          bbSplit[3] +
-          "&xmin=" +
-          bbSplit[0] +
-          "&xmax=" +
-          bbSplit[1] +
-          "&";
-      }
-      break;
-    case "modell":
-      url += "resultModell?";
-      if (bbSplit != "") {
-        //Boundingbox
-        url +=
-          "ymin=" +
-          bbSplit[2] +
-          "ymax=" +
-          bbSplit[3] +
-          "xmin=" +
-          bbSplit[0] +
-          "xmax=" +
-          bbSplit[1] +
-          "&";
-      }
-      break;
-  }
-  if (req.body.anzahl != "" && req.body.id == "trainingsdaten") {
-    url += "baumAnzahl=" + req.body.anzahl + "&";
-  }
-  if (req.body.tiefe != "" && req.body.id == "trainingsdaten") {
-    url += "baumTiefe=" + req.body.tiefe;
-  }
-
-  console.log("URL:");
-  console.log(url);
-
-  request(url, { json: true }, (err, res2, body) => {
-    console.log(res2.body);
-    console.log(body);
-    if (err) {
-      return console.log(err);
+  console.log(req.body.bb);
+  if (req.body.bb) {
+    let url = "http://172.17.0.1:7001/";
+    let bbSplit = "";
+    console.log("bb: " + req.body.bb);
+    if (req.body.bb != "-") {
+      //Es wurde eine Boundingbox angegeben
+      bbSplit = req.body.bb.split(",");
     }
-    res.render("result", { title: "Result" });
-  });
+
+    //Zusammenbauen der Url mit den Parametern
+    switch (req.body.id) {
+      case "trainingsdaten":
+        url += "result?";
+        if (bbSplit != "") {
+          //Boundingbox
+          url +=
+            "ymin=" +
+            bbSplit[2] +
+            "&ymax=" +
+            bbSplit[3] +
+            "&xmin=" +
+            bbSplit[0] +
+            "&xmax=" +
+            bbSplit[1] +
+            "&";
+        }
+        break;
+      case "modell":
+        url += "resultModell?";
+        if (bbSplit != "") {
+          //Boundingbox
+          url +=
+            "ymin=" +
+            bbSplit[2] +
+            "ymax=" +
+            bbSplit[3] +
+            "xmin=" +
+            bbSplit[0] +
+            "xmax=" +
+            bbSplit[1] +
+            "&";
+        }
+        break;
+    }
+    if (req.body.anzahl != "" && req.body.id == "trainingsdaten") {
+      url += "baumAnzahl=" + req.body.anzahl + "&";
+    }
+    if (req.body.tiefe != "" && req.body.id == "trainingsdaten") {
+      url += "baumTiefe=" + req.body.tiefe;
+    }
+
+    console.log("URL:");
+    console.log(url);
+
+    request(url, { json: true }, (err, res2, body) => {
+      console.log(res2.body);
+      console.log(body);
+      if (err) {
+        return console.log(err);
+      }
+      res.render("result", { title: "Result" });
+    });
+  }
+  // Download
+  else {
+    //var zip = new JSZip();
+    var dateien = [];
+    console.log("hallo");
+    console.log(req.body.aoa_datei);
+    if (req.body.prediction_datei) {
+      dateien.push({
+        path: req.body.prediction_datei,
+        name: "classification.tif",
+      });
+      fs.readFile(req.body.value, function read(err, file) {
+        if (err) {
+          throw err;
+        }
+        zip.file("AoA.tif", file);
+      });
+    }
+    if (req.body.polygone_datei) {
+      dateien.push({
+        path: req.body.polygone_datei,
+        name: "polygone.geojson",
+      });
+    }
+    if (req.body.aoa_datei) {
+      dateien.push({
+        path: req.body.aoa_datei,
+        name: "AoA.tif",
+      });
+    }
+    if (req.body.modell_datei) {
+      dateien.push({
+        path: req.body.modell_datei,
+        name: "model.RDS",
+      });
+    }
+    // fs.readFile(req.body.value, function read(err, file) {
+    //   if (err) {
+    //     throw err;
+    //   }
+    //   zip.file("AoA.tif", file);
+    // });
+
+    // console.log("zip:");
+    // console.log(zip.files);
+    // var blob = zip.generateAsync({ type: "nodebuffer" });
+    // console.log("blob:");
+    // console.log(blob.files);
+    // //saveAs(blob, "hello.zip");
+    res.zip(dateien);
+  }
 });
 
 /**

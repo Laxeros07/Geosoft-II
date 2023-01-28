@@ -3,28 +3,25 @@ extends tabs
 block bearbeiten
 
   .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
-    .col-lg-8.col-xs-12.mb-3
+    .col-lg-8.col-sm-12.mb-3
       .card.shadow.p-4.h-100
         #map
-    .col-lg-4.col-xs-12.mb-3
+    .col-lg-4.col-sm-12.mb-3
 
-      .card.shadow.p-4(style='height: 300px;')
-        .row.gy-4.gx-lg-2.mt-2
-          .col-lg-6.col-md-12.mb-3
-            form(method='post' action='result')
-              a.btn.btn-primary.my-2(type='submit') Skript ausführen
-          .col-lg-6.col-md-12.mb-3
-            form(method='post' action='result')
-              a.btn.btn-primary.my-2(onclick='geojsonExport()') Export Data
-        .row.gy-4.gx-lg-2.mt-2
-          .col-lg-6.col-md-12.mb-3
-            form(action="result/trainingsdaten" method="post")
-              a.btn.btn-primary.my-2(type="submit") bearbeiten
-        .row.gy-4.gx-lg-2.mt-2
-          table#tabelle.table.table-dark.table-striped.table-hover
-            tr
-              th Label
-              th Class_ID
+      .card.shadow.p-4
+        .row
+          .col-lg-12.col-sm-4.flex-xs-row.gx-1.d-grid.gap-1
+            a.btn.btn-primary(type='submit')(method='post' action='result') Skript ausführen
+            a.btn.btn-primary(onclick='geojsonExport()')(method='post' action='result') Dateien herunterladen
+            a.btn.btn-primary(type="submit")(action="result/trainingsdaten" method="post") Bearbeiten
+            
+          .col-lg-12.col-sm-8  
+            .row.gx-2.mt-2
+              table#tabelle.table.table.table-striped.table-hover.table-sm
+                tr.text-center
+                  th Beschreibung
+                  th Klassen_Identifikation
+     
   script.
     // Set active Button
     document.getElementById("ergebnisTab").classList.remove("active")

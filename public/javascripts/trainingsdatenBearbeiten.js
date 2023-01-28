@@ -55,13 +55,16 @@ map.on("draw:created", function (e) {
 
 //Popup Name
 var getName = function (layer) {
-  var name = prompt("please, enter the geometry name", "geometry name");
+  var name = prompt("Geben Sie den Namen der Geometrie ein", "Geometrie Name");
   return name;
 };
 
 //popup Id
 var getID = function (layer) {
-  var classID = prompt("please, enter the geometry ClassID", "ClassID");
+  var classID = prompt(
+    "Geben Sie die Identifikationsnummer der Geometrie ein",
+    "Klassen_Identifikation"
+  );
   return classID;
 };
 
@@ -113,14 +116,13 @@ function toJson() {
     data.push({
       type: "Feature",
       properties: {
-        shape: "polygon",
-        label: json[i].features[i].geometry.properties.label,
-        classID: json[i].features[i].geometry.properties.classID,
-        //coordinates:
+        id: i,
+        ClassID: json[i].features[i].geometry.properties.classID,
+        Label: json[i].features[i].geometry.properties.label,
       },
       geometry: {
-        type: "trainingsgebie",
-        coordinates: json[i].features[i].geometry.geometry.coordinates,
+        type: "MultiPolygon",
+        coordinates: [json[i].features[i].geometry.geometry.coordinates],
       },
     });
     i++;
@@ -142,8 +144,8 @@ function einlesen() {
     let cell1 = row.insertCell(1);
 
     // Speichern der Nummer und der Attribute in jeder Zeile
-    cell0.innerHTML = item.properties.label;
-    cell1.innerHTML = item.properties.classID;
+    cell0.innerHTML = item.properties.Label;
+    cell1.innerHTML = item.properties.ClassID;
   });
 
   tabelleFüllen(json);
@@ -219,16 +221,25 @@ showExportButton.addTo(map);
 // Export to GeoJSON File
 function geojsonExport() {
   let nodata = '{"type":"FeatureCollection","features":[]}';
-  let jsonData = JSON.stringify(drawnItems.toGeoJSON());
+  let jsonData = {
+    type: "FeatureCollection",
+    name: "trainingsgebiete",
+    crs: {
+      type: "name",
+      properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
+    },
+    features: data,
+  };
+  let string = JSON.stringify(jsonData);
   let dataUri =
-    "data:application/json;charset=utf-8," + encodeURIComponent(jsonData);
+    "data:application/json;charset=utf-8," + encodeURIComponent(string);
   let datenow = new Date();
   let datenowstr = datenow.toLocaleDateString("en-GB");
   let exportFileDefaultName = "export_draw_" + datenowstr + ".geojson";
   let linkElement = document.createElement("a");
   linkElement.setAttribute("href", dataUri);
   linkElement.setAttribute("download", exportFileDefaultName);
-  if (jsonData == nodata) {
+  if (string == nodata) {
     alert("No features are drawn");
   } else {
     linkElement.click();
