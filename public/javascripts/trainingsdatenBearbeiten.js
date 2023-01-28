@@ -90,6 +90,7 @@ map.on(L.Draw.Event.CREATED, function (e) {
   console.log(drawnItems.toGeoJSON());
   //json speichern
   json.push(drawnItems.toGeoJSON());
+  datenAnzeigen();
 });
 
 /**
@@ -207,16 +208,16 @@ function findXY(cell) {
  * https://github.com/anshori/leaflet-draw-to-geojson-file/blob/master/assets/js/app.js
  */
 // Export Button
-var showExport =
-  '<a href="#" onclick="datenAnzeigen()" title="Export to GeoJSON File" type="button" class="btn btn-danger btn-sm text-light"><i class="fa fa-file-code-o" aria-hidden="true"></i> laden</a>';
+// var showExport =
+//   '<a href="#" onclick="datenAnzeigen()" title="Export to GeoJSON File" type="button" class="btn btn-danger btn-sm text-light"><i class="fa fa-file-code-o" aria-hidden="true"></i> laden</a>';
 
-var showExportButton = new L.Control({ position: "topright" });
-showExportButton.onAdd = function (map) {
-  this._div = L.DomUtil.create("div");
-  this._div.innerHTML = showExport;
-  return this._div;
-};
-showExportButton.addTo(map);
+// var showExportButton = new L.Control({ position: "topright" });
+// showExportButton.onAdd = function (map) {
+//   this._div = L.DomUtil.create("div");
+//   this._div.innerHTML = showExport;
+//   return this._div;
+// };
+// showExportButton.addTo(map);
 
 // Export to GeoJSON File
 function geojsonExport() {
