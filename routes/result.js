@@ -31,11 +31,12 @@ router.post("/", function (req, res, next) {
     }
   );
   */
+  console.log(req.body.bb);
   if (req.body.bb) {
     let url = "http://172.17.0.1:7001/";
     let bbSplit = "";
     console.log("bb: " + req.body.bb);
-    if (req.body.bb != "") {
+    if (req.body.bb != "-") {
       //Es wurde eine Boundingbox angegeben
       bbSplit = req.body.bb.split(",");
     }
@@ -98,18 +99,12 @@ router.post("/", function (req, res, next) {
   else {
     //var zip = new JSZip();
     var dateien = [];
-    console.log("hallo");
-    console.log(req.body.aoa_datei);
+    console.log("req");
+    console.log(req.body);
     if (req.body.prediction_datei) {
       dateien.push({
         path: req.body.prediction_datei,
         name: "classification.tif",
-      });
-      fs.readFile(req.body.value, function read(err, file) {
-        if (err) {
-          throw err;
-        }
-        zip.file("AoA.tif", file);
       });
     }
     if (req.body.polygone_datei) {
@@ -143,6 +138,8 @@ router.post("/", function (req, res, next) {
     // console.log("blob:");
     // console.log(blob.files);
     // //saveAs(blob, "hello.zip");
+    console.log("Dateien:");
+    console.log(dateien);
     res.zip(dateien);
   }
 });

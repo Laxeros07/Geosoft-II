@@ -3,6 +3,8 @@ boundingBoxText.value = "";
 const skriptAusfuehren = document.getElementById("skript");
 skriptAusfuehren.disabled = true;
 
+boundingBoxText.value = "-";
+
 const smallText = document.getElementById("small");
 
 skriptAusfuehren.addEventListener("click", showLoadingScreen);
