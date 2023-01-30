@@ -1,6 +1,7 @@
 var rasterLayer;
 var klassifikationLayer;
 var aoaLayer;
+var geojsonLayer;
 
 function addGeoJSONToMap(url) {
   // this requests the file and executes a callback with the parsed result once it is available
@@ -38,6 +39,7 @@ function addGeoJSONToMap(url) {
       });
     }
     let group = L.layerGroup(layerArray).addTo(map);
+    geojsonLayer = layerArray;
     layerControl.addOverlay(group, "Trainingspolygone");
   });
 }

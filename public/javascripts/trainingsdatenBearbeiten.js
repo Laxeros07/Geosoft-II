@@ -212,6 +212,13 @@ function findXY(cell) {
 
 // Export to GeoJSON File
 function geojsonExport() {
+  oldLayer = [];
+  geojsonLayer.forEach((item) => {
+    fc = item.toGeoJSON();
+    oldLayer.push(fc.features[0]);
+  });
+
+  console.log(geojsonLayer);
   let nodata = '{"type":"FeatureCollection","features":[]}';
   let jsonData = {
     type: "FeatureCollection",
@@ -220,7 +227,7 @@ function geojsonExport() {
       type: "name",
       properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
     },
-    features: data,
+    features: data.concat(oldLayer),
   };
   let string = JSON.stringify(jsonData);
   let dataUri =
