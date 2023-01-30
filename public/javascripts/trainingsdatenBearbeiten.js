@@ -44,16 +44,13 @@ map.addControl(drawControl);
 
 //Popup Name
 var getName = function (layer) {
-  var name = prompt("Geben Sie den Namen der Geometrie ein:", "Geometrie Name");
+  var name = prompt("Label:", "Geometrie Name");
   return name;
 };
 
 //popup Id
 var getID = function (layer) {
-  var classID = prompt(
-    "Geben Sie die Identifikationsnummer der Geometrie ein:",
-    "Klassen_Identifikation"
-  );
+  var classID = prompt("ClassID:", "Klassen_Identifikation");
   return classID;
 };
 
@@ -71,7 +68,9 @@ map.on(L.Draw.Event.CREATED, function (e) {
   } else if (name == "") {
     layer.bindPopup("-- no name provided --");
   } else {
-    layer.bindTooltip(name, { permanent: true, direction: "top" });
+    let text = "<b>ClassID:</b> " + classID + "<br>";
+    text += "<b>Label:</b> " + name;
+    layer.bindTooltip(text, { permanent: true, direction: "top" });
   }
   drawnItems.addLayer(layer);
   // get json
@@ -212,14 +211,16 @@ function findXY(cell) {
 
 // Export to GeoJSON File
 function geojsonExport() {
+  //Die alten trainingspolygone werden in ein Array gepushed
   oldLayer = [];
   geojsonLayer.forEach((item) => {
     fc = item.toGeoJSON();
     oldLayer.push(fc.features[0]);
   });
 
-  console.log(geojsonLayer);
   let nodata = '{"type":"FeatureCollection","features":[]}';
+
+  //Zusammenfügen der neuen und alten feature
   let jsonData = {
     type: "FeatureCollection",
     name: "trainingsgebiete",
@@ -229,6 +230,12 @@ function geojsonExport() {
     },
     features: data.concat(oldLayer),
   };
+
+  //Zuweisen einer eindeutigen ID zu jedem Feature
+  for (let i = 0; i < jsonData.features.length; i++) {
+    jsonData.features[i].properties.id = i + 1;
+  }
+
   let string = JSON.stringify(jsonData);
   let dataUri =
     "data:application/json;charset=utf-8," + encodeURIComponent(string);
@@ -241,6 +248,7 @@ function geojsonExport() {
   if (string == nodata) {
     alert("No features are drawn");
   } else {
+    //Download
     linkElement.click();
   }
 }

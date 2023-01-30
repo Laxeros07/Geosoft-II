@@ -32,7 +32,7 @@ maske_raster <- c(7.55738996178022, 7.64064656833175, 51.9372943715445, 52.00015
 maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.64064656833175, ymax =52.0001517816852)
 baumAnzahl <- NA
 baumTiefe <- NA
-algorithmus <- "dt"
+algorithmus <- "rf"
 
 ## Ausgabe
 klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
@@ -167,7 +167,6 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   extr <<- merge(extr, trainingsdaten, by.x = "ID", by.y = "PolyID")
    #head(extr)
 
-
   # Modell trainieren
   # nicht alle Daten verwenden um Rechenzeit zu sparen
   # extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
@@ -212,18 +211,19 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # plot(varImp(model)) # variablenwichtigkeit
 
   # Farbpalette
-  cols <- c(
-    "beige", "sandybrown",
-    "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
-    "deepskyblue4", "forestgreen", "brown", "darkgreen"
-  )
+  #cols <- c(
+  #  "beige", "sandybrown",
+  #  "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
+  #  "deepskyblue4", "forestgreen", "brown", "darkgreen"
+  #)
   # klassifizieren
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), model)#, colors(cols))
   projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   farben <- brewer.pal(n = 12, name = "Paired")
-  coltab(prediction_terra) <- farben#[0:10]
+  coltab(prediction_terra) <- farben[1:12]
+  # coltab(prediction_terra)
   # plot(prediction_terra)
   #coltab(prediction_terra) <- cols
 
@@ -278,8 +278,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     "/public/uploads/legend.png",
     sep = ""
   ), plot= legend, width = 2, height = 3)
-  
-  
+
   #plot(prediction_terra)
   #writeRaster(prediction_terra, filename="public/uploads/prediction2.tif", format="GTiff", overwrite=TRUE)
   # library(tmap)
