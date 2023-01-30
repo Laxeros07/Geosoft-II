@@ -32,6 +32,7 @@ maske_raster <- c(7.55738996178022, 7.64064656833175, 51.9372943715445, 52.00015
 maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.64064656833175, ymax =52.0001517816852)
 baumAnzahl <- NA
 baumTiefe <- NA
+algorithmus <- "rf"
 
 
 ## Ausgabe
@@ -140,7 +141,7 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
 
 
 ## Ausgabe
-klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe) {
+klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus) {
   ## Variablen definieren
   predictors <- c(
     "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B10", "B11", "B12")
@@ -181,27 +182,29 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
 
-  # Hyperparameter für Modelltraining abfragen
-  if(is.na(baumAnzahl)){
-    baumAnzahl <- 50
+  if(algorithmus == "rf") {
+    # Hyperparameter für Modelltraining abfragen
+    if(is.na(baumAnzahl)){
+      baumAnzahl <- 50
+    }
+    if(is.na(baumTiefe)){
+      baumTiefe <- 100
+    }
+    #### Modelltraining
+    model <- train(trainDat[, predictors],
+      trainDat$Label,
+      method = "rf",
+      importance = TRUE,
+      ntree = baumAnzahl,  # Anzahl der Bäume
+      maxnodes = baumTiefe   # Tiefe der Bäume
+    ) # 50 is quite small (default=500). But it runs faster.
+  } else {
+    model <- train(trainDat[, predictors],
+                   trainDat$Label,
+                   method="rpart", 
+                   trControl = trainControl(method = "cv")   # Classification Tree Algorithmus
+    ) # nicht so gut wie rf Algorithmus
   }
-  if(is.na(baumTiefe)){
-    baumTiefe <- 100
-  }
-  #### Modelltraining
-  model <- train(trainDat[, predictors],
-    trainDat$Label,
-    method = "rf",
-    importance = TRUE,
-    ntree = baumAnzahl,  # Anzahl der Bäume
-    maxnodes = baumTiefe   # Tiefe der Bäume
-  ) # 50 is quite small (default=500). But it runs faster.
-  
-  model <- train(trainDat[, predictors],
-                 trainDat$Label,
-                 method="rpart", 
-                 trControl = trainControl(method = "cv")   # Classification Tree Algorithmus
-  ) # nicht so gut wie rf Algorithmus
   #model
    #saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
   saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
@@ -372,4 +375,4 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
 
 # zum Testen der Funktionen
  klassifizierung_mit_Modell(rasterdaten, modell, maske_raster)
- klassifizierung_ohne_Modell(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe)
+ klassifizierung_ohne_Modell(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus)

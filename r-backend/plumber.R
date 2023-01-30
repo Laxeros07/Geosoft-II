@@ -39,7 +39,7 @@ function() {
 #* @param ymin,ymax,xmin,xmax If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe = NA) {
+function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe = NA, algorithmus = NA) {
   library(terra)
   library(sf)
   library(caret)
@@ -106,26 +106,33 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
 
+  if(algorithmus == "rf") {
+    # Hyperparameter für Modelltraining abfragen
+    if (is.na(baumAnzahl)) {
+      baumAnzahl <- 50 # 50 is quite small (default=500). But it runs faster.
+    }
+    class(baumAnzahl) <- "numeric"
 
-  # Hyperparameter für Modelltraining abfragen
-  if (is.na(baumAnzahl)) {
-    baumAnzahl <- 50 # 50 is quite small (default=500). But it runs faster.
+    if (is.na(baumTiefe)) {
+      baumTiefe <- 100
+    }
+    class(baumTiefe) <- "numeric"
+
+    #### Modelltraining
+    model <- train(trainDat[, predictors],
+      trainDat$Label,
+      method = "rf",
+      importance = TRUE,
+      ntree = baumAnzahl,
+      maxnodes = baumTiefe
+    )
+  } else {
+    model <- train(trainDat[, predictors],
+                 trainDat$Label,
+                 method="rpart", 
+                 trControl = trainControl(method = "cv")   # Classification Tree Algorithmus
+    ) # nicht so gut wie rf Algorithmus
   }
-  class(baumAnzahl) <- "numeric"
-
-  if (is.na(baumTiefe)) {
-    baumTiefe <- 100
-  }
-  class(baumTiefe) <- "numeric"
-
-  #### Modelltraining
-  model <- train(trainDat[, predictors],
-    trainDat$Label,
-    method = "rf",
-    importance = TRUE,
-    ntree = baumAnzahl,
-    maxnodes = baumTiefe
-  )
   saveRDS(model, "myfiles/RFModel2.RDS")
 
   # model
