@@ -8,20 +8,56 @@ block bearbeiten
         #map
     .col-lg-4.col-sm-12.mb-3
 
-      .card.shadow.p-4
-        .row
-          .col-lg-12.col-sm-4.flex-xs-row.gx-1.d-grid.gap-1
-            a.btn.btn-primary(type='submit')(method='post' action='result') Skript ausführen
-            a.btn.btn-primary(onclick='geojsonExport()')(method='post' action='result') Dateien herunterladen
-            a.btn.btn-primary(type="submit")(action="result/trainingsdaten" method="post") Bearbeiten
+      .row.gy-4.gx-lg-2
+        .col-lg-12.col-sm-4.flex-xs-row.gx-1.d-grid.gap-1
+          .card.shadow.p-2
+            .card-body
+              text Algorithmus auswählen: 
+              a.btn.btn-primary.dropdown-toggle(type='button' data-bs-toggle='dropdown' aria-expanded='false')
+                text Random Forest
+              ul.dropdown-menu
+                li
+                  a.dropdown-item(href='#') Descicion Tree
+                li
+                  a.dropdown-item(href='#') Another action
+              
+              form(method='post' action='result')
+                  form-group
+                      #baeume
+                          label.col-form-label(for="anzahl")
+                              |Anzahl der Bäume für random forest: 
+                          input.form-control(name="anzahl" type="number" min="0" max="1000" step="1")
+                          label.col-form-label(for="tiefe")
+                              |Tiefe der Bäume für random forest: 
+                          input.form-control(name="tiefe" type="number" min="0" max="1000" step="1")
             
-          .col-lg-12.col-sm-8  
-            .row.gx-2.mt-2
-              table#tabelle.table.table.table-striped.table-hover.table-sm
+              a.btn.btn-primary(type='submit')(method='post' action='result')
+                img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconPlayGruen.svg" width="30" height="30")
+                text     Skript ausführen
+          .card.shadow.p-2
+            .card-body
+              a.btn.btn-primary(onclick='geojsonExport()')(method='post' action='result') 
+                img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconDownloadGruen.svg" width="30" height="30")
+                text     Dateien herunterladen
+              //a.btn.btn-primary(type="submit")(action="result/trainingsdaten" method="post") Bearbeiten
+            
+        .col-lg-12.col-sm-8.flex-xs-row.gx-1.d-grid.gap-1
+          .card.shadow.p-2
+            .card-body 
+              table#tabelle.table.table-light.table-striped.table-hover.table-sm
                 tr.text-center
                   th Beschreibung
                   th Klassen_Identifikation
-     
+                tr
+                  td test 1
+                  td test Klasse 1
+                tr
+                  td test 1
+                  td test Klasse 1
+                tr
+                  td test 1
+                  td test Klasse 1
+      
   script.
     // Set active Button
     document.getElementById("ergebnisTab").classList.remove("active")
