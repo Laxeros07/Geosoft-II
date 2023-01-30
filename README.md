@@ -1,7 +1,5 @@
 # Geosoft-II
 Hier wird für Christian Knoth und Edzer Pebesma programmiert :) Irgend etwas mit Fernerkundung und Machine Learning
-
-Status reports(07.12. & 11.01.) & Pre-release(21.12.)  -> nicht bewertet, aber Prototyp vorzeigen
  
 Abschlusspräsentation (01.02.)  -> bewertet
 
@@ -14,6 +12,8 @@ Die Daten können im Anschluss bearbeitet werden um eine höhere AOA zu erreiche
 
 Mit npm install und npm start können Sie die Website auf dem localhost:3000 erreichen.
 Wenn die Anwendung mit Docker gestartet werden soll, nutzen Sie bitte das felioxx/geosoft2image, welches Sie mit docker pull laden können, und starten Sie mit docker compose up (auch unter Rechtsklick auf die docker-compose.yml Datei).
+
+Unsere Software folgt den Open Source Prinzipien und unterliegt der ISC Lizenz. Nutzern ist es erlaubt, die Software zu verwenden und zu bearbeiten, solange sie uns per Copyright Trademark angeben. Mehr Informationen dazu [hier](https://opensource.org/licenses/ISC)
 
 Viel Erfolg beim Klassifizieren!
 
