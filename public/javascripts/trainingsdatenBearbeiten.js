@@ -166,7 +166,7 @@ function tabelleFüllen() {
           console.log(y);
           var x = xy[1];
           map.setView([x, y], 20);
-          markerArray[id - 1].openPopup();
+          //markerArray[id - 1].openPopup();
         };
       };
 

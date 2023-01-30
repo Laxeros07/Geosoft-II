@@ -3,6 +3,8 @@ Hier wird für Christian Knoth und Edzer Pebesma programmiert :) Irgend etwas mi
  
 Abschlusspräsentation (01.02.)  -> bewertet
 
+Dockerimage im Readme anpassen.
+
 ----------- Ab hier beginnt das offizielle Readme ----------------------------
 
 Dies ist das Repo zum Kurs Geosoft II und dem Projekt Apollo 13 der Firma Spacy.
