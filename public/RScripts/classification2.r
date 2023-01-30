@@ -32,8 +32,7 @@ maske_raster <- c(7.55738996178022, 7.64064656833175, 51.9372943715445, 52.00015
 maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.64064656833175, ymax =52.0001517816852)
 baumAnzahl <- NA
 baumTiefe <- NA
-algorithmus <- "rf"
-
+algorithmus <- "dt"
 
 ## Ausgabe
 klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
@@ -166,7 +165,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # head(trainingsdaten)
   trainingsdaten$PolyID <- 1:nrow(trainingsdaten)
   extr <<- merge(extr, trainingsdaten, by.x = "ID", by.y = "PolyID")
-   head(extr)
+   #head(extr)
 
 
   # Modell trainieren
@@ -225,6 +224,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   prediction_terra <- as(prediction, "SpatRaster")
   farben <- brewer.pal(n = 12, name = "Paired")
   coltab(prediction_terra) <- farben#[0:10]
+  # plot(prediction_terra)
   #coltab(prediction_terra) <- cols
 
   # erste Visualisierung der Klassifikation:
