@@ -211,14 +211,16 @@ function findXY(cell) {
 
 // Export to GeoJSON File
 function geojsonExport() {
+  //Die alten trainingspolygone werden in ein Array gepushed
   oldLayer = [];
   geojsonLayer.forEach((item) => {
     fc = item.toGeoJSON();
     oldLayer.push(fc.features[0]);
   });
 
-  console.log(geojsonLayer);
   let nodata = '{"type":"FeatureCollection","features":[]}';
+
+  //Zusammenfügen der neuen und alten feature
   let jsonData = {
     type: "FeatureCollection",
     name: "trainingsgebiete",
@@ -228,6 +230,12 @@ function geojsonExport() {
     },
     features: data.concat(oldLayer),
   };
+
+  //Zuweisen einer eindeutigen ID zu jedem Feature
+  for (let i = 0; i < geojson.features.length; i++) {
+    jsonData.features[i].properties.id = i + 1;
+  }
+
   let string = JSON.stringify(jsonData);
   let dataUri =
     "data:application/json;charset=utf-8," + encodeURIComponent(string);
@@ -240,6 +248,7 @@ function geojsonExport() {
   if (string == nodata) {
     alert("No features are drawn");
   } else {
+    //Download
     linkElement.click();
   }
 }
