@@ -10,8 +10,14 @@ block bearbeiten
 
       .row.gy-4.gx-lg-2
         .col-lg-12.col-sm-4.flex-xs-row.gx-1.d-grid.gap-1
-          .card.shadow.p-2
+          .card.shadow
             .card-body
+              form.d-grid.gap-2.col-12.mx-auto(method='post' action='result')
+                a.btn.btn-primary(onclick='geojsonExport()')
+                  img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconDownloadGruen.svg" width="30" height="30")
+                  text     Dateien herunterladen
+          .card.shadow
+            .card-body.d-grid
               form(method='post' action='result').mb-2
                     form-group
                         #algorithmusDiv
@@ -28,33 +34,31 @@ block bearbeiten
                                     |Tiefe der Bäume für random forest: 
                                 input.form-control(name="tiefe" type="number" min="1" max="1000" step="1")
             
-              a.btn.btn-primary(type='submit')(method='post' action='result')
-                img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconPlayGruen.svg" width="30" height="30")
-                text     Skript ausführen
-          .card.shadow.p-2
-            .card-body
-              a.btn.btn-primary(onclick='geojsonExport()')(method='post' action='result') 
-                img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconDownloadGruen.svg" width="30" height="30")
-                text     Dateien herunterladen
+              form.d-grid.gap-2.col-12.mx-auto(method='post' action='result')
+                a.btn.btn-primary(type='submit')
+                  img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconPlayGruen.svg" width="30" height="30")
+                  text     Skript ausführen
+          
           
           //a.btn.btn-primary(type="submit")(action="result/trainingsdaten" method="post") Bearbeiten
             
-        .col-lg-12.col-sm-8.flex-xs-row.gx-1.d-grid.gap-1
-          .card.shadow.p-2
+        .col-lg-12.col-sm-8.gx-1
+          .card.shadow
             .card-body 
-              table#tabelle.table.table-light.table-striped.table-hover.table-sm
-                tr.text-center
-                  th Beschreibung
-                  th Klassen_Identifikation
-                tr
-                  td test 1
-                  td test Klasse 1
-                tr
-                  td test 1
-                  td test Klasse 1
-                tr
-                  td test 1
-                  td test Klasse 1
+              .div.table-responsive
+                table#tabelle.table.table-light.table-striped.table-hover.table-sm.table-bordered
+                  tr.text-center
+                    th Beschreibung
+                    th Klassen_Identifikation
+                  tr
+                    td test 1
+                    td test Klasse 1
+                  tr
+                    td test 1
+                    td test Klasse 1
+                  tr
+                    td test 1
+                    td test Klasse 1
       
   script.
     // Set active Button
