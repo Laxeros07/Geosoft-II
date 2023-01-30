@@ -232,7 +232,7 @@ function geojsonExport() {
   };
 
   //Zuweisen einer eindeutigen ID zu jedem Feature
-  for (let i = 0; i < geojson.features.length; i++) {
+  for (let i = 0; i < jsonData.features.length; i++) {
     jsonData.features[i].properties.id = i + 1;
   }
 
