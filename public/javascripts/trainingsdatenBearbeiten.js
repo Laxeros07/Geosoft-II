@@ -1,12 +1,12 @@
 var json = []; //Geojson Array
 
 // Add Data to map
+addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
+addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
 addPredictionAndAoaToMap(
   "http://localhost:3000/prediction.tif",
   "http://localhost:3000/AOA_klassifikation.tif"
 );
-addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
-addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
 
 var LeafIcon = L.Icon.extend({
   options: {
@@ -42,30 +42,21 @@ var drawControl = new L.Control.Draw({
 });
 map.addControl(drawControl);
 
-map.on("draw:created", function (e) {
-  var type = e.layerType,
-    layer = e.layer;
-
-  if (type === "marker") {
-    layer.bindPopup("ascacacsdcascscsd");
-  }
-
-  drawnItems.addLayer(layer);
-});
-
 //Popup Name
 var getName = function (layer) {
-  var name = prompt("Geben Sie den Namen der Geometrie ein", "Geometrie Name");
+  var name = prompt("Geben Sie den Namen der Geometrie ein:", "Geometrie Name");
   return name;
 };
 
 //popup Id
 var getID = function (layer) {
-  var classID = prompt("Geben Sie die Identifikationsnummer der Geometrie ein", "Klassen_Identifikation");
+  var classID = prompt(
+    "Geben Sie die Identifikationsnummer der Geometrie ein:",
+    "Klassen_Identifikation"
+  );
   return classID;
 };
 
-map.addControl(drawControl);
 map.on(L.Draw.Event.CREATED, function (e) {
   var layer = e.layer,
     feature = (layer.feature = layer.feature || {});
@@ -87,6 +78,7 @@ map.on(L.Draw.Event.CREATED, function (e) {
   console.log(drawnItems.toGeoJSON());
   //json speichern
   json.push(drawnItems.toGeoJSON());
+  datenAnzeigen();
 });
 
 /**
@@ -97,7 +89,8 @@ function datenAnzeigen() {
 
   //Tabelle zurücksetzen
   tbl = document.getElementById("tabelle");
-  tbl.innerHTML = "<tbody><tr><th>Label</th><th>Class_ID</th></tr></tbody>";
+  tbl.innerHTML =
+    "<tbody><tr><th>Id</th><th>Label</th><th>Class_ID</th></tr></tbody>";
 
   toJson(json);
 }
@@ -113,14 +106,13 @@ function toJson() {
     data.push({
       type: "Feature",
       properties: {
-        shape: "polygon",
-        label: json[i].features[i].geometry.properties.label,
-        classID: json[i].features[i].geometry.properties.classID,
-        //coordinates:
+        id: i,
+        ClassID: json[i].features[i].geometry.properties.classID,
+        Label: json[i].features[i].geometry.properties.label,
       },
       geometry: {
-        type: "trainingsgebie",
-        coordinates: json[i].features[i].geometry.geometry.coordinates,
+        type: "MultiPolygon",
+        coordinates: [json[i].features[i].geometry.geometry.coordinates],
       },
     });
     i++;
@@ -140,10 +132,12 @@ function einlesen() {
     let row = table.insertRow(-1);
     let cell0 = row.insertCell(0);
     let cell1 = row.insertCell(1);
+    let cell2 = row.insertCell(2);
 
     // Speichern der Nummer und der Attribute in jeder Zeile
-    cell0.innerHTML = item.properties.label;
-    cell1.innerHTML = item.properties.classID;
+    cell0.innerHTML = item.properties.id;
+    cell1.innerHTML = item.properties.Label;
+    cell2.innerHTML = item.properties.ClassID;
   });
 
   tabelleFüllen(json);
@@ -172,7 +166,7 @@ function tabelleFüllen() {
           console.log(y);
           var x = xy[1];
           map.setView([x, y], 20);
-          markerArray[id - 1].openPopup();
+          //markerArray[id - 1].openPopup();
         };
       };
 
@@ -191,8 +185,8 @@ function findXY(cell) {
   var i = 0;
   while (data.length > i) {
     console.log("lauft");
-    if ((data[i].properties.classID = cell)) {
-      xy = data[i].geometry.coordinates[0][1];
+    if (data[i].properties.id == cell) {
+      xy = data[i].geometry.coordinates[0][0][1];
       console.log("gefunden" + xy);
     }
     i++;
@@ -205,30 +199,39 @@ function findXY(cell) {
  * https://github.com/anshori/leaflet-draw-to-geojson-file/blob/master/assets/js/app.js
  */
 // Export Button
-var showExport =
-  '<a href="#" onclick="datenAnzeigen()" title="Export to GeoJSON File" type="button" class="btn btn-danger btn-sm text-light"><i class="fa fa-file-code-o" aria-hidden="true"></i> laden</a>';
+// var showExport =
+//   '<a href="#" onclick="datenAnzeigen()" title="Export to GeoJSON File" type="button" class="btn btn-danger btn-sm text-light"><i class="fa fa-file-code-o" aria-hidden="true"></i> laden</a>';
 
-var showExportButton = new L.Control({ position: "topright" });
-showExportButton.onAdd = function (map) {
-  this._div = L.DomUtil.create("div");
-  this._div.innerHTML = showExport;
-  return this._div;
-};
-showExportButton.addTo(map);
+// var showExportButton = new L.Control({ position: "topright" });
+// showExportButton.onAdd = function (map) {
+//   this._div = L.DomUtil.create("div");
+//   this._div.innerHTML = showExport;
+//   return this._div;
+// };
+// showExportButton.addTo(map);
 
 // Export to GeoJSON File
 function geojsonExport() {
   let nodata = '{"type":"FeatureCollection","features":[]}';
-  let jsonData = JSON.stringify(drawnItems.toGeoJSON());
+  let jsonData = {
+    type: "FeatureCollection",
+    name: "trainingsgebiete",
+    crs: {
+      type: "name",
+      properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
+    },
+    features: data,
+  };
+  let string = JSON.stringify(jsonData);
   let dataUri =
-    "data:application/json;charset=utf-8," + encodeURIComponent(jsonData);
+    "data:application/json;charset=utf-8," + encodeURIComponent(string);
   let datenow = new Date();
   let datenowstr = datenow.toLocaleDateString("en-GB");
   let exportFileDefaultName = "export_draw_" + datenowstr + ".geojson";
   let linkElement = document.createElement("a");
   linkElement.setAttribute("href", dataUri);
   linkElement.setAttribute("download", exportFileDefaultName);
-  if (jsonData == nodata) {
+  if (string == nodata) {
     alert("No features are drawn");
   } else {
     linkElement.click();

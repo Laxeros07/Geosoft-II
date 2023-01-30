@@ -3,6 +3,8 @@ boundingBoxText.value = "";
 const skriptAusfuehren = document.getElementById("skript");
 skriptAusfuehren.disabled = true;
 
+boundingBoxText.value = "-";
+
 const smallText = document.getElementById("small");
 
 skriptAusfuehren.addEventListener("click", showLoadingScreen);
@@ -10,6 +12,19 @@ const loading = document.getElementById("loading");
 function showLoadingScreen() {
   loading.style.display = "block";
 }
+
+algorithmus = document.getElementById("algorithmus");
+algorithmus.value = "rf";
+algorithmus.addEventListener("change", () => {
+  switch (algorithmus.value) {
+    case "rf":
+      document.getElementById("rfAttribute").style.display = "block";
+      break;
+    case "dt":
+      document.getElementById("rfAttribute").style.display = "none";
+      break;
+  }
+});
 
 var drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);

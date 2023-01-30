@@ -31,11 +31,12 @@ router.post("/", function (req, res, next) {
     }
   );
   */
+  console.log(req.body.bb);
   if (req.body.bb) {
     let url = "http://172.17.0.1:7001/";
     let bbSplit = "";
     console.log("bb: " + req.body.bb);
-    if (req.body.bb != "") {
+    if (req.body.bb != "-") {
       //Es wurde eine Boundingbox angegeben
       bbSplit = req.body.bb.split(",");
     }
@@ -75,11 +76,18 @@ router.post("/", function (req, res, next) {
         }
         break;
     }
-    if (req.body.anzahl != "" && req.body.id == "trainingsdaten") {
-      url += "baumAnzahl=" + req.body.anzahl + "&";
-    }
-    if (req.body.tiefe != "" && req.body.id == "trainingsdaten") {
-      url += "baumTiefe=" + req.body.tiefe;
+    if (req.body.algorithmus == "rf") {
+      // Random Forest
+      if (req.body.anzahl != "" && req.body.id == "trainingsdaten") {
+        url += "baumAnzahl=" + req.body.anzahl + "&";
+      }
+      if (req.body.tiefe != "" && req.body.id == "trainingsdaten") {
+        url += "baumTiefe=" + req.body.tiefe + "&";
+      }
+      url += "algorithmus='rf'";
+    } else {
+      // Decision Tree
+      url += "algorithmus='dt'";
     }
 
     console.log("URL:");
@@ -98,18 +106,12 @@ router.post("/", function (req, res, next) {
   else {
     //var zip = new JSZip();
     var dateien = [];
-    console.log("hallo");
-    console.log(req.body.aoa_datei);
+    console.log("req");
+    console.log(req.body);
     if (req.body.prediction_datei) {
       dateien.push({
         path: req.body.prediction_datei,
         name: "classification.tif",
-      });
-      fs.readFile(req.body.value, function read(err, file) {
-        if (err) {
-          throw err;
-        }
-        zip.file("AoA.tif", file);
       });
     }
     if (req.body.polygone_datei) {
@@ -130,6 +132,18 @@ router.post("/", function (req, res, next) {
         name: "model.RDS",
       });
     }
+    if (req.body.di_datei) {
+      dateien.push({
+        path: req.body.di_datei,
+        name: "maxDI.geojson",
+      });
+    }
+    if (req.body.aoaDiffernez_datei) {
+      dateien.push({
+        path: req.body.aoaDiffernez_datei,
+        name: "AOADifferenz.tif",
+      });
+    }
     // fs.readFile(req.body.value, function read(err, file) {
     //   if (err) {
     //     throw err;
@@ -143,6 +157,8 @@ router.post("/", function (req, res, next) {
     // console.log("blob:");
     // console.log(blob.files);
     // //saveAs(blob, "hello.zip");
+    console.log("Dateien:");
+    console.log(dateien);
     res.zip(dateien);
   }
 });

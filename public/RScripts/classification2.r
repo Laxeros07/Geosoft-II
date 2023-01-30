@@ -32,7 +32,7 @@ maske_raster <- c(7.55738996178022, 7.64064656833175, 51.9372943715445, 52.00015
 maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.64064656833175, ymax =52.0001517816852)
 baumAnzahl <- NA
 baumTiefe <- NA
-
+algorithmus <- "dt"
 
 ## Ausgabe
 klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
@@ -79,6 +79,22 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
     sep = ""
   ), plot= legend, width = 2, height = 3)
   
+  
+  # Abfrage, ob bereits eine AOA gerechnet wurde
+  AOA_Differenz_nötig <- FALSE
+  if(file.exists(paste(
+    getwd(),
+    "/public/uploads/AOA_klassifikation.tif",
+    sep = ""
+  ))){
+    AOA_Differenz_nötig <- TRUE
+    AOA_klassifikation_alt<- rast(paste(
+      getwd(),
+      "/public/uploads/AOA_klassifikation.tif",
+      sep = ""
+    ))
+  }
+  
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten,modell)
   crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
@@ -94,16 +110,37 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
   # DI Berechnungen
   maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, paste(
+  #terra::writeRaster(maxDI, paste(
+  #  getwd(),
+  #  "/public/uploads/maxDI.tif",
+  #  sep = ""
+  #), overwrite = TRUE)
+  
+  # DI als GeoJSON exportieren
+  maxDIVector <- as.polygons(maxDI)
+  crs(maxDIVector)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeVector(maxDIVector, paste(
     getwd(),
-    "/public/uploads/maxDI.tif",
+    "/public/uploads/maxDI.geojson",
     sep = ""
-  ), overwrite = TRUE)
+  ), filetype="geojson", overwrite = TRUE)
+  
+  # AOA Differenz berechnen
+  if(AOA_Differenz_nötig == TRUE){
+    AOA_klassifikation_alt <- crop(AOA_klassifikation_alt, ext(AOA_klassifikation$AOA))
+    AOA_klassifikation$AOA <- crop(AOA_klassifikation$AOA, ext(AOA_klassifikation_alt))
+    differenz <- AOA_klassifikation$AOA - AOA_klassifikation_alt
+    terra::writeRaster(differenz, paste(
+      getwd(),
+      "/public/uploads/AOADifferenz.tif",
+      sep = ""
+    ), overwrite = TRUE)
+  } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
 }
 
 
 ## Ausgabe
-klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe) {
+klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus) {
   ## Variablen definieren
   predictors <- c(
     "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B10", "B11", "B12")
@@ -118,7 +155,6 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   sf_use_s2(FALSE)
   trainingsdaten2 <- st_make_valid(trainingsdaten)
   trainingsdaten <- st_crop(trainingsdaten2, ext(maske_training))
-  plot(trainingsdaten)
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -129,42 +165,44 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # head(trainingsdaten)
   trainingsdaten$PolyID <- 1:nrow(trainingsdaten)
   extr <<- merge(extr, trainingsdaten, by.x = "ID", by.y = "PolyID")
-  # head(extr)
+   #head(extr)
 
 
   # Modell trainieren
   # nicht alle Daten verwenden um Rechenzeit zu sparen
-  extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
+  # extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
 
   # eventuell Daten limitieren.
   # Verhälnis der Daten aus jedem Trainingsgebiet soll aber gleich bleiben
   # hier:10% aus jedem Trainingsgebiet (see ?createDataPartition)
-  trainIDs <- createDataPartition(extr$ID, p = 0.1, list = FALSE)
-  trainDat <- extr[trainIDs, ]
+  # trainIDs <- createDataPartition(extr$ID, p = 0.1, list = FALSE)
+  # trainDat <- extr[trainIDs, ]
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
-  trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
+  trainDat <- extr[complete.cases(extr[, predictors]), ]
 
-  # Hyperparameter für Modelltraining abfragen
-  if(is.na(baumAnzahl)){
-    baumAnzahl <- 50
+  if(algorithmus == "rf") {
+    # Hyperparameter für Modelltraining abfragen
+    if(is.na(baumAnzahl)){
+      baumAnzahl <- 50
+    }
+    if(is.na(baumTiefe)){
+      baumTiefe <- 100
+    }
+    #### Modelltraining
+    model <- train(trainDat[, predictors],
+      trainDat$Label,
+      method = "rf",
+      importance = TRUE,
+      ntree = baumAnzahl,  # Anzahl der Bäume
+      maxnodes = baumTiefe   # Tiefe der Bäume
+    ) # 50 is quite small (default=500). But it runs faster.
+  } else {
+    model <- train(trainDat[, predictors],
+                   trainDat$Label,
+                   method="rpart", 
+                   trControl = trainControl(method = "cv")   # Classification Tree Algorithmus
+    ) # nicht so gut wie rf Algorithmus
   }
-  if(is.na(baumTiefe)){
-    baumTiefe <- 100
-  }
-  #### Modelltraining
-  model <- train(trainDat[, predictors],
-    trainDat$Label,
-    method = "rf",
-    importance = TRUE,
-    ntree = baumAnzahl,  # Anzahl der Bäume
-    maxnodes = baumTiefe   # Tiefe der Bäume
-  ) # 50 is quite small (default=500). But it runs faster.
-  
-  model <- train(trainDat[, predictors],
-                 trainDat$Label,
-                 method="rpart", 
-                 trControl = trainControl(method = "cv")   # Classification Tree Algorithmus
-  ) # nicht so gut wie rf Algorithmus
   #model
    #saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
   saveRDS(model, "C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-II/public/uploads/modell.RDS")
@@ -186,6 +224,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   prediction_terra <- as(prediction, "SpatRaster")
   farben <- brewer.pal(n = 12, name = "Paired")
   coltab(prediction_terra) <- farben#[0:10]
+  # plot(prediction_terra)
   #coltab(prediction_terra) <- cols
 
   # erste Visualisierung der Klassifikation:
@@ -291,11 +330,20 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # DI Berechnungen
   maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, paste(
+  #terra::writeRaster(maxDI, paste(
+  #  getwd(),
+  #  "/public/uploads/maxDI.tif",
+  #  sep = ""
+  #), overwrite = TRUE)
+  
+  # DI als GeoJSON exportieren
+  maxDIVector <- as.polygons(maxDI)
+  crs(maxDIVector)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeVector(maxDIVector, paste(
     getwd(),
-    "/public/uploads/maxDI.tif",
+    "/public/uploads/maxDI.geojson",
     sep = ""
-  ), overwrite = TRUE)
+  ), filetype="geojson", overwrite = TRUE)
   
   # AOA Differenz berechnen
   if(AOA_Differenz_nötig == TRUE){
@@ -326,4 +374,4 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
 
 # zum Testen der Funktionen
  klassifizierung_mit_Modell(rasterdaten, modell, maske_raster)
- klassifizierung_ohne_Modell(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe)
+ klassifizierung_ohne_Modell(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus)

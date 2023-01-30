@@ -18,7 +18,7 @@ block result
             label.form-check-label(for='flexCheckDefault')
               | Klassifikation
             .form-check
-            input#aoa.form-check-input(type='checkbox' name= "aoa_datei" value='myfiles/AOA_klassifikatoin.tif')
+            input#aoa.form-check-input(type='checkbox' name= "aoa_datei" value='myfiles/AOA_klassifikation.tif')
             label.form-check-label(for='flexCheckChecked')
               | Area of Applicability
             .form-check
@@ -26,9 +26,18 @@ block result
             label.form-check-label(for='flexCheckChecked')
               | Trainingspolygone
             .form-check
-            input#modell.form-check-input(type='checkbox' name="modell_datei" value='modell.RDS')
+            input#modell.form-check-input(type='checkbox' name="modell_datei" value='myfiles/modell.RDS')
             label.form-check-label(for='flexCheckChecked')
               | Modell
+            .form-check
+            input#di.form-check-input(type='checkbox' name="di_datei" value='myfiles/maxDI.geojson')
+            label.form-check-label(for='flexCheckChecked')
+              | Dissimilarity Index
+            .form-check
+            input#aoaDifferenz.form-check-input(type='checkbox' name="aoaDifferenz_datei" value='myfiles/AOADifferenz.tif')
+            label.form-check-label(for='flexCheckChecked')
+              | AOA Differenz 
+              small (nur nach wiederholtem ausführen des Skripts verfügbar)
           p
           button#downloadKnopf.btn.btn-primary.mt-3(type= "submit") Herunterladen
 
