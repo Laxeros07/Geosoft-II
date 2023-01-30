@@ -166,7 +166,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   trainingsdaten$PolyID <- 1:nrow(trainingsdaten)
   extr <<- merge(extr, trainingsdaten, by.x = "ID", by.y = "PolyID")
    #head(extr)
-
+  extr$id
 
   # Modell trainieren
   # nicht alle Daten verwenden um Rechenzeit zu sparen
@@ -212,18 +212,19 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # plot(varImp(model)) # variablenwichtigkeit
 
   # Farbpalette
-  cols <- c(
-    "beige", "sandybrown",
-    "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
-    "deepskyblue4", "forestgreen", "brown", "darkgreen"
-  )
+  #cols <- c(
+  #  "beige", "sandybrown",
+  #  "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
+  #  "deepskyblue4", "forestgreen", "brown", "darkgreen"
+  #)
   # klassifizieren
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), model)#, colors(cols))
   projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   farben <- brewer.pal(n = 12, name = "Paired")
-  coltab(prediction_terra) <- farben#[0:10]
+  coltab(prediction_terra) <- farben[1:12]
+  coltab(prediction_terra)
   # plot(prediction_terra)
   #coltab(prediction_terra) <- cols
 
@@ -270,8 +271,10 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # Prediction Legende exportieren
   legend_plot <- ggplot()+
     geom_spatraster(data=prediction_terra)+
-    scale_fill_manual(values=farben[2:12], na.value=NA)
+    scale_fill_manual(values=farben[1:12], na.value=NA)
+    #scale_fill_manual(values=farben[4:12], na.value=NA)
   legend <- get_legend(legend_plot)
+  ?scale_fill_manual
 
   ggsave(paste(
     getwd(),
@@ -279,7 +282,10 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     sep = ""
   ), plot= legend, width = 2, height = 3)
   
-  
+  plot(prediction_terra)
+  plot(legend_plot)
+  plot(legend)
+  farben
   #plot(prediction_terra)
   #writeRaster(prediction_terra, filename="public/uploads/prediction2.tif", format="GTiff", overwrite=TRUE)
   # library(tmap)
