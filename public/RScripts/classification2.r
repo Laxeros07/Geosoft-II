@@ -79,6 +79,22 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
     sep = ""
   ), plot= legend, width = 2, height = 3)
   
+  
+  # Abfrage, ob bereits eine AOA gerechnet wurde
+  AOA_Differenz_nötig <- FALSE
+  if(file.exists(paste(
+    getwd(),
+    "/public/uploads/AOA_klassifikation.tif",
+    sep = ""
+  ))){
+    AOA_Differenz_nötig <- TRUE
+    AOA_klassifikation_alt<- rast(paste(
+      getwd(),
+      "/public/uploads/AOA_klassifikation.tif",
+      sep = ""
+    ))
+  }
+  
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten,modell)
   crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
@@ -94,11 +110,32 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
   # DI Berechnungen
   maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, paste(
+  #terra::writeRaster(maxDI, paste(
+  #  getwd(),
+  #  "/public/uploads/maxDI.tif",
+  #  sep = ""
+  #), overwrite = TRUE)
+  
+  # DI als GeoJSON exportieren
+  maxDIVector <- as.polygons(maxDI)
+  crs(maxDIVector)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeVector(maxDIVector, paste(
     getwd(),
-    "/public/uploads/maxDI.tif",
+    "/public/uploads/maxDI.geojson",
     sep = ""
-  ), overwrite = TRUE)
+  ), filetype="geojson", overwrite = TRUE)
+  
+  # AOA Differenz berechnen
+  if(AOA_Differenz_nötig == TRUE){
+    AOA_klassifikation_alt <- crop(AOA_klassifikation_alt, ext(AOA_klassifikation$AOA))
+    AOA_klassifikation$AOA <- crop(AOA_klassifikation$AOA, ext(AOA_klassifikation_alt))
+    differenz <- AOA_klassifikation$AOA - AOA_klassifikation_alt
+    terra::writeRaster(differenz, paste(
+      getwd(),
+      "/public/uploads/AOADifferenz.tif",
+      sep = ""
+    ), overwrite = TRUE)
+  } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
 }
 
 
@@ -291,11 +328,20 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # DI Berechnungen
   maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, paste(
+  #terra::writeRaster(maxDI, paste(
+  #  getwd(),
+  #  "/public/uploads/maxDI.tif",
+  #  sep = ""
+  #), overwrite = TRUE)
+  
+  # DI als GeoJSON exportieren
+  maxDIVector <- as.polygons(maxDI)
+  crs(maxDIVector)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeVector(maxDIVector, paste(
     getwd(),
-    "/public/uploads/maxDI.tif",
+    "/public/uploads/maxDI.geojson",
     sep = ""
-  ), overwrite = TRUE)
+  ), filetype="geojson", overwrite = TRUE)
   
   # AOA Differenz berechnen
   if(AOA_Differenz_nötig == TRUE){
