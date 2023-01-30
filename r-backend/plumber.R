@@ -104,6 +104,8 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   # trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
   trainDat <- extr[complete.cases(extr[, predictors]), ]
 
+  print(algorithmus)
+  print(class(algorithmus))
   if(algorithmus == "rf") {
     # Hyperparameter für Modelltraining abfragen
     if (is.na(baumAnzahl)) {
