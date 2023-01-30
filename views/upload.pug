@@ -60,10 +60,10 @@ block content
                             #rfAttribute
                                 label.col-form-label(for="anzahl")
                                     |Anzahl der Bäume für random forest: 
-                                input.form-control(name="anzahl" type="number" min="1" max="1000" step="1")
+                                input#baumAnzahl.form-control(name="anzahl" min="1" max="1000" step="1")
                                 label.col-form-label(for="tiefe")
                                     |Tiefe der Bäume für random forest: 
-                                input.form-control(name="tiefe" type="number" min="1" max="1000" step="1")
+                                input#baumTiefe.form-control(name="tiefe" min="1" max="1000" step="1")
                         label.col-form-label(for='bb') Boundingbox
                         textarea#bb.form-control.disabled(name="bb" readonly="readonly" style="font-size: 0.8rem")
                         input#idInput(name="id" style="display:none") 
