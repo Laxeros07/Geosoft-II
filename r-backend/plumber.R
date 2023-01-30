@@ -176,7 +176,12 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   # DI Berechnungen
   maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, "myfiles/maxDI.tif", overwrite = TRUE)
+  # terra::writeRaster(maxDI, "myfiles/maxDI.tif", overwrite = TRUE)
+
+  # DI als GeoJSON exportieren
+  maxDIVector <- as.polygons(maxDI)
+  crs(maxDIVector)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeVector(maxDIVector, "myfiles/maxDI.geojson", filetype="geojson", overwrite = TRUE)
 
   # AOA Differenz berechnen
   if (AOA_Differenz_nötig == TRUE) {
@@ -278,7 +283,12 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
   # DI Berechnungen
   maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeRaster(maxDI, "myfiles/maxDI.tif", overwrite = TRUE)
+  # terra::writeRaster(maxDI, "myfiles/maxDI.tif", overwrite = TRUE)
+
+  # DI als GeoJSON exportieren
+  maxDIVector <- as.polygons(maxDI)
+  crs(maxDIVector)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeVector(maxDIVector, "myfiles/maxDI.geojson", filetype="geojson", overwrite = TRUE)
 
   # AOA Differenz berechnen
   if (AOA_Differenz_nötig == TRUE) {
