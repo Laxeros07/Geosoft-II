@@ -37,6 +37,14 @@ function downloadZip(e) {
     formData.append("modell_datei", modell.value);
     data["modell_datei"] = modell.value;
   }
+  if (di.checked == true) {
+    formData.append("di_datei", di.value);
+    data["di_datei"] = di.value;
+  }
+  if (aoaDifferenz.checked == true) {
+    formData.append("aoaDiffernez_datei", aoaDifferenz.value);
+    data["aoaDiffernez_datei"] = aoaDifferenz.value;
+  }
 
   console.log(data);
 
