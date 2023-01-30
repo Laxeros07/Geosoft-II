@@ -1,7 +1,7 @@
 var rasterLayer;
 var klassifikationLayer;
 var aoaLayer;
-var trainingspolygone;
+var geojsonLayer;
 
 function addGeoJSONToMap(url) {
   // this requests the file and executes a callback with the parsed result once it is available
@@ -22,7 +22,10 @@ function addGeoJSONToMap(url) {
       // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
       // Farbe zuvor gespeicherte Farbe zugeordnet
       data.features.forEach((element) => {
-        if (element.properties.Label == label) {
+        if (
+          element.properties.Label == label &&
+          element.geometry.coordinates.length != 0
+        ) {
           layerArray.push(
             L.geoJSON(element, {
               style: {
@@ -33,13 +36,17 @@ function addGeoJSONToMap(url) {
                 fillOpacity: 0.65,
               },
             }).bindPopup(function (layer) {
-              return layer.feature.properties.Label;
+              let text =
+                "<b>ClassID:</b> " + layer.feature.properties.ClassID + "<br>";
+              text += "<b>Label:</b> " + layer.feature.properties.Label;
+              return text;
             })
           );
         }
       });
     }
     let group = L.layerGroup(layerArray).addTo(map);
+    geojsonLayer = layerArray;
     layerControl.addOverlay(group, "Trainingspolygone");
   });
 }

@@ -115,6 +115,10 @@ dd {
   background-color: white;
 }
 
+.darkMode .table-primary {
+  background-color: white
+}
+/*
 [data-theme="dark"] {
   background-color: #111 !important;
   color: #eee;

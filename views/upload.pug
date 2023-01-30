@@ -28,8 +28,12 @@ block content
                             |laden:
                             input#modelFiles.form-control.mt-2(type='file' name='daten' accept=".RDS")
                         button#modellHochladen.btn.btn-primary.my-2(type='submit') Hochladen
-                    button#trainingsdaten.btn.btn-primary.my-2.mx-1(onclick='hideTrainingsdatenForm()') Ich möchte Trainingspolygone hochladen
-                    button#modell.btn.btn-primary.my-2.mx-1(onclick='hideModellForm()') Ich möchte ein Modell hochladen                    
+                    button#trainingsdaten.btn.btn-primary.my-2.mx-1(onclick='hideTrainingsdatenForm()')
+                        img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconUploadgruen.svg" width="30" height="30")
+                        text  Ich möchte Trainingspolygone hochladen
+                    button#modell.btn.btn-primary.my-2.mx-1(onclick='hideModellForm()') 
+                        img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconUploadgruen.svg" width="30" height="30")
+                        text  Ich möchte ein Modell hochladen                    
         .col-lg-4.col-xs-12.mb-3
             .card.shadow.p-4.h-100
                 h3 Rasterdaten
@@ -45,7 +49,9 @@ block content
                                 b B02, B03, B04, B05, B06, B07, B08, B8A, B09, B10, B11, B12.
                             label.col-form-label(for='daten') Rasterdaten laden
                             input#rasterdatenFiles.form-control(type='file' name="daten" accept=".tif")
-                        button#rasterdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
+                        button#rasterdatenHochladen.btn.btn-primary.my-2(type='submit') 
+                            img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconUploadgruen.svg" width="30" height="30")
+                            text     Hochladen
         .col-lg-4.col-xs-12.mb-3
             .card.shadow.p-4.h-100
                 h3 Klassifizierung
@@ -67,7 +73,9 @@ block content
                         label.col-form-label(for='bb') Boundingbox
                         textarea#bb.form-control.disabled(name="bb" readonly="readonly" style="font-size: 0.8rem")
                         input#idInput(name="id" style="display:none") 
-                        button#skript.btn.btn-primary.my-2 Skript ausführen
+                        button#skript.btn.btn-primary.my-2 
+                            img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconPlayGruen.svg" width="30" height="30")
+                            text     Skript ausführen
                         p
                             small#small Es müssen zunächst Trainingdaten oder ein trainiertes Modell und Rasterdaten hochgeladen werden.
 
