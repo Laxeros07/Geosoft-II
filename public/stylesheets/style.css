@@ -149,7 +149,7 @@ dd {
 
 /*Legend specific*/
 
-.leaflet-control{
+.leaflet-control {
   background: white;
   background: rgba(255, 255, 255, 0.8);
 }
@@ -241,7 +241,12 @@ dd {
   position: inherit;
 }
 
-.disabled{
+.disabled {
   background-color: rgb(233, 236, 239) !important;
   color: rgb(33, 37, 41) !important;
+}
+.input-error {
+  outline: 1px solid red !important;
+  border-color: red !important;
+  box-shadow: 0 0 0 0.25rem hsla(0, 100%, 50%, 0.288) !important;
 }
