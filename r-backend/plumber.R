@@ -106,6 +106,8 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
 
+  print(algorithmus)
+  print(class(algorithmus))
   if(algorithmus == "rf") {
     # Hyperparameter für Modelltraining abfragen
     if (is.na(baumAnzahl)) {

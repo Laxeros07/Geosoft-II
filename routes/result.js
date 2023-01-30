@@ -76,11 +76,18 @@ router.post("/", function (req, res, next) {
         }
         break;
     }
-    if (req.body.anzahl != "" && req.body.id == "trainingsdaten") {
-      url += "baumAnzahl=" + req.body.anzahl + "&";
-    }
-    if (req.body.tiefe != "" && req.body.id == "trainingsdaten") {
-      url += "baumTiefe=" + req.body.tiefe;
+    if (req.body.algorithmus == "rf") {
+      // Random Forest
+      if (req.body.anzahl != "" && req.body.id == "trainingsdaten") {
+        url += "baumAnzahl=" + req.body.anzahl + "&";
+      }
+      if (req.body.tiefe != "" && req.body.id == "trainingsdaten") {
+        url += "baumTiefe=" + req.body.tiefe + "&";
+      }
+      url += "algorithmus='rf'";
+    } else {
+      // Decision Tree
+      url += "algorithmus='dt'";
     }
 
     console.log("URL:");
