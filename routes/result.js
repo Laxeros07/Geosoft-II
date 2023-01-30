@@ -132,6 +132,18 @@ router.post("/", function (req, res, next) {
         name: "model.RDS",
       });
     }
+    if (req.body.di_datei) {
+      dateien.push({
+        path: req.body.di_datei,
+        name: "maxDI.geojson",
+      });
+    }
+    if (req.body.aoaDiffernez_datei) {
+      dateien.push({
+        path: req.body.aoaDiffernez_datei,
+        name: "AOADifferenz.tif",
+      });
+    }
     // fs.readFile(req.body.value, function read(err, file) {
     //   if (err) {
     //     throw err;
