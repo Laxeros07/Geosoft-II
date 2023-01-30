@@ -156,7 +156,6 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   sf_use_s2(FALSE)
   trainingsdaten2 <- st_make_valid(trainingsdaten)
   trainingsdaten <- st_crop(trainingsdaten2, ext(maske_training))
-  plot(trainingsdaten)
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -167,20 +166,20 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   # head(trainingsdaten)
   trainingsdaten$PolyID <- 1:nrow(trainingsdaten)
   extr <<- merge(extr, trainingsdaten, by.x = "ID", by.y = "PolyID")
-  # head(extr)
+   head(extr)
 
 
   # Modell trainieren
   # nicht alle Daten verwenden um Rechenzeit zu sparen
-  extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
+  # extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
 
   # eventuell Daten limitieren.
   # Verhälnis der Daten aus jedem Trainingsgebiet soll aber gleich bleiben
   # hier:10% aus jedem Trainingsgebiet (see ?createDataPartition)
-  trainIDs <- createDataPartition(extr$ID, p = 0.1, list = FALSE)
-  trainDat <- extr[trainIDs, ]
+  # trainIDs <- createDataPartition(extr$ID, p = 0.1, list = FALSE)
+  # trainDat <- extr[trainIDs, ]
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
-  trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
+  trainDat <- extr[complete.cases(extr[, predictors]), ]
 
   if(algorithmus == "rf") {
     # Hyperparameter für Modelltraining abfragen

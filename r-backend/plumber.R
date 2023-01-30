@@ -87,24 +87,22 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
 
   # Daten mergen
   extr <<- extract(rasterdaten, trainingsdaten)
-  # head(extr)
-  # head(trainingsdaten)
   trainingsdaten$PolyID <- 1:nrow(trainingsdaten)
   extr <<- merge(extr, trainingsdaten, by.x = "ID", by.y = "PolyID")
-  # head(extr)
 
 
   # Modell trainieren
   # nicht alle Daten verwenden um Rechenzeit zu sparen
-  extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
+  # extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
 
   # eventuell Daten limitieren.
   # Verhälnis der Daten aus jedem Trainingsgebiet soll aber gleich bleiben
   # hier:10% aus jedem Trainingsgebiet (see ?createDataPartition)
-  trainIDs <- createDataPartition(extr$ID, p = 0.1, list = FALSE)
-  trainDat <- extr[trainIDs, ]
+  # trainIDs <- createDataPartition(extr$ID, p = 0.1, list = FALSE)
+  # trainDat <- extr[trainIDs, ]
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
-  trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
+  # trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
+  trainDat <- extr[complete.cases(extr[, predictors]), ]
 
   if(algorithmus == "rf") {
     # Hyperparameter für Modelltraining abfragen
