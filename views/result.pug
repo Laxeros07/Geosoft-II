@@ -29,6 +29,15 @@ block result
             input#modell.form-check-input(type='checkbox' name="modell_datei" value='myfiles/modell.RDS')
             label.form-check-label(for='flexCheckChecked')
               | Modell
+            .form-check
+            input#di.form-check-input(type='checkbox' name="di_datei" value='myfiles/maxDI.geojson')
+            label.form-check-label(for='flexCheckChecked')
+              | Dissimilarity Index
+            .form-check
+            input#aoaDifferenz.form-check-input(type='checkbox' name="aoaDifferenz_datei" value='myfiles/AOADifferenz.tif')
+            label.form-check-label(for='flexCheckChecked')
+              | AOA Differenz 
+              small (nur nach wiederholtem ausführen des Skripts verfügbar)
           p
           button#downloadKnopf.btn.btn-primary.mt-3(type= "submit") Herunterladen
 

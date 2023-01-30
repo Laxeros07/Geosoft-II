@@ -1,10 +1,12 @@
 var rasterLayer;
 var klassifikationLayer;
 var aoaLayer;
+var trainingspolygone;
 
 function addGeoJSONToMap(url) {
   // this requests the file and executes a callback with the parsed result once it is available
   fetchJSONFile(url, function (data) {
+    trainingspolygone = data;
     // Die verschiedenen Labels werden in einem Set gespeichert
     let labels = new Set();
     data.features.forEach((element) => {
