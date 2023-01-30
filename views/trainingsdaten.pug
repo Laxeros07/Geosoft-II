@@ -12,24 +12,21 @@ block bearbeiten
         .col-lg-12.col-sm-4.flex-xs-row.gx-1.d-grid.gap-1
           .card.shadow.p-2
             .card-body
-              text Algorithmus auswählen: 
-              a.btn.btn-primary.dropdown-toggle(type='button' data-bs-toggle='dropdown' aria-expanded='false')
-                text Random Forest
-              ul.dropdown-menu
-                li
-                  a.dropdown-item(href='#') Descicion Tree
-                li
-                  a.dropdown-item(href='#') Another action
-              
-              form(method='post' action='result')
-                  form-group
-                      #baeume
-                          label.col-form-label(for="anzahl")
-                              |Anzahl der Bäume für random forest: 
-                          input.form-control(name="anzahl" type="number" min="0" max="1000" step="1")
-                          label.col-form-label(for="tiefe")
-                              |Tiefe der Bäume für random forest: 
-                          input.form-control(name="tiefe" type="number" min="0" max="1000" step="1")
+              form(method='post' action='result').mb-2
+                    form-group
+                        #algorithmusDiv
+                            label.col-form-label(for="algorithmus")
+                                |Algorithmus auswählen:
+                            select#algorithmus.form-select(name="algorithmus")
+                                option(value="rf") Random Forest
+                                option(value="dt") Decision Tree
+                            #rfAttribute
+                                label.col-form-label(for="anzahl")
+                                    |Anzahl der Bäume für random forest: 
+                                input.form-control(name="anzahl" type="number" min="1" max="1000" step="1")
+                                label.col-form-label(for="tiefe")
+                                    |Tiefe der Bäume für random forest: 
+                                input.form-control(name="tiefe" type="number" min="1" max="1000" step="1")
             
               a.btn.btn-primary(type='submit')(method='post' action='result')
                 img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconPlayGruen.svg" width="30" height="30")
@@ -39,7 +36,8 @@ block bearbeiten
               a.btn.btn-primary(onclick='geojsonExport()')(method='post' action='result') 
                 img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconDownloadGruen.svg" width="30" height="30")
                 text     Dateien herunterladen
-              //a.btn.btn-primary(type="submit")(action="result/trainingsdaten" method="post") Bearbeiten
+          
+          //a.btn.btn-primary(type="submit")(action="result/trainingsdaten" method="post") Bearbeiten
             
         .col-lg-12.col-sm-8.flex-xs-row.gx-1.d-grid.gap-1
           .card.shadow.p-2
