@@ -12,6 +12,11 @@ block bearbeiten
         .col-lg-12.col-sm-4.flex-xs-row.gx-1.d-grid.gap-1
           .card.shadow.p-2
             .card-body
+              a.btn.btn-primary(onclick='geojsonExport()')(method='post' action='result') 
+                img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconDownloadGruen.svg" width="30" height="30")
+                text     Dateien herunterladen
+          .card.shadow.p-2
+            .card-body
               form(method='post' action='result').mb-2
                     form-group
                         #algorithmusDiv
@@ -31,15 +36,11 @@ block bearbeiten
               a.btn.btn-primary(type='submit')(method='post' action='result')
                 img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconPlayGruen.svg" width="30" height="30")
                 text     Skript ausführen
-          .card.shadow.p-2
-            .card-body
-              a.btn.btn-primary(onclick='geojsonExport()')(method='post' action='result') 
-                img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconDownloadGruen.svg" width="30" height="30")
-                text     Dateien herunterladen
+          
           
           //a.btn.btn-primary(type="submit")(action="result/trainingsdaten" method="post") Bearbeiten
             
-        .col-lg-12.col-sm-8.flex-xs-row.gx-1.d-grid.gap-1
+        .col-lg-12.col-sm-8.gx-1
           .card.shadow.p-2
             .card-body 
               table#tabelle.table.table-light.table-striped.table-hover.table-sm
