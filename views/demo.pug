@@ -11,7 +11,9 @@ block content
                 p Die Demoseite soll Usern einmal ein Beispiel der Anwendung des AOA bieten. Über den Button "Klassifizieren" lässt sich eine beispielhafte Klassifizierung ausführen.
                 form(action="demo/result" method="post")
                     form-group
-                        button#klassifizieren.btn.btn-primary.my-2(type="submit") Klassifizieren
+                        button#klassifizieren.btn.btn-primary.my-2(type="submit")
+                            img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconResult.svg" width="30" height="30")
+                            text   Klassifizieren 
         .col-lg-8.col-xs-12.mb-3
             .card.shadow.p-4
                 .leaflet-container#map
