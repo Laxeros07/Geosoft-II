@@ -44,7 +44,7 @@ addPredictionAndAoaToMap(
 
 //Legende
 
-/*Legend specific*/
+// AoA
 var legend = L.control({ position: "bottomleft" });
 
 legend.onAdd = function () {
@@ -57,6 +57,7 @@ legend.onAdd = function () {
 
 legend.addTo(map);
 
+// Klassifizierung
 var legend2 = L.control({ position: "bottomleft" });
 
 legend2.onAdd = function () {
