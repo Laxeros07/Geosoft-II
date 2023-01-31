@@ -69,7 +69,7 @@ html
 
       .container.m-3.px-2
         .row
-          .col-sm
+          .col-sm.text-start
             h5.text-uppercase Links
             ul.list-unstyled.mb-0
               li
@@ -77,17 +77,17 @@ html
               li
                 a.link1.text-muted.text-decoration-none(href='/team') Team
 
-          .col-sm
-            img.logo.sm.m-2(src='/images/spaceylogo.png')
-          .col-sm
+            
+          .col-sm.col-lg-8.text-center
             p.form-check.form-switch
               input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
               label.form-check-label(for='switchDark') Darkmode
               script(src='/javascripts/darkmode.js' )
-            p.form-check.form-switch(style="display:none")
+            //p.form-check.form-switch(style="display:none")
               input#switchColor.form-check-input(type='checkbox' role='switch')
               label.form-check-label(for='switchColor') Colorblindmode
-          .col-sm
+            img.logo.sm.m-2(src='/images/spaceylogo.png')
+          .col-sm.text-end
             div
               a.me-4.text-reset(href='https://github.com/Laxeros07/Geosoft-II')
                 i.bi.bi-github
