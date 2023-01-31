@@ -74,6 +74,9 @@ legend2.onAdd = function () {
 
 legend2.addTo(map);
 
+var downloadKnopf = document.getElementById("downloadKnopf");
+downloadKnopf.addEventListener("click", (event) => downloadZip(event));
+
 function downloadZip(e) {
   e.preventDefault();
   let data = {};
