@@ -69,66 +69,10 @@ function downloadZip(e) {
       var binaryData = [];
       binaryData.push(blob);
       downloadBlob(binaryData, "test.zip");
-
-      //   console.log(blob);
-      //   blob.generateAsync({ type: "blob" }).then(
-      //     function (blob) {
-      //       // 1) generate the zip file
-      //       saveAs(blob, "Area_Of_Aplicability.zip"); // 2) trigger the download
-      //     }
-      //     // function (err) {
-      //     //   jQuery("#blob").text(err);
-      //     // }
-      //   );
     });
 }
 
-// import JSZip from "jszip";
-
-// const downloadKnopf = document.getElementById("download");
-// const downloadForm = document.getElementById("download_form");
-
-// function urlToPromise(url) {
-//   return new Promise(function (resolve, reject) {
-//     JSZipUtils.getBinaryContent(url, function (err, data) {
-//       if (err) {
-//         reject(err);
-//       } else {
-//         resolve(data);
-//       }
-//     });
-//   });
-// }
-
-// $("#download_form").on("submit", function () {
-//   var zip = new JSZip();
-
-//   // find every checked item
-//   $(this)
-//     .find(":checked")
-//     .each(function () {
-//       var $this = $(this);
-//       var url = $this.data("url");
-//       var filename = url.replace(/.*\//g, "");
-//       zip.file(filename, urlToPromise(url), { binary: true });
-//     });
-
-//   // when everything has been downloaded, we can trigger the dl
-//   zip
-//     .generateAsync({ type: "blob" }, function updateCallback(metadata) {
-//       var msg = "progression : " + metadata.percent.toFixed(2) + " %";
-//       if (metadata.currentFile) {
-//         msg += ", current file = " + metadata.currentFile;
-//       }
-//     })
-//     .then(function callback(blob) {
-//       // see FileSaver.js
-//       saveAs(blob, "example.zip");
-//     });
-
-//   return false;
-// });
-
+// Wandelt Daten in ein Blob um, damit diese im Brwoser heruntergeladen werden können
 function downloadBlob(binaryData, filename) {
   // Create an object URL for the blob object
   const url = URL.createObjectURL(
