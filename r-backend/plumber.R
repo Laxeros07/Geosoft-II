@@ -155,6 +155,7 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   prediction_terra <- as(prediction, "SpatRaster")
   farben <- brewer.pal(n = 12, name = "Paired")
   coltab(prediction_terra) <- farben # [0:10]
+  print(farben)
 
   terra::writeRaster(prediction_terra, "myfiles/prediction.tif", overwrite = TRUE)
 

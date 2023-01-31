@@ -40,7 +40,7 @@ app.use("/demo", demoRouter);
 app.use("/impressum", impressumRouter);
 app.use("/handbuch", handbuchRouter);
 app.use("/team", teamRouter);
-app.use("/result/bearbeiten", bearbeitenRouter);
+app.use("/bearbeiten", bearbeitenRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

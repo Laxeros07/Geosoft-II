@@ -53,7 +53,7 @@ block bearbeiten
 
           .card.shadow
             .card-body
-              form(method='post' action='result').mb-2
+              form(method='post' action='/result').mb-2
                 form-group
                   #algorithmusDiv
                     label.col-form-label(for="algorithmus")
@@ -68,7 +68,7 @@ block bearbeiten
                       label.col-form-label(for="tiefe")
                         |Tiefe der Bäume für random forest: 
                       input#baumTiefe.form-control(name="tiefe" min="1" max="1000" step="1")
-                    a#skriptAusfuehren.btn.btn-primary.col-12.mt-2(type='submit')
+                    button#skriptAusfuehren.btn.btn-primary.col-12.mt-2(type='submit')
                       img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconPlayGruen.svg" width="30" height="30")
                       text     Skript ausführen
 
