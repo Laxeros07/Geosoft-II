@@ -8,11 +8,6 @@
   "features": [
     {
       "type": "Feature",
-      "properties": { "id": 1, "ClassID": 1, "Label": "Laubwald" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
       "properties": { "id": 2, "ClassID": 1, "Label": "Laubwald" },
       "geometry": {
         "type": "MultiPolygon",
@@ -37,11 +32,6 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": 3, "ClassID": 1, "Label": "Laubwald" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
       "properties": { "id": 4, "ClassID": 1, "Label": "Siedlung" },
       "geometry": {
         "type": "MultiPolygon",
@@ -60,11 +50,6 @@
           ]
         ]
       }
-    },
-    {
-      "type": "Feature",
-      "properties": { "id": 5, "ClassID": 1, "Label": "Siedlung" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
     },
     {
       "type": "Feature",
@@ -88,11 +73,6 @@
           ]
         ]
       }
-    },
-    {
-      "type": "Feature",
-      "properties": { "id": 7, "ClassID": 3, "Label": "Mischwald" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
     },
     {
       "type": "Feature",
@@ -181,21 +161,7 @@
         ]
       }
     },
-    {
-      "type": "Feature",
-      "properties": { "id": 11, "ClassID": 5, "Label": "Gruenland" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "id": 12, "ClassID": 5, "Label": "Gruenland" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "id": 13, "ClassID": 5, "Label": "Gruenland" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
+
     {
       "type": "Feature",
       "properties": { "id": 14, "ClassID": 5, "Label": "Gruenland" },
@@ -228,11 +194,7 @@
         ]
       }
     },
-    {
-      "type": "Feature",
-      "properties": { "id": 15, "ClassID": 6, "Label": "Acker_bepflanzt" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
+
     {
       "type": "Feature",
       "properties": { "id": 16, "ClassID": 6, "Label": "Acker_bepflanzt" },
@@ -271,11 +233,7 @@
         ]
       }
     },
-    {
-      "type": "Feature",
-      "properties": { "id": 18, "ClassID": 6, "Label": "Acker_bepflanzt" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
+
     {
       "type": "Feature",
       "properties": { "id": 19, "ClassID": 6, "Label": "Acker_bepflanzt" },
@@ -584,11 +542,7 @@
         ]
       }
     },
-    {
-      "type": "Feature",
-      "properties": { "id": 31, "ClassID": 16, "Label": "Fliessgewaesser" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
+
     {
       "type": "Feature",
       "properties": { "id": 32, "ClassID": 17, "Label": "See" },
@@ -638,31 +592,6 @@
     },
     {
       "type": "Feature",
-      "properties": { "id": 34, "ClassID": 17, "Label": "See" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "id": 35, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "id": 36, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "id": 37, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "id": 38, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
       "properties": { "id": 39, "ClassID": 19, "Label": "Offenboden" },
       "geometry": {
         "type": "MultiPolygon",
@@ -692,11 +621,6 @@
           ]
         ]
       }
-    },
-    {
-      "type": "Feature",
-      "properties": { "id": 40, "ClassID": 19, "Label": "Offenboden" },
-      "geometry": { "type": "MultiPolygon", "coordinates": [] }
     }
   ]
 }

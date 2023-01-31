@@ -25,6 +25,7 @@ router.post("/", function (req, res, next) {
     switch (req.body.id) {
       case "trainingsdaten":
         url += "result?";
+        url += "datenanteil=" + req.body.reduzieren + "&";
         if (bbSplit != "") {
           //Boundingbox
           url +=
@@ -41,6 +42,7 @@ router.post("/", function (req, res, next) {
         break;
       case "modell":
         url += "resultModell?";
+        url += "datenanteil=" + req.body.reduzieren + "&";
         if (bbSplit != "") {
           //Boundingbox
           url +=
