@@ -38,6 +38,11 @@ html
         a.navbar-brand(href='/') 
           img.img-fluid.rounded.me-1.d-inline-block.align-text-top(src="/images/IconDonkey.svg" width="50" height="50") 
         a.navbar-brand(href='/') Apollo 13  
+        #countdown(style="color: white; font-size: 23px;")
+          b Countdown:
+          span#hours
+          span#minutes 
+          span#seconds
         button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
           span.navbar-toggler-icon
         #navbarSupportedContent.collapse.navbar-collapse
@@ -103,4 +108,5 @@ html
 
     // Bootstrap core JS
     script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js')
+    script(src="javascripts/zeit.js")
 
