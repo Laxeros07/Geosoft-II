@@ -25,7 +25,7 @@ Wenn die Anwendung mit Docker gestartet werden soll, nutzen Sie bitte das feliox
 
 # Lizenz
 
-Unsere Software folgt den Open Source Prinzipien und unterliegt der ISC Lizenz. Nutzern ist es erlaubt, die Software zu verwenden und zu bearbeiten, solange sie uns per Copyright Trademark angeben. Mehr Informationen dazu [hier](https://opensource.org/licenses/ISC)
+Unsere Software folgt den Open Source Prinzipien und unterliegt der MIT Lizenz. Nutzern ist es erlaubt, die Software zu verwenden und zu bearbeiten, solange sie uns per Copyright Trademark angeben. Mehr Informationen dazu [hier](https://opensource.org/licenses/MIT)
 
 Viel Erfolg beim Klassifizieren!
 
