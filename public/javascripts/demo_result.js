@@ -45,6 +45,7 @@ addPredictionAndAoaToMap(
   "../beispieldaten/prediction.tif",
   "../beispieldaten/AOA_klassifikation.tif"
 );
+addDIToMap("../beispieldaten/maxDI.geojson");
 
 //Legende
 

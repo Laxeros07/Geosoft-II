@@ -30,5 +30,7 @@ addPredictionAndAoaToMap(
   "http://localhost:3000/AOA_klassifikation.tif"
 );
 addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
+addDIToMap("http://localhost:3000/maxDI.geojson");
+addAoaDifToMap("http://localhost:3000/AOADifferenz.tif");
 
 map.createPane("labels");
