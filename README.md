@@ -58,12 +58,21 @@ Unter anderem wird auf der Seite auch der Dissimliartiy Index angegeben. An dies
 
 ## 5.1 Results bearbeiten 
 Falls ihr mit dem Ergebnis so noch nicht zu frieden seid, könnt ihr in desem Bereich die Trainingspolygone bearbeiten oder an fehlenden Stellen ergänzen.
-
-
-
+Nach dem dies geschehen ist, müssen die Daten hochgeladen werden, damit die Klassifizierung anschließend noch einmal durchgeführt werden kann.
 
 
 ## Output 
+Als Output stehen nachher..
+*Klassifikation
+*Area of Applicability
+*Trainingspolygone
+*Modell
+*Dissimilarity Index
+*AOA Differenz 
+Zur Verfügung 
+
+![grafik](https://user-images.githubusercontent.com/102729357/215838001-53eaaeb5-31b7-4b1d-bf84-f4fbf2593af6.png)
+
 
 
 # Lizenz
