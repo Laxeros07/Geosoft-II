@@ -38,7 +38,14 @@ block bearbeiten
                 a.btn.btn-primary(onclick='geojsonExport()')
                   img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconDownloadGruen.svg" width="30" height="30")
                   text     Dateien herunterladen
-
+      
+          .card.shadow
+            .card-body
+              form.d-grid.gap-2.col-12.mx-auto(method='post' action='result')
+                a.btn.btn-primary(onclick='geojsonExport()')
+                  img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconUploadGruen.svg" width="30" height="30")
+                  text     Neue Polygone Hochladen
+       
           .card.shadow
             .card-body
               form(method='post' action='result').mb-2
