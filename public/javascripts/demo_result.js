@@ -45,6 +45,7 @@ addPredictionAndAoaToMap(
   "../beispieldaten/prediction.tif",
   "../beispieldaten/AOA_klassifikation.tif"
 );
+addDIToMap("../beispieldaten/maxDI.geojson");
 
 //Legende
 
@@ -74,6 +75,9 @@ legend2.onAdd = function () {
 
 legend2.addTo(map);
 
+var downloadKnopf = document.getElementById("downloadKnopf");
+downloadKnopf.addEventListener("click", (event) => downloadZip(event));
+
 function downloadZip(e) {
   e.preventDefault();
   let data = {};
@@ -93,7 +97,7 @@ function downloadZip(e) {
     .then(function (blob) {
       var binaryData = [];
       binaryData.push(blob);
-      downloadBlob(binaryData, "test.zip");
+      downloadBlob(binaryData, "Beispieldaten.zip");
     });
 }
 

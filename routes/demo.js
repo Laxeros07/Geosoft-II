@@ -33,6 +33,10 @@ router.post("/", function (req, res, next) {
     path: "beispieldaten/maxDI.geojson",
     name: "maxDI.geojson",
   });
+  dateien.push({
+    path: "beispieldaten/AOADifferenz.tif",
+    name: "maxDI.geojson",
+  });
 
   console.log("Dateien:");
   console.log(dateien);

@@ -9,6 +9,9 @@ block content
                 p Um die Klassifizierung anzupassen, wird es außerhalb der Demoversion die Möglichkeit geben die vorhandenen Trainingspolygone zu bearbeiten. 
                 p Die .tif Datei kann man nach der Durchführung auch lokal auf dem Gerät speichern.
                 p Es kann bis zu 1 Minute dauern, bis die Ursprungs-Rasterdaten auf der Karte angezeigt werden. Die restlichen Daten sollten aber bereits sichtbar sein.
+                button#downloadKnopf.btn.btn-primary.mt-3(type= "click") 
+                    img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconDownloadGruen.svg" width="30" height="30")
+                    text    Herunterladen
         .col-lg-8.col-xs-12.mb-3
             .card.text-dark.shadow.p-4
                 .leaflet-container#map
@@ -19,7 +22,7 @@ block content
         document.querySelectorAll(".nav-link")[3].classList.add("active");
 
     // Leaflet
-    
+
     script(src="https://unpkg.com/georaster") 
     script(src="https://unpkg.com/georaster-layer-for-leaflet") 
     script(src='/javascripts/leaflet.js')

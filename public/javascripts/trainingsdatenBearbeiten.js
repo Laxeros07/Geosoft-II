@@ -7,6 +7,8 @@ addPredictionAndAoaToMap(
   "http://localhost:3000/prediction.tif",
   "http://localhost:3000/AOA_klassifikation.tif"
 );
+addDIToMap("http://localhost:3000/maxDI.geojson");
+addAoaDifToMap("http://localhost:3000/maxDI.geojson");
 
 var LeafIcon = L.Icon.extend({
   options: {
