@@ -25,6 +25,9 @@ Mit npm install und npm start können Sie die Website auf dem localhost:3000 err
 Wenn die Anwendung mit Docker gestartet werden soll, nutzen Sie bitte das felioxx/geosoft2image, welches Sie mit docker pull laden können, und starten Sie mit docker compose up (auch unter Rechtsklick auf die docker-compose.yml Datei).
 
 # Workflow
+## Installation Schritt 1: Willst du Trainingspolygone oder ein Fertiges Model hochladen?
+![grafik](https://user-images.githubusercontent.com/102729357/215824118-e502d007-78ea-4be7-880f-98bc749df30f.png)
+
 
 # Lizenz
 
