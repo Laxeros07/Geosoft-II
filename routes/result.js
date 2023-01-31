@@ -89,7 +89,7 @@ router.post("/", function (req, res, next) {
       if (err) {
         return console.log(err);
       }
-      res.render("http://localhost:3000/result", { title: "Result" });
+      res.render("result", { title: "Result" });
     });
   } else if (req.body.type == "FeatureCollection") {
     const jsonData = req.body;
