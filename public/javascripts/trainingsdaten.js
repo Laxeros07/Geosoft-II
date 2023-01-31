@@ -42,8 +42,23 @@ modellForm.addEventListener("submit", submitFormM);
 // Trainingsdaten:
 // Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
 // Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
-trainingsdatenFiles.addEventListener("change", () => {
-  trainingsdatenHochladen.disabled = false;
+trainingsdatenFiles.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.readAsText(file);
+  reader.onload = (event) => {
+    const content = event.target.result;
+    const json = JSON.parse(content);
+    console.log(json);
+    console.log(validateGeoJSON(json));
+    if (validateGeoJSON(json)) {
+      trainingsdatenHochladen.disabled = false;
+      document.getElementById("error").style.display = "none";
+    } else {
+      trainingsdatenHochladen.disabled = true;
+      document.getElementById("error").style.display = "block";
+    }
+  };
 });
 trainingsdatenHochladen.disabled = true;
 trainingsdatenForm.reset();
