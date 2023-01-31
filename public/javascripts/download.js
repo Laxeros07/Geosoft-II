@@ -68,7 +68,7 @@ function downloadZip(e) {
     .then(function (blob) {
       var binaryData = [];
       binaryData.push(blob);
-      downloadBlob(binaryData, "test.zip");
+      downloadBlob(binaryData, "Daten.zip");
 
       //   console.log(blob);
       //   blob.generateAsync({ type: "blob" }).then(
