@@ -19,6 +19,7 @@ block content
                             b Trainingspolygone 
                             |laden:
                             input#trainingsdatenFiles.form-control.mt-2(type='file' name='daten' accept=".json, .geojson, .gpkg")
+                            #error(style="color:red; display:none") Das Format des GeoJSONs ist falsch!
                         button#trainingsdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
                     form#modellForm( style='display:none' action="/" method="post")
                         form-group

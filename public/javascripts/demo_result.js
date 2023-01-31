@@ -37,6 +37,8 @@ function addMyData(feature, layer) {
   trainingspolygone.addLayer(layer);
 }
 
+addGeotiffToMap("../beispieldaten/rasterdaten.tif");
+
 addPredictionAndAoaToMap(
   "../beispieldaten/prediction.tif",
   "../beispieldaten/AOA_klassifikation.tif"

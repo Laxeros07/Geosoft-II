@@ -241,8 +241,19 @@ function validateGeoJSON(geojson) {
     if (!feature.hasOwnProperty("geometry")) {
       return false;
     }
-    // Überprüfen Sie die Geometrie auf ihre korrekte Struktur.
-    // Hier können Sie auch weitere Überprüfungen durchführen, um sicherzustellen, dass die Geometrie den GeoJSON-Spezifikationen entspricht.
+    //Koordinaten dürfen nicht leer sein.
+    if (feature.geometry.coordinates.length == 0) {
+      return false;
+    }
+    //Überprüfung auf Attribute
+    if (
+      !feature.properties ||
+      !feature.properties.id ||
+      !feature.properties.ClassID ||
+      !feature.properties.Label
+    ) {
+      return false;
+    }
   }
 
   // Wenn alle Überprüfungen erfolgreich waren, geben Sie true zurück.
