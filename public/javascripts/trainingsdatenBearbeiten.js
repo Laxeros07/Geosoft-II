@@ -331,3 +331,9 @@ function setInputFilter(textbox, inputFilter, errMsg) {
     });
   });
 }
+const skriptAusfuehren = document.getElementById("skriptAusfuehren");
+skriptAusfuehren.addEventListener("click", showLoadingScreen);
+const loading = document.getElementById("loading");
+function showLoadingScreen() {
+  loading.style.display = "block";
+}
