@@ -1,3 +1,5 @@
+const { response } = require("../../app");
+
 var json = []; //Geojson Array
 
 algorithmus = document.getElementById("algorithmus");
@@ -293,7 +295,13 @@ function geojsonHochladen() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(jsonData),
-  });
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(response);
+      window.alert("Hochladen erfolgreich");
+    })
+    .catch((error) => console.error("Error:", error));
 }
 
 setInputFilter(
