@@ -27,7 +27,9 @@ var trainingsgebiete = L.geoJSON(trainingsgebiete, {
 })
   .addTo(map)
   .bindPopup(function (layer) {
-    return layer.feature.properties.Label;
+    let text = "<b>ClassID:</b> " + layer.feature.properties.ClassID + "<br>";
+    text += "<b>Label:</b> " + layer.feature.properties.Label;
+    return text;
   });
 
 layerControl.addOverlay(trainingsgebiete, "Trainingspolygone");

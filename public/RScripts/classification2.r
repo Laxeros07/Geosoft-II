@@ -14,12 +14,12 @@ setwd("C:/Users/Felix/Desktop/Studium/Uni Fächer/4. Semester/Geosoft 1/Geosoft-
 
 rasterdaten <- rast(paste(
   getwd(),
-  "/public/uploads/rasterdaten.tif",
+  "/public/beispieldaten/rasterdaten.tif",
   sep = ""
 ))
 trainingsdaten <- read_sf(paste(
   getwd(),
-  "/public/uploads/trainingsdaten.geojson",
+  "/public/uploads/trainingsgebiete.geojson",
   sep = ""
 ))
 modell <- readRDS(paste(
@@ -185,7 +185,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
       baumAnzahl <- 50
     }
     if(is.na(baumTiefe)){
-      baumTiefe <- 30
+      baumTiefe <- 50
     }
     #### Modelltraining
     model <- train(trainDat[, predictors],
@@ -279,6 +279,9 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     sep = ""
   ), plot= legend, width = 2, height = 3)
 
+  #plot(prediction_terra)
+  #plot(legend_plot)
+  #plot(legend)
   #plot(prediction_terra)
   #writeRaster(prediction_terra, filename="public/uploads/prediction2.tif", format="GTiff", overwrite=TRUE)
   # library(tmap)
@@ -374,3 +377,4 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
 # zum Testen der Funktionen
  klassifizierung_mit_Modell(rasterdaten, modell, maske_raster)
  klassifizierung_ohne_Modell(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus, datenanteil)
+ 
