@@ -252,3 +252,31 @@ function geojsonExport() {
     linkElement.click();
   }
 }
+
+function geojsonHochladen() {
+  //Die alten trainingspolygone werden in ein Array gepushed
+  oldLayer = [];
+  geojsonLayer.forEach((item) => {
+    fc = item.toGeoJSON();
+    oldLayer.push(fc.features[0]);
+  });
+
+  //Zusammenfügen der neuen und alten feature
+  let jsonData = {
+    type: "FeatureCollection",
+    name: "trainingsgebiete",
+    crs: {
+      type: "name",
+      properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
+    },
+    features: data.concat(oldLayer),
+  };
+
+  fetch("http://localhost:3000/result", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(jsonData),
+  });
+}
