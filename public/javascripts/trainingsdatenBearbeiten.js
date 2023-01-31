@@ -252,3 +252,88 @@ function geojsonExport() {
     linkElement.click();
   }
 }
+
+function geojsonHochladen() {
+  //Die alten trainingspolygone werden in ein Array gepushed
+  oldLayer = [];
+  geojsonLayer.forEach((item) => {
+    fc = item.toGeoJSON();
+    oldLayer.push(fc.features[0]);
+  });
+
+  //Zusammenfügen der neuen und alten feature
+  let jsonData = {
+    type: "FeatureCollection",
+    name: "trainingsgebiete",
+    crs: {
+      type: "name",
+      properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
+    },
+    features: data.concat(oldLayer),
+  };
+
+  fetch("http://localhost:3000/result", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(jsonData),
+  });
+}
+
+setInputFilter(
+  document.getElementById("baumAnzahl"),
+  function (value) {
+    return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 1000);
+  },
+  "Must be between 0 and 1000"
+);
+setInputFilter(
+  document.getElementById("baumTiefe"),
+  function (value) {
+    return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 1000);
+  },
+  "Must be between 0 and 1000"
+);
+function setInputFilter(textbox, inputFilter, errMsg) {
+  [
+    "input",
+    "keydown",
+    "keyup",
+    "mousedown",
+    "mouseup",
+    "select",
+    "contextmenu",
+    "drop",
+    "focusout",
+  ].forEach(function (event) {
+    textbox.addEventListener(event, function (e) {
+      if (inputFilter(this.value)) {
+        // Accepted value
+        if (["keydown", "mousedown", "focusout"].indexOf(e.type) >= 0) {
+          this.classList.remove("input-error");
+          this.setCustomValidity("");
+        }
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        // Rejected value - restore the previous one
+        this.classList.add("input-error");
+        this.setCustomValidity(errMsg);
+        this.reportValidity();
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        // Rejected value - nothing to restore
+        this.value = "";
+      }
+    });
+  });
+}
+const skriptAusfuehren = document.getElementById("skriptAusfuehren");
+skriptAusfuehren.addEventListener("click", showLoadingScreen);
+const loading = document.getElementById("loading");
+function showLoadingScreen() {
+  loading.style.display = "block";
+}

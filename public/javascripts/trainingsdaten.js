@@ -24,6 +24,7 @@ function hideTrainingsdatenForm() {
   trainingsdatenKnopf.style.display = "none";
   document.getElementById("idInput").value = "trainingsdaten";
   document.getElementById("algorithmusDiv").style.display = "block";
+  document.getElementById("reduzierenDiv").style.display = "block";
 }
 // Modell:
 function hideModellForm() {
@@ -33,6 +34,7 @@ function hideModellForm() {
   modellKnopf.style.display = "none";
   document.getElementById("idInput").value = "modell";
   document.getElementById("algorithmusDiv").style.display = "none";
+  document.getElementById("reduzierenDiv").style.display = "none";
 }
 // Trainingsdaten:
 trainingsdatenForm.addEventListener("submit", submitFormT);
@@ -44,21 +46,26 @@ modellForm.addEventListener("submit", submitFormM);
 // Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
 trainingsdatenFiles.addEventListener("change", (event) => {
   const file = event.target.files[0];
-  const reader = new FileReader();
-  reader.readAsText(file);
-  reader.onload = (event) => {
-    const content = event.target.result;
-    const json = JSON.parse(content);
-    console.log(json);
-    console.log(validateGeoJSON(json));
-    if (validateGeoJSON(json)) {
-      trainingsdatenHochladen.disabled = false;
-      document.getElementById("error").style.display = "none";
-    } else {
-      trainingsdatenHochladen.disabled = true;
-      document.getElementById("error").style.display = "block";
-    }
-  };
+  if (getDateityp(file.name) == "geojson") {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = (event) => {
+      const content = event.target.result;
+      const json = JSON.parse(content);
+      console.log(json);
+      console.log(validateGeoJSON(json));
+      if (validateGeoJSON(json)) {
+        trainingsdatenHochladen.disabled = false;
+        document.getElementById("error").style.display = "none";
+      } else {
+        trainingsdatenHochladen.disabled = true;
+        document.getElementById("error").style.display = "block";
+      }
+    };
+  } else {
+    trainingsdatenHochladen.disabled = false;
+    document.getElementById("error").style.display = "none";
+  }
 });
 trainingsdatenHochladen.disabled = true;
 trainingsdatenForm.reset();

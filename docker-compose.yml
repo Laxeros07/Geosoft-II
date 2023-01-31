@@ -9,9 +9,7 @@ services:
             - '3000:3000'
         volumes:
             - mydata:/usr/src/app/myfiles
-            #- mydata:/public/uploads:/usr/src/app
-        # depends_on:
-        #     - mongoservice
+            - ./public/beispieldaten:/beispieldaten
 
     rservice:
         container_name: RService
@@ -25,6 +23,7 @@ services:
     
 volumes:
     mydata:
+    beispieldaten:
 
 
     # mongoservice:

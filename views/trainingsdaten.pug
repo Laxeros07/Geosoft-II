@@ -1,7 +1,12 @@
 extends tabs
 
 block bearbeiten
-
+  #loading(style='display:none')
+    div
+      figure#loading-image
+        img.img-fluid(src='/images/loading_bg.png')
+        img#loading-image.figure-img.img-fluid.loading-image(src='/images/ajax-loader.gif') 
+        figcaption#image-caption.figure-caption.mt-6 Loaaaading...
   .row.gy-4.gx-lg-2.justify-content-md-center.mt-2 
     .col-lg-8.col-sm-12.mb-3
       .card.shadow.p-4.h-100
@@ -42,7 +47,7 @@ block bearbeiten
           .card.shadow
             .card-body
               form.d-grid.gap-2.col-12.mx-auto(method='post' action='result')
-                a.btn.btn-primary(onclick='geojsonExport()')
+                a.btn.btn-primary(onclick='geojsonHochladen()')
                   img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconUploadGruen.svg" width="30" height="30")
                   text     Neue Polygone Hochladen
 
@@ -59,11 +64,11 @@ block bearbeiten
                     #rfAttribute
                       label.col-form-label(for="anzahl")
                         |Anzahl der Bäume für random forest: 
-                      input.form-control(name="anzahl" type="number" min="1" max="1000" step="1")
+                      input#baumAnzahl.form-control(name="anzahl" min="1" max="1000" step="1")
                       label.col-form-label(for="tiefe")
                         |Tiefe der Bäume für random forest: 
-                      input.form-control(name="tiefe" type="number" min="1" max="1000" step="1")
-                    a.btn.btn-primary.col-12.mt-2(type='submit')
+                      input#baumTiefe.form-control(name="tiefe" min="1" max="1000" step="1")
+                    a#skriptAusfuehren.btn.btn-primary.col-12.mt-2(type='submit')
                       img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconPlayGruen.svg" width="30" height="30")
                       text     Skript ausführen
 

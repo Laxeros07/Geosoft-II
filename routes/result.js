@@ -4,16 +4,12 @@ var R = require("r-integration");
 var request = require("request");
 var JSZip = require("jszip");
 var zip = require("express-zip");
+const fs = require("fs");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("result", { title: "Result" });
 });
-
-const multer = require("multer");
-const { rawListeners } = require("../app");
-const { urlencoded } = require("express");
-const upload = multer({ dest: "uploads/" });
 
 router.post("/", function (req, res, next) {
   if (req.body.bb) {
@@ -29,6 +25,7 @@ router.post("/", function (req, res, next) {
     switch (req.body.id) {
       case "trainingsdaten":
         url += "result?";
+        url += "datenanteil=" + req.body.reduzieren + "&";
         if (bbSplit != "") {
           //Boundingbox
           url +=
@@ -45,6 +42,7 @@ router.post("/", function (req, res, next) {
         break;
       case "modell":
         url += "resultModell?";
+        url += "datenanteil=" + req.body.reduzieren + "&";
         if (bbSplit != "") {
           //Boundingbox
           url +=
@@ -85,6 +83,14 @@ router.post("/", function (req, res, next) {
       }
       res.render("result", { title: "Result" });
     });
+  } else if (req.body.type == "FeatureCollection") {
+    const jsonData = req.body;
+    console.log(jsonData);
+    fs.writeFileSync(
+      "myfiles/trainingsdaten.geojson",
+      JSON.stringify(jsonData)
+    );
+    res.send("File saved successfully!");
   }
   // Download
   else {
