@@ -68,7 +68,18 @@ function downloadZip(e) {
     .then(function (blob) {
       var binaryData = [];
       binaryData.push(blob);
-      downloadBlob(binaryData, "test.zip");
+      downloadBlob(binaryData, "Daten.zip");
+
+      //   console.log(blob);
+      //   blob.generateAsync({ type: "blob" }).then(
+      //     function (blob) {
+      //       // 1) generate the zip file
+      //       saveAs(blob, "Area_Of_Aplicability.zip"); // 2) trigger the download
+      //     }
+      //     // function (err) {
+      //     //   jQuery("#blob").text(err);
+      //     // }
+      //   );
     });
 }
 

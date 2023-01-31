@@ -96,7 +96,7 @@ function downloadZip(e) {
     .then(function (blob) {
       var binaryData = [];
       binaryData.push(blob);
-      downloadBlob(binaryData, "test.zip");
+      downloadBlob(binaryData, "Beispieldaten.zip");
     });
 }
 
