@@ -3,6 +3,10 @@ var klassifikationLayer;
 var aoaLayer;
 var geojsonLayer;
 
+/**
+ * Lädt die Trainingsdaten auf die Karte
+ * @param {*} url
+ */
 function addGeoJSONToMap(url) {
   // this requests the file and executes a callback with the parsed result once it is available
   fetchJSONFile(url, function (data) {
@@ -72,6 +76,10 @@ function fetchJSONFile(path, callback) {
   httpRequest.send();
 }
 
+/**
+ * Lädt ein Geotiff im RGB Format auf die Karte
+ * @param {*} url
+ */
 function addGeotiffToMap(url) {
   fetch(url)
     .then((response) => response.arrayBuffer())
@@ -107,19 +115,10 @@ function addGeotiffToMap(url) {
 
             return `rgb(${values[2]}, ${values[1]}, ${values[0]})`;
           },
-          /*
-        pixelValuesToColorFn: (values) =>
-          values[0] > 255
-            ? null
-            : `rgb(${values[0]},${values[1]},${values[2]})`,*/
         });
-        // map.createPane("rasterPane");
-        // map.getPane("rasterPane").style.zIndex = 600;
-        // layer.pane = "rasterpane";
-        // rasterLayer.setZIndex(500);
+
         rasterLayer.addTo(map);
         rasterLayer.bringToBack();
-        //layer.addTo(map);
 
         layerControl.addOverlay(rasterLayer, "Rasterbild");
 
@@ -129,6 +128,11 @@ function addGeotiffToMap(url) {
     });
 }
 
+/**
+ * Läd die Prediction und die AoA auf die Karte
+ * @param {*} predUrl
+ * @param {*} aoaUrl
+ */
 function addPredictionAndAoaToMap(predUrl, aoaUrl) {
   fetch(predUrl)
     .then((response) => response.arrayBuffer())
@@ -138,37 +142,8 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl) {
 
         klassifikationLayer = new GeoRasterLayer({
           georaster: georaster,
-          resolution: 256 /**,
-          pixelValuesToColorFn: (values) => {
-            let maxs = georaster.maxs;
-            let mins = georaster.mins;
-
-            values[0] = Math.round(
-              (255 / (4000 - mins[0])) * (values[0] - mins[0])
-            );
-            values[1] = Math.round(
-              (255 / (4000 - mins[1])) * (values[1] - mins[1])
-            );
-            values[2] = Math.round(
-              (255 / (4000 - mins[2])) * (values[2] - mins[2])
-            );
-
-            // make sure no values exceed 255
-            values[0] = Math.min(values[0], 255);
-            values[1] = Math.min(values[1], 255);
-            values[2] = Math.min(values[2], 255);
-
-            // treat all black as no data
-            if (values[0] === 0 && values[1] === 0 && values[2] === 0)
-              return null;
-
-            return `rgb(${values[2]}, ${values[1]}, ${values[0]})`;
-          },*/,
+          resolution: 256,
         });
-        // map.createPane("predictionPane");
-        // map.getPane("predictionPane").style.zIndex = 700;
-        // layer.pane = "predictionPane";
-        // klassifikationLayer.setZIndex(600);
         klassifikationLayer.addTo(map);
 
         layerControl.addOverlay(klassifikationLayer, "Klassifikation");
@@ -188,9 +163,6 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl) {
           georaster: georaster,
           resolution: 256,
         });
-        // map.createPane("aoaPane");
-        // map.getPane("aoaPane").style.zIndex = 1000;
-        // aoaLayer.pane = "aoaPane";
         aoaLayer.addTo(map);
 
         layerControl.addOverlay(aoaLayer, "AOA");
@@ -201,6 +173,10 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl) {
     });
 }
 
+/**
+ * Generiert eine zufällige Farbe im Hexadezimalformat
+ * @returns
+ */
 function getRandomColor() {
   var letters = "0123456789ABCDEF";
   var color = "#";
@@ -210,16 +186,32 @@ function getRandomColor() {
   return color;
 }
 
-// checkt, ob das Dateiformat Geopackage ist
+/**
+ * checkt, ob das Dateiformat Geopackage ist
+ * @param {*} name
+ * @returns
+ */
 function getDateityp(name) {
   extension = name.toString().split(".")[1];
   //console.log(extension);
   return extension;
 }
 
+/**
+ * Setzt die richtige Reihenfolge
+ */
 function setOrder() {
-  rasterLayer.bringToBack();
+  if (rasterLayer) {
+    rasterLayer.bringToBack();
+  }
+
   osm.bringToBack();
   satellite.bringToBack();
-  aoaLayer.bringToFront();
+
+  if (aoaLayer) {
+    aoaLayer.bringToFront();
+  }
+  if (klassifikationLayer) {
+    klassifikationLayer.bringToFront();
+  }
 }

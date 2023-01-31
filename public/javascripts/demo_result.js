@@ -44,15 +44,26 @@ addPredictionAndAoaToMap(
 
 //Legende
 
-/*Legend specific*/
+// AoA
 var legend = L.control({ position: "bottomleft" });
 
 legend.onAdd = function () {
   var div = L.DomUtil.create("div", "legend");
-  div.innerHTML += "<h4>Tegnforklaring</h4>";
+  div.innerHTML += "<h4>AoA</h4>";
   div.innerHTML += '<i style="background: #000"></i><span>Gut</span><br>';
   div.innerHTML += '<i style="background: #fff"></i><span>Schlecht</span><br>';
   return div;
 };
 
 legend.addTo(map);
+
+// Klassifizierung
+var legend2 = L.control({ position: "bottomleft" });
+
+legend2.onAdd = function () {
+  var img = L.DomUtil.create("img", "legend");
+  img.src += "../beispieldaten/legend.png";
+  return img;
+};
+
+legend2.addTo(map);
