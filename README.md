@@ -1,13 +1,17 @@
 # Geosoft-II
 Hier wird für Christian Knoth und Edzer Pebesma programmiert :) Irgend etwas mit Fernerkundung und Machine Learning
- 
-Abschlusspräsentation (01.02.)  -> bewertet
 
 Dockerimage im Readme anpassen.
 
 ----------- Ab hier beginnt das offizielle Readme ----------------------------
 
-Dies ist das Repo zum Kurs Geosoft II und dem Projekt Apollo 13 der Firma Spacy.
+Dies ist das Repo zum Kurs Geosoft II und dem Projekt Apollo 13 der Firma Spacey.
+Entwickelt wurde dies von folgenden Personen:
+* Felix Disselkamp
+* Eva Langstein
+* Philipp Mundinger
+* Robert Schmitz
+* Anne Staskiewicz
 
 Mit unserer Webanwendung können Sie Satellitendaten klassifizieren und die AOA der Klassifikation berechnen.
 Die Daten können im Anschluss bearbeitet werden um eine höhere AOA zu erreichen. Der Algorithmus gibt Ihnen dafür Gebiete aus, in denen am besten weitere Trainingsdaten gesammelt werden sollen.
