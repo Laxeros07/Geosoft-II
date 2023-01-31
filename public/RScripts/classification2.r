@@ -33,6 +33,7 @@ maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.6406
 baumAnzahl <- NA
 baumTiefe <- NA
 algorithmus <- "rf"
+datenanteil <- 0.1
 
 ## Ausgabe
 klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
@@ -140,7 +141,7 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
 
 
 ## Ausgabe
-klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus) {
+klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus, datenanteil) {
   ## Variablen definieren
   predictors <- c(
     "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B10", "B11", "B12")
@@ -169,15 +170,14 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
 
   # Modell trainieren
   # nicht alle Daten verwenden um Rechenzeit zu sparen
-  # extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
+   extr_subset <- extr[createDataPartition(extr$ID, p = datenanteil)$Resample1, ]
 
   # eventuell Daten limitieren.
   # Verhälnis der Daten aus jedem Trainingsgebiet soll aber gleich bleiben
-  # hier:10% aus jedem Trainingsgebiet (see ?createDataPartition)
-  # trainIDs <- createDataPartition(extr$ID, p = 0.1, list = FALSE)
-  # trainDat <- extr[trainIDs, ]
+   trainIDs <- createDataPartition(extr$ID, p = datenanteil, list = FALSE)
+   trainDat <- extr[trainIDs, ]
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
-  trainDat <- extr[complete.cases(extr[, predictors]), ]
+  trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
 
   if(algorithmus == "rf") {
     # Hyperparameter für Modelltraining abfragen
@@ -185,7 +185,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
       baumAnzahl <- 50
     }
     if(is.na(baumTiefe)){
-      baumTiefe <- 100
+      baumTiefe <- 30
     }
     #### Modelltraining
     model <- train(trainDat[, predictors],
@@ -373,4 +373,4 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
 
 # zum Testen der Funktionen
  klassifizierung_mit_Modell(rasterdaten, modell, maske_raster)
- klassifizierung_ohne_Modell(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus)
+ klassifizierung_ohne_Modell(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus, datenanteil)

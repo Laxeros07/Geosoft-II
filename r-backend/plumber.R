@@ -39,7 +39,7 @@ function() {
 #* @param ymin,ymax,xmin,xmax If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe = NA, algorithmus = NA) {
+function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe = NA, algorithmus = NA, datenanteil = NA) {
   library(terra)
   library(sf)
   library(caret)
@@ -53,6 +53,9 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   # ymax <- 51.998432
   # xmin <- 7.560220
   # xmax <- 7.638644
+
+  # Anteil der verwendeten Trainingsdaten auf 1 normalisieren
+  datenanteil = datenanteil/10
 
   maske_raster <- c(xmin, xmax, ymin, ymax)
   maske_training <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
@@ -93,19 +96,18 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
 
   # Modell trainieren
   # nicht alle Daten verwenden um Rechenzeit zu sparen
-  # extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
+  extr_subset <- extr[createDataPartition(extr$ID, p = datenanteil)$Resample1, ]
 
   # eventuell Daten limitieren.
   # Verhälnis der Daten aus jedem Trainingsgebiet soll aber gleich bleiben
-  # hier:10% aus jedem Trainingsgebiet (see ?createDataPartition)
-  # trainIDs <- createDataPartition(extr$ID, p = 0.1, list = FALSE)
-  # trainDat <- extr[trainIDs, ]
+  trainIDs <- createDataPartition(extr$ID, p = datenanteil, list = FALSE)
+  trainDat <- extr[trainIDs, ]
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
-  # trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
-  trainDat <- extr[complete.cases(extr[, predictors]), ]
+  trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
+  # trainDat <- extr[complete.cases(extr[, predictors]), ]
 
-  print(algorithmus)
-  print(class(algorithmus))
+ # print(algorithmus)
+ # print(class(algorithmus))
   if(algorithmus == "rf") {
     # Hyperparameter für Modelltraining abfragen
     if (is.na(baumAnzahl)) {

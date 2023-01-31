@@ -4,8 +4,10 @@ var legend = L.control({ position: "bottomleft" });
 legend.onAdd = function () {
   var div = L.DomUtil.create("div", "legend");
   div.innerHTML += "<h4>AoA</h4>";
-  div.innerHTML += '<i style="background: #000"></i><span>Gut</span><br>';
-  div.innerHTML += '<i style="background: #fff"></i><span>Schlecht</span><br>';
+  div.innerHTML +=
+    '<i style="background: #000"></i><span>Gute Klassifikation</span><br>';
+  div.innerHTML +=
+    '<i style="background: #fff"></i><span>Schlechte Klassifikation</span><br>';
   return div;
 };
 
@@ -29,4 +31,4 @@ addPredictionAndAoaToMap(
 );
 addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
 
-map.createPane('labels');
+map.createPane("labels");
