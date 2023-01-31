@@ -43,6 +43,7 @@ Basierend auf deiner Entscheidung, ob du Trainingsdaten oder ein Modell ausgewä
 ### Schritt 4.1: Trainingsdaten benutzt
 Entscheide dich für einen der beiden Algorithmen (Random Forrest oder Decision Tree).
 Random Forrest: lege eine Anzahl und die Tiefe der Bäume fest.
+
 ![grafik](https://user-images.githubusercontent.com/102729357/215829306-8ee80cc5-ce89-4544-9685-25cbfbde1f34.png)
 
 ### Schritt 4.2: Modell benutzt:
