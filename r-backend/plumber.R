@@ -54,6 +54,9 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   # xmin <- 7.560220
   # xmax <- 7.638644
 
+  # Anteil der verwendeten Trainingsdaten auf 1 normalisieren
+  datenanteil = datenanteil/10
+
   maske_raster <- c(xmin, xmax, ymin, ymax)
   maske_training <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
 
