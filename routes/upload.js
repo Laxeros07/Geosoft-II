@@ -48,14 +48,6 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-//const upload = multer({ dest: "uploads/" });
-
-const url = "mongodb://localhost:27017"; // connection URL
-const client = new MongoClient(url); // mongodb client
-const dbName = "Apollo13"; // database name
-const collectionName = "trainingsdaten"; // collection nam
-
-var trainingsdaten = null;
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -68,12 +60,7 @@ router.post("/", upload.single("daten"), uploadFiles);
 function uploadFiles(req, res) {
   console.log("Filetype: " + filetype);
   if (filetype == "gpkg") {
-    /*
-    R.callMethod("public/rScripts/gpkgToGeojson_converter.r", "konvertierung", {
-      x: "x",
-    });
-*/
-
+    // Geopackage wird in GeoJSON konvertiert
     request(
       "http://172.17.0.1:7001/convert",
       { json: true },
@@ -81,7 +68,6 @@ function uploadFiles(req, res) {
         if (err) {
           return console.log(err);
         }
-        console.log(body);
 
         fs.readFile("myfiles/trainingsdaten.geojson", function read(err, data) {
           if (err) {
@@ -99,6 +85,7 @@ function uploadFiles(req, res) {
       res.send({ message: filetype, json: JSON.parse(data) });
     });
   } else {
+    //Rasterdaten oder Modell
     res.send({ message: filetype });
   }
 }
