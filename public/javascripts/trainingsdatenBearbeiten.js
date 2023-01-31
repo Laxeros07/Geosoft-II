@@ -1,5 +1,18 @@
 var json = []; //Geojson Array
 
+algorithmus = document.getElementById("algorithmus");
+algorithmus.value = "rf";
+algorithmus.addEventListener("change", () => {
+  switch (algorithmus.value) {
+    case "rf":
+      document.getElementById("rfAttribute").style.display = "block";
+      break;
+    case "dt":
+      document.getElementById("rfAttribute").style.display = "none";
+      break;
+  }
+});
+
 // Add Data to map
 addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
 addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
