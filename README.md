@@ -64,12 +64,12 @@ Nach dem dies geschehen ist, müssen die Daten hochgeladen werden, damit die Kla
 
 ## Output 
 Als Output stehen nachher..
-*Klassifikation
-*Area of Applicability
-*Trainingspolygone
-*Modell
-*Dissimilarity Index
-*AOA Differenz 
+* Klassifikation
+* Area of Applicability
+* Trainingspolygone
+* Modell
+* Dissimilarity Index
+* AOA Differenz 
 Zur Verfügung 
 
 ![grafik](https://user-images.githubusercontent.com/102729357/215838001-53eaaeb5-31b7-4b1d-bf84-f4fbf2593af6.png)
