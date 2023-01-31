@@ -8,23 +8,6 @@
   "features": [
     {
       "type": "Feature",
-      "properties": { "id": 0, "ClassID": "11", "Label": "Siedlung" },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
-          [
-            [
-              [7.55973, 52.034457],
-              [7.575169, 52.022628],
-              [7.582374, 52.032978],
-              [7.55973, 52.034457]
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
       "properties": { "id": 4, "ClassID": 1, "Label": "Siedlung" },
       "geometry": {
         "type": "MultiPolygon",
