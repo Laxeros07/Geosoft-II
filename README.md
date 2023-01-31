@@ -1,5 +1,6 @@
-# Geosoft-II
-Hier wird für Christian Knoth und Edzer Pebesma programmiert :) Irgend etwas mit Fernerkundung und Machine Learning
+# Geosoft-II Apollo13
+
+Das Projekt stellt eine einfache Schnittstelle zum benutzen der AOA (Area of Applicability). 
 
 Dockerimage im Readme anpassen.
 
@@ -22,6 +23,8 @@ Die Daten können im Anschluss bearbeitet werden um eine höhere AOA zu erreiche
 
 Mit npm install und npm start können Sie die Website auf dem localhost:3000 erreichen.
 Wenn die Anwendung mit Docker gestartet werden soll, nutzen Sie bitte das felioxx/geosoft2image, welches Sie mit docker pull laden können, und starten Sie mit docker compose up (auch unter Rechtsklick auf die docker-compose.yml Datei).
+
+# Workflow
 
 # Lizenz
 
