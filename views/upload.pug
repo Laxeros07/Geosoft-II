@@ -72,7 +72,7 @@ block content
                                 input#baumTiefe.form-control(name="tiefe" min="1" max="1000" step="1")
                         label.col-form-label(for='bb') Boundingbox
                         textarea#bb.form-control.disabled(name="bb" readonly="readonly" style="font-size: 0.8rem")
-                        label.col-form-label(for="reduzieren") Auflösung
+                        label.col-form-label(for="reduzieren") Anteil benutzter Trainingsdaten:
                         input.form-range(name="reduzieren" type="range" min="0" max="100" step="10" list="tickmarks")
                         datalist#tickmarks
                             option(value='0' label='0%')

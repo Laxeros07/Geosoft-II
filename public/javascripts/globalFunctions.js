@@ -215,3 +215,36 @@ function setOrder() {
     klassifikationLayer.bringToFront();
   }
 }
+
+/**
+ * Überprüft ein geojson auf Richtigkeit
+ * @param {*} geojson
+ * @returns
+ */
+function validateGeoJSON(geojson) {
+  // Überprüfen Sie, ob das GeoJSON-Objekt eine "type" -Eigenschaft hat und diese den Wert "FeatureCollection" hat.
+  if (!geojson.hasOwnProperty("type") || geojson.type !== "FeatureCollection") {
+    return false;
+  }
+
+  // Überprüfen Sie, ob das GeoJSON-Objekt eine "features" -Eigenschaft hat und dies ein Array ist.
+  if (!geojson.hasOwnProperty("features") || !Array.isArray(geojson.features)) {
+    return false;
+  }
+
+  // Überprüfen Sie jedes Feature in der "features" -Eigenschaft auf seine Struktur.
+  for (let i = 0; i < geojson.features.length; i++) {
+    let feature = geojson.features[i];
+    if (!feature.hasOwnProperty("type") || feature.type !== "Feature") {
+      return false;
+    }
+    if (!feature.hasOwnProperty("geometry")) {
+      return false;
+    }
+    // Überprüfen Sie die Geometrie auf ihre korrekte Struktur.
+    // Hier können Sie auch weitere Überprüfungen durchführen, um sicherzustellen, dass die Geometrie den GeoJSON-Spezifikationen entspricht.
+  }
+
+  // Wenn alle Überprüfungen erfolgreich waren, geben Sie true zurück.
+  return true;
+}

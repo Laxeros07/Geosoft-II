@@ -42,8 +42,16 @@ modellForm.addEventListener("submit", submitFormM);
 // Trainingsdaten:
 // Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
 // Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
-trainingsdatenFiles.addEventListener("change", () => {
+trainingsdatenFiles.addEventListener("change", (event) => {
   trainingsdatenHochladen.disabled = false;
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.readAsText(file);
+  reader.onload = (event) => {
+    const content = event.target.result;
+    const json = JSON.parse(content);
+    console.log(json);
+  };
 });
 trainingsdatenHochladen.disabled = true;
 trainingsdatenForm.reset();
