@@ -6,34 +6,6 @@
 
 let trainingspolygone = L.layerGroup().addTo(map);
 
-// let labels = new Set();
-// trainingsgebiete.features.forEach((element) => {
-//   labels.add(element.properties.Label);
-// });
-
-// const labelsArray = Array.from(labels);
-// console.log(labels);
-
-// for (let index = 0; index < labelsArray.length; index++) {
-//   let label = labelsArray[index];
-//   console.log(label);
-//   color = getRandomColor();
-
-//   trainingsgebiete.features.forEach((element) => {
-//     if (element.properties.Label == label) {
-//       L.geoJSON(element, {
-//         style: {
-//           color: color,
-//           fillColor: color,
-//           weight: 3,
-//           opacity: 1,
-//           fillOpacity: 0.65,
-//         },
-//       }).addTo(map);
-//     }
-//   });
-// }
-
 var trainingsgebiete = L.geoJSON(trainingsgebiete, {
   onEachFeature: addMyData,
   style: function (feature) {
@@ -61,7 +33,9 @@ var trainingsgebiete = L.geoJSON(trainingsgebiete, {
 })
   .addTo(map)
   .bindPopup(function (layer) {
-    return layer.feature.properties.Label;
+    let text = "<b>ClassID:</b> " + layer.feature.properties.ClassID + "<br>";
+    text += "<b>Label:</b> " + layer.feature.properties.Label;
+    return text;
   });
 
 layerControl.addOverlay(trainingsgebiete, "Trainingspolygone");
@@ -72,45 +46,3 @@ function addMyData(feature, layer) {
 }
 
 addGeotiffToMap("../beispieldaten/rasterdaten.tif");
-
-// var info = L.control();
-
-// info.onAdd = function (map) {
-//   this._div = L.DomUtil.create("div", "info"); // create a div with a class "info"
-//   this.update();
-//   return this._div;
-// };
-
-// // method that we will use to update the control based on feature properties passed
-// info.update = function (props) {
-//   this._div.innerHTML =
-//     "<h4>Trainingspolygone Münster</h4>" +
-//     (props
-//       ? "<b>" +
-//         props.id +
-//         "</b><br />" +
-//         props.Label +
-//         " people / mi<sup>2</sup>"
-//       : "Hover over a state");
-// };
-
-// info.addTo(map);
-
-// function highlightFeature(e) {
-//   var layer = e.target;
-//   layer.setStyle({
-//     weight: 5,
-//     color: "#666",
-//     dashArray: "",
-//     fillOpacity: 0.7,
-//   });
-//   layer.bringToFront();
-//   info.update(layer.feature.properties);
-// }
-
-// function resetHighlight(e) {
-//   geojson.resetStyle(e.target);
-//   info.update();
-// }
-
-// var legend = L.control({ position: "bottomright" });
