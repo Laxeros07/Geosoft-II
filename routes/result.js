@@ -15,23 +15,7 @@ const { rawListeners } = require("../app");
 const { urlencoded } = require("express");
 const upload = multer({ dest: "uploads/" });
 
-//router.post("/", upload.single("trainingsdaten"), uploadFiles);
-/*
-router.post("/bearbeiten", function (req, res, next) {
-  res.render("trainingsdaten", { title: "Trainingsdaten bearbeiten" });
-});
-*/
 router.post("/", function (req, res, next) {
-  /*
-  R.callMethod(
-    "public/rScripts/classification2.r",
-    "klassifizierung_ohne_Modell",
-    {
-      x: "x",
-    }
-  );
-  */
-  console.log(req.body.bb);
   if (req.body.bb) {
     let url = "http://172.17.0.1:7001/";
     let bbSplit = "";
