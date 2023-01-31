@@ -34,20 +34,36 @@ Wenn die Anwendung mit Docker gestartet werden soll, nutzen Sie bitte das feliox
 ## Schritt 3: Rasterdaten einladen
 Lade dein Satellitendaten ein, auf denen du die Klassifizierung anwenden willst.
 ![grafik](https://user-images.githubusercontent.com/102729357/215827242-28b8e575-9157-40f4-8245-e63eb629c6a8.png)
+
 In der Karte kann nach dem Einladen der Rasterdaten eine Boundingbox, für das Festlegen einer Area of Interest, festgelegt werden.
 
 ## Schritt 4: Unterscheidung zwischen Trainingsdaten und einem Modell
 Basierend auf deiner Entscheidung, ob du Trainingsdaten oder ein Modell ausgewählt hast, ändern sich die folgenden Schritte
 
-## Schritt 4.1: Trainingsdaten benutzt
+### Schritt 4.1: Trainingsdaten benutzt
 Entscheide dich für einen der beiden Algorithmen (Random Forrest oder Decision Tree).
 Random Forrest: lege eine Anzahl und die Tiefe der Bäume fest.
 ![grafik](https://user-images.githubusercontent.com/102729357/215829306-8ee80cc5-ce89-4544-9685-25cbfbde1f34.png)
 
-## Schritt 4.2: Modell benutzt:
+### Schritt 4.2: Modell benutzt:
 Über die Scral-Bar hast du die Möglichkeit, die Anzahl benutzter Trainingsdaten zu Variieren.
+
 ![grafik](https://user-images.githubusercontent.com/102729357/215829717-804353fd-9f81-448c-b039-1fad3e365531.png)
 
+### Schritt 5: Result Seite
+Nach der Ausfhrung der vorherigen Prozesse, gelangt ihr automatisch auf die Result Page.
+Hier könnt ihr euche die Ergebnisse der AOA angucken und die verschiedenen Layer auswählen.
+
+Unter anderem wird auf der Seite auch der Dissimliartiy Index angegeben. An diesem kann erkannt werden in welchen Bereichen noch Trainingspolygone fehlen.
+
+## 5.1 Results bearbeiten 
+Falls ihr mit dem Ergebnis so noch nicht zu frieden seid, könnt ihr in desem Bereich die Trainingspolygone bearbeiten oder an fehlenden Stellen ergänzen.
+
+
+
+
+
+## Output 
 
 
 # Lizenz
