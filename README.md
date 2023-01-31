@@ -69,7 +69,8 @@ Als Output stehen nachher..
 * Trainingspolygone
 * Modell
 * Dissimilarity Index
-* AOA Differenz 
+* AOA Differenz
+
 Zur Verfügung 
 
 ![grafik](https://user-images.githubusercontent.com/102729357/215838001-53eaaeb5-31b7-4b1d-bf84-f4fbf2593af6.png)
