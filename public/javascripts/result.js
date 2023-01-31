@@ -5,9 +5,9 @@ legend.onAdd = function () {
   var div = L.DomUtil.create("div", "legend");
   div.innerHTML += "<h4>AoA</h4>";
   div.innerHTML +=
-    '<i style="background: #000"></i><span>Gute Klassifikation</span><br>';
+    '<i style="background: #000"></i><small><span>Gute Klassifikation</span></small><br>';
   div.innerHTML +=
-    '<i style="background: #fff"></i><span>Schlechte Klassifikation</span><br>';
+    '<i style="background: #fff"></i><small><span>Schlechte Klassifikation</span></small><br>';
   return div;
 };
 
@@ -30,5 +30,7 @@ addPredictionAndAoaToMap(
   "http://localhost:3000/AOA_klassifikation.tif"
 );
 addGeoJSONToMap("http://localhost:3000/trainingsdaten.geojson");
+addDIToMap("http://localhost:3000/maxDI.geojson");
+addAoaDifToMap("http://localhost:3000/AOADifferenz.tif");
 
 map.createPane("labels");

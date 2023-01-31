@@ -39,7 +39,7 @@ function() {
 #* @param ymin,ymax,xmin,xmax If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe = NA, algorithmus = NA, datenanteil = NA) {
+function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe = NA, algorithmus = NA) {
   library(terra)
   library(sf)
   library(caret)
@@ -53,10 +53,6 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   # ymax <- 51.998432
   # xmin <- 7.560220
   # xmax <- 7.638644
-
-  # Anteil der verwendeten Trainingsdaten auf 1 normalisieren
-  class(datenanteil)  <- "numeric"
-  datenanteil = datenanteil/100
 
   maske_raster <- c(xmin, xmax, ymin, ymax)
   maske_training <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
@@ -91,25 +87,26 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
 
   # Daten mergen
   extr <<- extract(rasterdaten, trainingsdaten)
+  # head(extr)
+  # head(trainingsdaten)
   trainingsdaten$PolyID <- 1:nrow(trainingsdaten)
   extr <<- merge(extr, trainingsdaten, by.x = "ID", by.y = "PolyID")
+  # head(extr)
 
 
   # Modell trainieren
   # nicht alle Daten verwenden um Rechenzeit zu sparen
-  extr_subset <- extr[createDataPartition(extr$ID, p = datenanteil)$Resample1, ]
+  extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
 
   # eventuell Daten limitieren.
   # Verhälnis der Daten aus jedem Trainingsgebiet soll aber gleich bleiben
-  trainIDs <- createDataPartition(extr$ID, p = datenanteil, list = FALSE)
+  # hier:10% aus jedem Trainingsgebiet (see ?createDataPartition)
+  trainIDs <- createDataPartition(extr$ID, p = 0.1, list = FALSE)
   trainDat <- extr[trainIDs, ]
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
-  # trainDat <- extr[complete.cases(extr[, predictors]), ]
 
- # print(algorithmus)
- # print(class(algorithmus))
-  if(algorithmus == "rf") {
+  if (algorithmus == "rf") {
     # Hyperparameter für Modelltraining abfragen
     if (is.na(baumAnzahl)) {
       baumAnzahl <- 50 # 50 is quite small (default=500). But it runs faster.
@@ -131,9 +128,9 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
     )
   } else {
     model <- train(trainDat[, predictors],
-                 trainDat$Label,
-                 method="rpart", 
-                 trControl = trainControl(method = "cv")   # Classification Tree Algorithmus
+      trainDat$Label,
+      method = "rpart",
+      trControl = trainControl(method = "cv") # Classification Tree Algorithmus
     ) # nicht so gut wie rf Algorithmus
   }
   saveRDS(model, "myfiles/RFModel2.RDS")
@@ -190,8 +187,8 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
 
   # DI als GeoJSON exportieren
   maxDIVector <- as.polygons(maxDI)
-  crs(maxDIVector)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeVector(maxDIVector, "myfiles/maxDI.geojson", filetype="geojson", overwrite = TRUE)
+  crs(maxDIVector) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeVector(maxDIVector, "myfiles/maxDI.geojson", filetype = "geojson", overwrite = TRUE)
 
   # AOA Differenz berechnen
   if (AOA_Differenz_nötig == TRUE) {
@@ -297,8 +294,8 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
 
   # DI als GeoJSON exportieren
   maxDIVector <- as.polygons(maxDI)
-  crs(maxDIVector)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  terra::writeVector(maxDIVector, "myfiles/maxDI.geojson", filetype="geojson", overwrite = TRUE)
+  crs(maxDIVector) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
+  terra::writeVector(maxDIVector, "myfiles/maxDI.geojson", filetype = "geojson", overwrite = TRUE)
 
   # AOA Differenz berechnen
   if (AOA_Differenz_nötig == TRUE) {

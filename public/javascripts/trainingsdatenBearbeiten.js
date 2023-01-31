@@ -1,4 +1,19 @@
+const { response } = require("../../app");
+
 var json = []; //Geojson Array
+
+algorithmus = document.getElementById("algorithmus");
+algorithmus.value = "rf";
+algorithmus.addEventListener("change", () => {
+  switch (algorithmus.value) {
+    case "rf":
+      document.getElementById("rfAttribute").style.display = "block";
+      break;
+    case "dt":
+      document.getElementById("rfAttribute").style.display = "none";
+      break;
+  }
+});
 
 // Add Data to map
 addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
@@ -7,6 +22,8 @@ addPredictionAndAoaToMap(
   "http://localhost:3000/prediction.tif",
   "http://localhost:3000/AOA_klassifikation.tif"
 );
+addDIToMap("http://localhost:3000/maxDI.geojson");
+addAoaDifToMap("http://localhost:3000/maxDI.geojson");
 
 var LeafIcon = L.Icon.extend({
   options: {
@@ -278,7 +295,13 @@ function geojsonHochladen() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(jsonData),
-  });
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(response);
+      window.alert("Hochladen erfolgreich");
+    })
+    .catch((error) => console.error("Error:", error));
 }
 
 setInputFilter(

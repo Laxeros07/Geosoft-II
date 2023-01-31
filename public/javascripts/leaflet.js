@@ -7,10 +7,13 @@ var osm = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 18,
 }).addTo(map);
 
-var satellite = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-  maxZoom: 20,
-  subdomains:['mt0','mt1','mt2','mt3']
-}).addTo(map);
+var satellite = L.tileLayer(
+  "http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+  {
+    maxZoom: 20,
+    subdomains: ["mt0", "mt1", "mt2", "mt3"],
+  }
+).addTo(map);
 
 var baseMaps = {
   Luftbild: satellite,
@@ -18,18 +21,3 @@ var baseMaps = {
 };
 
 var layerControl = L.control.layers(baseMaps).addTo(map);
-
-// var LeafIcon = L.Icon.extend({
-//   options: {
-//     shadowUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-//     iconSize: [38, 95],
-//     shadowSize: [50, 64],
-//     iconAnchor: [22, 94],
-//     shadowAnchor: [4, 62],
-//     popupAnchor: [-3, -76],
-//   },
-// });
-
-// var greenIcon = new LeafIcon({
-//   iconUrl: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-// });

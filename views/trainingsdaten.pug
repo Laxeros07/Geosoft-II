@@ -22,15 +22,15 @@ block bearbeiten
                     th ID
                     th Beschreibung
                     th Klassen_Identifikation
-                  tr
+                  //tr
                     td 1
                     td test 1
                     td test Klasse 1
-                  tr
+                  //tr
                     td 2
                     td test 1
                     td test Klasse 1
-                  tr
+                  //tr
                     td 3
                     td test 1
                     td test Klasse 1
@@ -43,6 +43,7 @@ block bearbeiten
                 a.btn.btn-primary(onclick='geojsonExport()')
                   img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconDownloadGruen.svg" width="30" height="30")
                   text     Dateien herunterladen
+                small Hier können Sie die neu erstellten Polygone zusammen mit den alten herunterladen.
 
           .card.shadow
             .card-body
@@ -50,10 +51,11 @@ block bearbeiten
                 a.btn.btn-primary(onclick='geojsonHochladen()')
                   img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconUploadGruen.svg" width="30" height="30")
                   text     Neue Polygone Hochladen
+                small Um die neuen Polygone in einer Klassifizierung zu nutzen, müssen diese hochgeladen werden.
 
           .card.shadow
             .card-body
-              form(method='post' action='result').mb-2
+              form(method='post' action='/result').mb-2
                 form-group
                   #algorithmusDiv
                     label.col-form-label(for="algorithmus")
@@ -68,7 +70,21 @@ block bearbeiten
                       label.col-form-label(for="tiefe")
                         |Tiefe der Bäume für random forest: 
                       input#baumTiefe.form-control(name="tiefe" min="1" max="1000" step="1")
-                    a#skriptAusfuehren.btn.btn-primary.col-12.mt-2(type='submit')
+                    label.col-form-label(for="reduzieren") Anteil benutzter Trainingsdaten:
+                    input.form-range(name="reduzieren" type="range" min="0" max="100" step="10" list="tickmarks")
+                    datalist#tickmarks
+                      option(value='0' label='0%')
+                      option(value='10')
+                      option(value='20')
+                      option(value='30')
+                      option(value='40')
+                      option(value='50' label='50%')
+                      option(value='60')
+                      option(value='70')
+                      option(value='80')
+                      option(value='90')
+                      option(value='100' label='100%')
+                    button#skriptAusfuehren.btn.btn-primary.col-12.mt-2(type='submit')
                       img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconPlayGruen.svg" width="30" height="30")
                       text     Skript ausführen
 

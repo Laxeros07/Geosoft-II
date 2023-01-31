@@ -12,51 +12,58 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/", function (req, res, next) {
-  if (req.body.bb) {
+  console.log(req.body);
+  if (req.body.algorithmus) {
     let url = "http://172.17.0.1:7001/";
     let bbSplit = "";
-    console.log("bb: " + req.body.bb);
-    if (req.body.bb != "-") {
-      //Es wurde eine Boundingbox angegeben
-      bbSplit = req.body.bb.split(",");
+    if (req.body.bb) {
+      if (req.body.bb != "-") {
+        //Es wurde eine Boundingbox angegeben
+        bbSplit = req.body.bb.split(",");
+      }
     }
 
-    //Zusammenbauen der Url mit den Parametern
-    switch (req.body.id) {
-      case "trainingsdaten":
-        url += "result?";
-        url += "datenanteil=" + req.body.reduzieren + "&";
-        if (bbSplit != "") {
-          //Boundingbox
-          url +=
-            "ymin=" +
-            bbSplit[2] +
-            "&ymax=" +
-            bbSplit[3] +
-            "&xmin=" +
-            bbSplit[0] +
-            "&xmax=" +
-            bbSplit[1] +
-            "&";
-        }
-        break;
-      case "modell":
-        url += "resultModell?";
-        url += "datenanteil=" + req.body.reduzieren + "&";
-        if (bbSplit != "") {
-          //Boundingbox
-          url +=
-            "ymin=" +
-            bbSplit[2] +
-            "ymax=" +
-            bbSplit[3] +
-            "xmin=" +
-            bbSplit[0] +
-            "xmax=" +
-            bbSplit[1] +
-            "&";
-        }
-        break;
+    if (req.body.id) {
+      //Zusammenbauen der Url mit den Parametern
+      switch (req.body.id) {
+        case "trainingsdaten":
+          url += "result?";
+          url += "datenanteil=" + req.body.reduzieren + "&";
+          if (bbSplit != "") {
+            //Boundingbox
+            url +=
+              "ymin=" +
+              bbSplit[2] +
+              "&ymax=" +
+              bbSplit[3] +
+              "&xmin=" +
+              bbSplit[0] +
+              "&xmax=" +
+              bbSplit[1] +
+              "&";
+          }
+          break;
+        case "modell":
+          url += "resultModell?";
+          url += "datenanteil=" + req.body.reduzieren + "&";
+          if (bbSplit != "") {
+            //Boundingbox
+            url +=
+              "ymin=" +
+              bbSplit[2] +
+              "ymax=" +
+              bbSplit[3] +
+              "xmin=" +
+              bbSplit[0] +
+              "xmax=" +
+              bbSplit[1] +
+              "&";
+          }
+          break;
+      }
+    } else {
+      url += "result?";
+      url += "datenanteil=" + req.body.reduzieren + "&";
     }
     if (req.body.algorithmus == "rf") {
       // Random Forest
@@ -66,10 +73,10 @@ router.post("/", function (req, res, next) {
       if (req.body.tiefe != "" && req.body.id == "trainingsdaten") {
         url += "baumTiefe=" + req.body.tiefe + "&";
       }
-      url += "algorithmus='rf'";
+      url += "algorithmus=rf";
     } else {
       // Decision Tree
-      url += "algorithmus='dt'";
+      url += "algorithmus=dt";
     }
 
     console.log("URL:");

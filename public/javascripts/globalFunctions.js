@@ -2,6 +2,7 @@ var rasterLayer;
 var klassifikationLayer;
 var aoaLayer;
 var geojsonLayer;
+var aoaDif;
 
 /**
  * Lädt die Trainingsdaten auf die Karte
@@ -52,6 +53,34 @@ function addGeoJSONToMap(url) {
     let group = L.layerGroup(layerArray).addTo(map);
     geojsonLayer = layerArray;
     layerControl.addOverlay(group, "Trainingspolygone");
+  });
+}
+
+/**
+ * Lädt die Trainingsdaten auf die Karte
+ * @param {*} url
+ */
+function addDIToMap(url) {
+  // this requests the file and executes a callback with the parsed result once it is available
+  fetchJSONFile(url, function (data) {
+    // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
+    // Farbe zuvor gespeicherte Farbe zugeordnet
+    let layerArray = [];
+    data.features.forEach((element) => {
+      layerArray.push(
+        L.geoJSON(element, {
+          style: {
+            color: "red",
+            fillColor: "red",
+            weight: 3,
+            opacity: 0.65,
+            fillOpacity: 0.65,
+          },
+        })
+      );
+    });
+    let group = L.layerGroup(layerArray).addTo(map);
+    layerControl.addOverlay(group, "Dissimalarity Index");
   });
 }
 
@@ -174,6 +203,30 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl) {
 }
 
 /**
+ * Läd die Prediction und die AoA auf die Karte
+ * @param {*} predUrl
+ * @param {*} aoaUrl
+ */
+function addAoaDifToMap(url) {
+  fetch(url)
+    .then((response) => response.arrayBuffer())
+    .then((arrayBuffer) => {
+      parseGeoraster(arrayBuffer).then((georaster) => {
+        console.log("georaster:", georaster);
+
+        AoADif = new GeoRasterLayer({
+          georaster: georaster,
+          resolution: 256,
+        });
+        AoADif.addTo(map);
+
+        layerControl.addOverlay(AoADif, "Differenz der AoA");
+        setOrder();
+      });
+    });
+}
+
+/**
  * Generiert eine zufällige Farbe im Hexadezimalformat
  * @returns
  */
@@ -208,6 +261,9 @@ function setOrder() {
   osm.bringToBack();
   satellite.bringToBack();
 
+  if (aoaDif) {
+    aoaDif.bringToFront();
+  }
   if (aoaLayer) {
     aoaLayer.bringToFront();
   }
