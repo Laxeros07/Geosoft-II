@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('inTouchWithMundinger',{title:"InTouch"});
+  res.render('Team',{title:"Team"});
 });
 
 module.exports = router;
