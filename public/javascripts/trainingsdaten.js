@@ -24,6 +24,7 @@ function hideTrainingsdatenForm() {
   trainingsdatenKnopf.style.display = "none";
   document.getElementById("idInput").value = "trainingsdaten";
   document.getElementById("algorithmusDiv").style.display = "block";
+  document.getElementById("reduzierenDiv").style.display = "block";
 }
 // Modell:
 function hideModellForm() {
@@ -33,6 +34,7 @@ function hideModellForm() {
   modellKnopf.style.display = "none";
   document.getElementById("idInput").value = "modell";
   document.getElementById("algorithmusDiv").style.display = "none";
+  document.getElementById("reduzierenDiv").style.display = "none";
 }
 // Trainingsdaten:
 trainingsdatenForm.addEventListener("submit", submitFormT);
