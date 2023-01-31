@@ -7,6 +7,7 @@ library(CAST)
 library(cowplot)
 library(tidyterra)
 library(RColorBrewer)
+library(tmap)
 
 
 # zum testen wd so setzen
@@ -19,7 +20,7 @@ rasterdaten <- rast(paste(
 ))
 trainingsdaten <- read_sf(paste(
   getwd(),
-  "/public/uploads/trainingsgebiete.geojson",
+  "/public/uploads/trainingsdaten2.geojson",
   sep = ""
 ))
 modell <- readRDS(paste(
@@ -33,7 +34,7 @@ maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.6406
 baumAnzahl <- NA
 baumTiefe <- NA
 algorithmus <- "rf"
-datenanteil <- 0.1
+datenanteil <- 0.01
 
 ## Ausgabe
 klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
@@ -196,6 +197,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
       maxnodes = baumTiefe   # Tiefe der Bäume
     ) # 50 is quite small (default=500). But it runs faster.
   } else {
+    #print(algorithmus)
     model <- train(trainDat[, predictors],
                    trainDat$Label,
                    method="rpart", 
@@ -222,7 +224,14 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   farben <- brewer.pal(n = 12, name = "Paired")
-  coltab(prediction_terra) <- farben[1:12]
+  coltab(prediction_terra) <- farben#[1:12]
+  ?predict
+  coltab(prediction_terra)
+  plot(prediction_terra)
+  colorize(prediction_terra, farben)
+  has.colors(prediction_terra)
+  ?colorize
+  col(prediction_terra)
   # coltab(prediction_terra)
   # plot(prediction_terra)
   #coltab(prediction_terra) <- cols
@@ -269,8 +278,8 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   
   # Prediction Legende exportieren
   legend_plot <- ggplot()+
-    geom_spatraster(data=prediction_terra)+
-    scale_fill_manual(values=farben[2:12], na.value=NA)
+    geom_spatraster(data=prediction_terra, aes(fill=farben))#+
+    #scale_fill_manual(values=farben, na.value=NA)
   legend <- get_legend(legend_plot)
 
   ggsave(paste(
@@ -278,28 +287,28 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     "/public/uploads/legend.png",
     sep = ""
   ), plot= legend, width = 2, height = 3)
-
-  #plot(prediction_terra)
-  #plot(legend_plot)
-  #plot(legend)
+?ggplot
+  plot(prediction_terra)
+  plot(legend_plot)
+  plot(legend)
   #plot(prediction_terra)
   #writeRaster(prediction_terra, filename="public/uploads/prediction2.tif", format="GTiff", overwrite=TRUE)
   # library(tmap)
   # crs(prediction_terra) <- "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
-  # map <- tm_shape(prediction_terra,
-  #                raster.downsample = FALSE) +
-  #  tm_raster(palette = cols,title = "LUC")+
-  #  tm_scale_bar(bg.color="white")+
-  #  tm_grid(n.x=4,n.y=4,projection="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")+
-  #  tm_layout(legend.position = c("left","bottom"),
-  #            legend.bg.color = "white",
-  #            legend.bg.alpha = 0.8)#+
-
-  # tmap_save(map, paste(
-  #  getwd(),
-  #  "/public/uploads/map.png",
-  #  sep = ""
-  # ))
+   map <- tm_shape(prediction_terra,
+                  raster.downsample = FALSE, 
+                  projection = 4326) +
+    tm_raster(palette = farben,title = "LUC")+
+    tm_layout(legend.position = c("left","bottom"),
+              legend.bg.color = "white",
+              legend.bg.alpha = 0.8)
+map
+?tmap_save
+   tmap_save(map, paste(
+    getwd(),
+    "/public/uploads/map.tiff",
+    sep = ""
+   ))#, overwrite=TRUE)
   
   # Abfrage, ob bereits eine AOA gerechnet wurde
   AOA_Differenz_nötig <- FALSE
