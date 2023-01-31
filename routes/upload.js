@@ -1,7 +1,5 @@
 var express = require("express");
 var router = express.Router();
-var R = require("r-integration");
-const MongoClient = require("mongodb").MongoClient;
 const app = require("../app");
 const request = require("request");
 const process = require("process");
