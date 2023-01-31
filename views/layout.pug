@@ -81,9 +81,9 @@ html
                 a.link1.text-muted.text-decoration-none(href='/impressum') Impressum
               li
                 a.link1.text-muted.text-decoration-none(href='/team') Team
-
+          .col-lg-3
             
-          .col-sm.col-lg-8.text-center
+          .col-sm.col-lg-2
             p.form-check.form-switch
               input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
               label.form-check-label(for='switchDark') Darkmode
@@ -91,7 +91,8 @@ html
             //p.form-check.form-switch(style="display:none")
               input#switchColor.form-check-input(type='checkbox' role='switch')
               label.form-check-label(for='switchColor') Colorblindmode
-            img.logo.sm.m-2(src='/images/spaceylogo.png')
+            //img.logo.sm.m-2(src='/images/spaceylogo.png')
+          .col-lg-3
           .col-sm.text-end
             div
               a.me-4.text-reset(href='https://github.com/Laxeros07/Geosoft-II')
@@ -100,7 +101,11 @@ html
                 i.bi.bi-envelope-at-fill
               a.me-4.text-reset(href='tel:+4915901600951')
                 i.bi.bi-phone
-
+        .row
+          .col-lg-2
+          .col-lg-8.text-center
+            img.logo.sm.m-2(src='/images/spaceylogo.png')
+          .col-lg-2
       .text-center.p-1.text-white(style='background-color:#005288;')
         | &copy; 2023 by: 
         i.text-white Apollo 13 Projekt
