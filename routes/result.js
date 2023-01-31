@@ -64,7 +64,6 @@ router.post("/", function (req, res, next) {
     } else {
       url += "result?";
       url += "datenanteil=" + req.body.reduzieren + "&";
-      //url += "datenanteil=10&";
     }
     if (req.body.algorithmus == "rf") {
       // Random Forest
@@ -74,10 +73,10 @@ router.post("/", function (req, res, next) {
       if (req.body.tiefe != "" && req.body.id == "trainingsdaten") {
         url += "baumTiefe=" + req.body.tiefe + "&";
       }
-      url += "algorithmus='rf'";
+      url += "algorithmus=rf";
     } else {
       // Decision Tree
-      url += "algorithmus='dt'";
+      url += "algorithmus=dt";
     }
 
     console.log("URL:");
