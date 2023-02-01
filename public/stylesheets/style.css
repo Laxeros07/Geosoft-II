@@ -112,11 +112,14 @@ dd {
 }
 
 .darkMode .btn-floating {
-  background-color: white;
+  background: #212529 !important;
+  color: white !important;
 }
 
 
-.darkMode .
+.darkMode .table{
+  .table-dark;
+}
 /*
 [data-theme="dark"] {
   background-color: #111 !important;
