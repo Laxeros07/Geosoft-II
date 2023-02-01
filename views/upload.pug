@@ -20,7 +20,9 @@ block content
               |laden:
               input#trainingsdatenFiles.form-control.mt-2(type='file' name='daten' accept=".json, .geojson, .gpkg")
               #error(style="color:red; display:none") Das Format des GeoJSONs ist falsch!
-            button#trainingsdatenHochladen.btn.btn-primary.my-2(type='submit') Hochladen
+            button#trainingsdatenHochladen.btn.btn-primary.my-2(type='submit') 
+              img.img-fluid.rounded.mb-lg-0.d-inline-block.align-text-center(src="/images/IconUploadGruen.svg" width="30" height="30")
+              text     Hochladen
           form#modellForm( style='display:none' action="/" method="post")
             form-group
               p Wichtig: Das Modell darf nicht mehr als 11 verschiedene Klassen kennen und muss im .RDS Format vorliegen!
