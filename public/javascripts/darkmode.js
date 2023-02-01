@@ -13,11 +13,15 @@ function setDarkMode() {
         setDarkMode.checked = true;
         localStorage.setItem('theme','dark');
         document.getElementById('switchDark').setAttribute('checked', 'checked');
+        document.getElementById('tabelle').classList.remove('table-light');
+        document.getElementById('tabelle').classList.add('table-dark');
 
     }
     else{
         setDarkMode.checked = false;
-        localStorage.removeItem('theme', 'dark')
+        localStorage.removeItem('theme', 'dark');
+        document.getElementById('tabelle').classList.remove('table-dark');
+        document.getElementById('tabelle').classList.add('table-light');
     }
 }
 
