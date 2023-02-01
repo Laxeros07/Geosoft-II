@@ -22,7 +22,10 @@ Die Daten können im Anschluss bearbeitet werden, um eine größere AOA zu errei
 ## Installation
 
 Starten mit Docker:
-nutzen Sie bitte das **felioxx/geosoft2image**, welches Sie mit docker pull laden können, und starten Sie mit **docker compose up** (auch unter Rechtsklick auf die docker-compose.yml Datei).
+nutzen Sie bitte folgende Befehle ausführen, um die beiden Images zu pullen:
+* ```docker pull felioxx/geosoft-ii_appservice```
+* ```docker pull felioxx/geosoft-ii_rservice```
+* ```docker compose-up```
 
 # Workflow
 ## Schritt 1: Willst du Trainingspolygone oder ein Fertiges Modell hochladen?

@@ -20,7 +20,7 @@ rasterdaten <- rast(paste(
 ))
 trainingsdaten <- read_sf(paste(
   getwd(),
-  "/public/uploads/trainingsdaten2.geojson",
+  "/public/uploads/trainingsgebiete.geojson",
   sep = ""
 ))
 modell <- readRDS(paste(
@@ -34,7 +34,7 @@ maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.6406
 baumAnzahl <- NA
 baumTiefe <- NA
 algorithmus <- "rf"
-datenanteil <- 0.01
+datenanteil <- 0.1
 
 ## Ausgabe
 klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
@@ -224,22 +224,37 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   farben <- brewer.pal(n = 12, name = "Paired")
-  coltab(prediction_terra) <- farben#[1:12]
-  ?predict
-  coltab(prediction_terra)
-  plot(prediction_terra)
-  colorize(prediction_terra, farben)
-  has.colors(prediction_terra)
-  ?colorize
-  col(prediction_terra)
+  coltab(prediction_terra) <- farben#[0:12]
+  #terra::plot(prediction_terra, col=farben[1:12])
+  #test <- as.polygons(prediction_terra)
+  #test1 <- values(test)[,1]
+  #trainingsdaten$Label
+  #test2 <- sort(trainingsdaten$Label)
+  #test2 <- unique(test2)
+  #test2
+  #test1
+  #farben
+  #test1[1]
+  #neueFarben <-c()
+  #nobreak <- TRUE
+  #for(i in 1:length(test2)){
+  #  if((test2[i] %in% test1) & (nobreak)){
+  #    neueFarben <- c(neueFarben, farben[i+1])
+  #  } else {
+  #    nobreak<-FALSE
+  #    if((test2[i] %in% test1)){
+  #      neueFarben <- c(neueFarben, farben[i])
+  #    }
+  #  }
+  #}
+  #neueFarben
+  #plot(test)
+  #coltab(prediction_terra)
+  #plot(prediction_terra)
   # coltab(prediction_terra)
-  # plot(prediction_terra)
-  #coltab(prediction_terra) <- cols
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
-
-  # plot(prediction_terra,col=cols)
 
   # export raster
   # writeRaster(prediction_terra,"prediction.grd",overwrite=TRUE)
@@ -278,37 +293,38 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   
   # Prediction Legende exportieren
   legend_plot <- ggplot()+
-    geom_spatraster(data=prediction_terra, aes(fill=farben))#+
-    #scale_fill_manual(values=farben, na.value=NA)
+    geom_spatraster(data=prediction_terra)+
+    scale_fill_manual(values=farben[2:12], na.value=NA)
+    #scale_fill_manual(values=neueFarben, na.value=NA)
   legend <- get_legend(legend_plot)
 
   ggsave(paste(
     getwd(),
     "/public/uploads/legend.png",
     sep = ""
-  ), plot= legend, width = 2, height = 3)
-?ggplot
-  plot(prediction_terra)
-  plot(legend_plot)
-  plot(legend)
-  #plot(prediction_terra)
-  #writeRaster(prediction_terra, filename="public/uploads/prediction2.tif", format="GTiff", overwrite=TRUE)
-  # library(tmap)
+  ), plot= legend_plot, width = 2, height = 3)
+  
+  #plot(legend_plot)
+  #plot(legend)
+  #test <- as(map, "SpatRaster")
   # crs(prediction_terra) <- "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
-   map <- tm_shape(prediction_terra,
-                  raster.downsample = FALSE, 
-                  projection = 4326) +
-    tm_raster(palette = farben,title = "LUC")+
-    tm_layout(legend.position = c("left","bottom"),
-              legend.bg.color = "white",
-              legend.bg.alpha = 0.8)
-map
-?tmap_save
-   tmap_save(map, paste(
-    getwd(),
-    "/public/uploads/map.tiff",
-    sep = ""
-   ))#, overwrite=TRUE)
+  # map <- tm_shape(prediction_terra,
+  #                raster.downsample = FALSE, projection = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs") +
+  #  tm_raster(palette = farben,title = "LUC")+
+  #  tm_scale_bar(bg.color="white")+
+  #  tm_grid(n.x=4,n.y=4,projection="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")+
+  #  tm_layout(legend.position = c("left","bottom"),
+  #            legend.bg.color = "white",
+  #            legend.bg.alpha = 0.8)#+
+#crs(map) <- "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+#test <- tmap_leaflet(map)
+#test
+#tmap_format()
+#tmap_save(map, paste(
+#    getwd(),
+#    "/public/uploads/map.tiff",
+#    sep = ""
+#   ))
   
   # Abfrage, ob bereits eine AOA gerechnet wurde
   AOA_Differenz_nötig <- FALSE
