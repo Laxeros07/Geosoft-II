@@ -69,38 +69,43 @@ html
 
       .container.m-3.px-2
         .row
-          .col-sm.text-start
+          .col-2.text-start
             h5.text-uppercase Links
             ul.list-unstyled.mb-0
               li
                 a.link1.text-muted.text-decoration-none(href='/impressum') Impressum
               li
                 a.link1.text-muted.text-decoration-none(href='/team') Team
-          .col-lg-3
+          .col-3
 
-          .col-sm.col-lg-2
-            p.form-check.form-switch
-              input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
-              label.form-check-label(for='switchDark') Darkmode
-              script(src='/javascripts/darkmode.js' )
-            //p.form-check.form-switch(style="display:none")
-              input#switchColor.form-check-input(type='checkbox' role='switch')
-              label.form-check-label(for='switchColor') Colorblindmode
-            //img.logo.sm.m-2(src='/images/spaceylogo.png')
-          .col-lg-3
-          .col-sm.text-end
+          .col-2
+            .card.bg-dark
+              p.form-check.form-switch
+                input#switchDark.form-check-input(type='checkbox' role='switch' onclick='setDarkMode()')
+                label.form-check-label(for='switchDark') Darkmode
+                script(src='/javascripts/darkmode.js' )
+              //p.form-check.form-switch(style="display:none")
+                input#switchColor.form-check-input(type='checkbox' role='switch')
+                label.form-check-label(for='switchColor') Colorblindmode
+              //img.logo.sm.m-2(src='/images/spaceylogo.png')
+          .col-3
+          .col-2
             div
-              a.me-4.text-reset(href='https://github.com/Laxeros07/Geosoft-II')
-                i.bi.bi-github
-              a.me-4.text-reset(href='mailto:Apollo13.spacey@gmx.de?subject=Erreicht%20ueber%20Website&amp;body=Sehr%20geehrtes%20Spacey%20Team,%0A%0A')
-                i.bi.bi-envelope-at-fill
-              a.me-4.text-reset(href='tel:+4915901600951')
-                i.bi.bi-phone
+              ul.list-unstyled.mb-0
+                li
+                  a.me-4.text-reset(href='https://github.com/Laxeros07/Geosoft-II')
+                    i.bi.bi-github
+                li
+                  a.me-4.text-reset(href='mailto:Apollo13.spacey@gmx.de?subject=Erreicht%20ueber%20Website&amp;body=Sehr%20geehrtes%20Spacey%20Team,%0A%0A')
+                    i.bi.bi-envelope-at-fill
+                li
+                  a.me-4.text-reset(href='tel:+4915901600951')
+                    i.bi.bi-phone
         .row
-          .col-lg-2
-          .col-lg-8.text-center
+          .col-md-2
+          .col-md-8.text-center
             img.logo.sm.m-2(src='/images/spaceylogo.png')
-          .col-lg-2
+          .col-md-2
       .text-center.p-1.text-white(style='background-color:#005288;')
         | &copy; 2023 by: 
         i.text-white Apollo 13 Projekt
