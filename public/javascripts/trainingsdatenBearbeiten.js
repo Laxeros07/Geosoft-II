@@ -1,5 +1,3 @@
-const { response } = require("../../app");
-
 var json = []; //Geojson Array
 
 algorithmus = document.getElementById("algorithmus");
