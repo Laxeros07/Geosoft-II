@@ -294,8 +294,7 @@ function geojsonHochladen() {
     },
     body: JSON.stringify(jsonData),
   })
-    .then((response) => response.json())
-    .then((data) => {
+    .then((response) => {
       console.log(response);
       window.alert("Hochladen erfolgreich");
     })
