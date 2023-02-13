@@ -1,11 +1,5 @@
 # Geosoft-II Apollo13
 
-Das Projekt stellt eine einfache Schnittstelle zum Benutzen der AOA (Area of Applicability). 
-
-Dockerimage im Readme anpassen.
-
------------ Ab hier beginnt das offizielle Readme ----------------------------
-
 Dies ist das Repo zum Kurs Geosoft II und dem Projekt Apollo 13 der Firma Spacey.
 Entwickelt wurde diese von den folgenden Personen:
 * Felix Disselkamp
@@ -22,10 +16,16 @@ Die Daten können im Anschluss bearbeitet werden, um eine größere AOA zu errei
 ## Installation
 
 Starten mit Docker:
-nutzen Sie bitte folgende Befehle ausführen, um die beiden Images zu pullen:
+nutzen Sie bitte folgende Befehle, um die beiden Images zu pullen und die Webanwendung zu starten:
 * ```docker pull felioxx/geosoft-ii_appservice```
 * ```docker pull felioxx/geosoft-ii_rservice```
 * ```docker compose-up```
+
+## Wartung/Tests
+
+Nutzen Sie bitte folgende Befehle, um die Tests für die Funktionen auszuführen:
+* ```npm install --save-dev jest```
+* ```npm test```
 
 # Workflow
 ## Schritt 1: Willst du Trainingspolygone oder ein Fertiges Modell hochladen?
