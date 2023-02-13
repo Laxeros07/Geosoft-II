@@ -312,3 +312,5 @@ function validateGeoJSON(geojson) {
   // return true if everything is correct
   return true;
 }
+
+module.exports = getDateityp;

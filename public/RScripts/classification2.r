@@ -47,17 +47,20 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
   prediction <- predict(as(rasterdaten, "Raster"), modell)
   projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  farben <- brewer.pal(n = 12, name = "Paired")
+  farben1 <- brewer.pal(n = 12, name = "Paired")
+  farben2 <- brewer.pal(n = 12, name = "Set2")
+  farben3 <- brewer.pal(n = 12, name = "Dark2")
+  farben <- c(farben1, farben2, farben3)
   coltab(prediction_terra) <- farben#[0:10]
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
 
   # und nochmal in schöner plotten mit sinnvollen Farben
-  cols <- c(
-    "lightgreen", "blue", "green", "darkred", "forestgreen",
-    "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
-  )
+  #cols <- c(
+  #  "lightgreen", "blue", "green", "darkred", "forestgreen",
+  #  "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
+  #)
   # plot(prediction_terra,col=cols)
 
   # export raster
@@ -222,7 +225,10 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   prediction <- predict(as(rasterdaten, "Raster"), model)#, colors(cols))
   projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  farben <- brewer.pal(n = 12, name = "Paired")
+  farben1 <- brewer.pal(n = 12, name = "Paired")
+  farben2 <- brewer.pal(n = 8, name = "Set2")
+  farben3 <- brewer.pal(n = 8, name = "Dark2")
+  farben <- c(farben1, farben2, farben3)
   #?categories
   #levels(prediction_terra)
   #id <- c(1:length(test1))

@@ -14,7 +14,6 @@ block content
         div
           form#trainingsdatenForm(style='display:none' action="/" method="post")
             form-group
-              p Wichtig: Trainingspolygone dürfen nicht mehr als 11 verschiedene Klassen enthalten!
               label.col-form-label(for='daten') 
               b Trainingspolygone 
               |laden:
@@ -25,7 +24,7 @@ block content
               text     Hochladen
           form#modellForm( style='display:none' action="/" method="post")
             form-group
-              p Wichtig: Das Modell darf nicht mehr als 11 verschiedene Klassen kennen und muss im .RDS Format vorliegen!
+              p Wichtig: Das Modell muss im .RDS Format vorliegen!
               label.col-form-label(for='daten') 
               b Modell 
               |laden:
@@ -43,13 +42,8 @@ block content
         div
           form#rasterdatenForm(action="/" method="post")
             form-group
-              p Das Satellitenbild muss folgendes besitzen:
-              p - Koordinatensystem 
-                b WGS84 (EPSG 4326)  
-              p - (wie es z.B. bei Sentinel 2 Standard ist)                          
-                b 12 Kanäle 
-              p - folgende Namen der Kanäle: 
-                b B02, B03, B04, B05, B06, B07, B08, B8A, B09, B10, B11, B12.
+              p Das Satellitenbild muss folgendes Koordinatensystem besitzen: 
+                b WGS84 (EPSG 4326)
               label.col-form-label(for='daten') Rasterdaten laden
               input#rasterdatenFiles.form-control(type='file' name="daten" accept=".tif")
             button#rasterdatenHochladen.btn.btn-primary.my-2(type='submit') 

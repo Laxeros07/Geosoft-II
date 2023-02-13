@@ -39,7 +39,7 @@ function() {
 #* @param ymin,ymax,xmin,xmax If provided, Zuschnitt fuer die Rasterdaten
 #* @get /result
 #* @serializer png
-function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe = NA, algorithmus = NA) {
+function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe = NA, algorithmus = NA, datenanteil) {
   library(terra)
   library(sf)
   library(caret)
@@ -94,12 +94,12 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
 
   # Modell trainieren
   # nicht alle Daten verwenden um Rechenzeit zu sparen
-  extr_subset <- extr[createDataPartition(extr$ID, p = 0.2)$Resample1, ]
+  extr_subset <- extr[createDataPartition(extr$ID, p = datenanteil)$Resample1, ]
 
   # eventuell Daten limitieren.
   # Verhälnis der Daten aus jedem Trainingsgebiet soll aber gleich bleiben
   # hier:10% aus jedem Trainingsgebiet (see ?createDataPartition)
-  trainIDs <- createDataPartition(extr$ID, p = 0.1, list = FALSE)
+  trainIDs <- createDataPartition(extr$ID, p = datenanteil, list = FALSE)
   trainDat <- extr[trainIDs, ]
   # Sicherstellen das kein NA in Prädiktoren enthalten ist:
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
@@ -142,7 +142,10 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   prediction <- predict(as(rasterdaten, "Raster"), model)
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  farben <- brewer.pal(n = 12, name = "Paired")
+  farben1 <- brewer.pal(n = 12, name = "Paired")
+  farben2 <- brewer.pal(n = 8, name = "Set2")
+  farben3 <- brewer.pal(n = 8, name = "Dark2")
+  farben <- c(farben1, farben2, farben3)
   test <- as.polygons(prediction_terra)
   neueFarben <-c("#000000")
   index <- 1
@@ -249,7 +252,10 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
   prediction <- predict(as(rasterdaten, "Raster"), modell)
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  farben <- brewer.pal(n = 12, name = "Paired")
+  farben1 <- brewer.pal(n = 12, name = "Paired")
+  farben2 <- brewer.pal(n = 8, name = "Set2")
+  farben3 <- brewer.pal(n = 8, name = "Dark2")
+  farben <- c(farben1, farben2, farben3)
   test <- as.polygons(prediction_terra)
   neueFarben <-c("#000000")
   index <- 1

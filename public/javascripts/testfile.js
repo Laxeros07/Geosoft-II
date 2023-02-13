@@ -1,26 +1,9 @@
-const englishCode = "en-UK";
-
-const frenchCode = "es-FS";
-
-function getAboutUsLink(language) {
-  switch (language.toLowerCase()) {
-    case englishCode.toLowerCase():
-      return "/about-us";
-
-    case frenchCode.toLowerCase():
-      return "/-à propos de nous";
-  }
-
-  return "";
+function sum(a, b) {
+  return a + b;
 }
 
-function moin(param) {
-  if (param == 1) {
-    return "ja";
-  } else {
-    return "nein";
-  }
+function testung(param) {
+  return param;
 }
 
-module.exports = getAboutUsLink;
-module.exports = moin;
+module.exports = sum;
