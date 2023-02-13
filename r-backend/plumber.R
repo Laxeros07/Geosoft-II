@@ -66,9 +66,7 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   # rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif")
 
   ## Variablen definieren
-  predictors <- c(
-    "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B10", "B11", "B12"
-  )
+  predictors <- names(rasterdaten)
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
@@ -139,26 +137,32 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   # plot(model) # see tuning results
   # plot(varImp(model)) # variablenwichtigkeit
 
-  cols <- c(
-    "beige", "sandybrown",
-    "blue3", "red", "magenta", "red", "darkgoldenrod", "lightgreen", "blue", "green", "deeppink4", "grey", "chartreuse", "deeppink3",
-    "deepskyblue4", "forestgreen", "brown", "darkgreen"
-  )
-
   # klassifizieren
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), model)
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   farben <- brewer.pal(n = 12, name = "Paired")
-  coltab(prediction_terra) <- farben # [0:10]
+  test <- as.polygons(prediction_terra)
+  neueFarben <-c("#000000")
+  index <- 1
+  alle <- as.data.frame(levels(prediction_terra))
+  for(i in 1:length(alle$value)){
+    if(!(alle$value[i] %in% values(test)$layer)){
+      neueFarben <- c(neueFarben, "#000000")
+    } else {
+        neueFarben <- c(neueFarben, farben[index])
+        index <- index+1
+      }
+    }
+  coltab(prediction_terra) <- neueFarben
 
   terra::writeRaster(prediction_terra, "myfiles/prediction.tif", overwrite = TRUE)
 
   # Prediction Legende exportieren
   legend_plot <- ggplot() +
     geom_spatraster(data = prediction_terra) +
-    scale_fill_manual(values = farben[2:12], na.value = NA)
+    scale_fill_manual(values = farben[1:12], na.value = NA)
   legend <- get_legend(legend_plot)
 
   ggsave("myfiles/legend.png", plot = legend, width = 1.7, height = 2.7)
@@ -168,6 +172,8 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   if (file.exists("myfiles/AOA_klassifikation.tif")) {
     AOA_Differenz_nötig <- TRUE
     AOA_klassifikation_alt <- rast("myfiles/AOA_klassifikation.tif")
+    terra::writeRaster(AOA_klassifikation_alt, "myfiles/AOA_klassifikation_alt.tif", overwrite = TRUE)
+    AOA_klassifikation_alt <- rast("myfiles/AOA_klassifikation_alt.tif")
   }
 
   # AOA Berechnungen
@@ -228,10 +234,7 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
   library(tidyterra)
 
   maske_raster <- c(xmin, xmax, ymin, ymax)
-  maske_training <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
-
   class(maske_raster) <- "numeric"
-  class(maske_training) <- "numeric"
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   modell <- readRDS("myfiles/modell.RDS")
@@ -247,18 +250,22 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   farben <- brewer.pal(n = 12, name = "Paired")
-  coltab(prediction_terra) <- farben # [0:10]
+  test <- as.polygons(prediction_terra)
+  neueFarben <-c("#000000")
+  index <- 1
+  alle <- as.data.frame(levels(prediction_terra))
+  for(i in 1:length(alle$value)){
+    if(!(alle$value[i] %in% values(test)$layer)){
+      neueFarben <- c(neueFarben, "#000000")
+    } else {
+        neueFarben <- c(neueFarben, farben[index])
+        index <- index+1
+      }
+    }
+  coltab(prediction_terra) <- neueFarben
 
   # erste Visualisierung der Klassifikation:
   # plot(prediction_terra)
-
-  # und nochmal in schöner plotten mit sinnvollen Farben
-  cols <- c(
-    "lightgreen", "blue", "green", "darkred", "forestgreen",
-    "darkgreen", "beige", "darkblue", " firebrick1", "red", "yellow"
-  )
-  # plot(prediction_terra,col=cols)
-
   # export raster
   # writeRaster(prediction_terra,"prediction.grd",overwrite=TRUE)
   # return(plot(prediction_terra)) # ,col=cols))
@@ -277,6 +284,8 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
   if (file.exists("myfiles/AOA_klassifikation.tif")) {
     AOA_Differenz_nötig <- TRUE
     AOA_klassifikation_alt <- rast("myfiles/AOA_klassifikation.tif")
+    terra::writeRaster(AOA_klassifikation_alt, "myfiles/AOA_klassifikation_alt.tif", overwrite = TRUE)
+    AOA_klassifikation_alt <- rast("myfiles/AOA_klassifikation_alt.tif")
   }
 
   # AOA Berechnungen
@@ -299,6 +308,8 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
 
   # AOA Differenz berechnen
   if (AOA_Differenz_nötig == TRUE) {
+    AOA_klassifikation_alt <- crop(AOA_klassifikation_alt, ext(AOA_klassifikation$AOA))
+    AOA_klassifikation$AOA <- crop(AOA_klassifikation$AOA, ext(AOA_klassifikation_alt))
     differenz <- AOA_klassifikation$AOA - AOA_klassifikation_alt
     terra::writeRaster(differenz, "myfiles/AOADifferenz.tif", overwrite = TRUE)
   } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
