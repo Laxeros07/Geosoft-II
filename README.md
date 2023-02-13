@@ -16,10 +16,16 @@ Die Daten können im Anschluss bearbeitet werden, um eine größere AOA zu errei
 ## Installation
 
 Starten mit Docker:
-nutzen Sie bitte folgende Befehle ausführen, um die beiden Images zu pullen:
+nutzen Sie bitte folgende Befehle, um die beiden Images zu pullen und die Webanwendung zu starten:
 * ```docker pull felioxx/geosoft-ii_appservice```
 * ```docker pull felioxx/geosoft-ii_rservice```
 * ```docker compose-up```
+
+## Wartung/Tests
+
+Nutzen Sie bitte folgende Befehle, um die Tests für die JS Funktionen auszuführen:
+* ```npm install --save-dev jest```
+* ```npm test```
 
 # Workflow
 ## Schritt 1: Willst du Trainingspolygone oder ein Fertiges Modell hochladen?
