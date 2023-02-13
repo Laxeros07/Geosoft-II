@@ -7,26 +7,20 @@ function(msg = "") {
   list(msg = paste0("The message is: '", msg, "'"))
 }
 
-#* Plot out data from the iris dataset
-#* @param spec If provided, filter the data to only this species (e.g. 'setosa')
-#* @get /plot
-#* @serializer png
-function(spec) {
-  myData <- iris
-  title <- "All Species"
 
-  # Filter if the species was specified
-  if (!missing(spec)) {
-    title <- paste0("Only the '", spec, "' Species")
-    myData <- subset(iris, Species == spec)
-  }
+#* function to test if r functions in plumber work
+#* @return string, if everything has worked well
+Testfunktion  <- function(){
+  library(testthat)
+  hallo <- "bla bla"
+  return("hat geklappt")}
 
-  plot(myData$Sepal.Length, myData$Petal.Length,
-    main = title, xlab = "Sepal Length", ylab = "Petal Length"
-  )
-}
+# Test the function
+test_that('teste Testfunktion', {expect_identical(Testfunktion(), "hat geklappt")})
 
-#* Umwandeln von Geopackage zu GeoJSON
+
+
+#* Convert Geopackage to GeoJSON
 #* @get /convert
 #* @serializer json
 function() {
@@ -35,11 +29,15 @@ function() {
   st_write(data, "myfiles/trainingsdaten.geojson", delete_dsn = TRUE)
 }
 
-#* Klassifikation ohne Modell
-#* @param ymin,ymax,xmin,xmax If provided, Zuschnitt fuer die Rasterdaten
+#* classification without Model
+#* Function to calculate a classifikation and depending AOA by using trainingdata
+#* @param ymin,ymax,xmin,xmax If provided, cutting for the rasterdata
+#* @param baumAnzahl If provided, number of trees for the random forest algorithm
+#* @param baumTiefe If provided, depth of the trees for the random forest algorithm
+#* @param datenanteil If provided, amount of trainingdata to use for the model calculation
 #* @get /result
 #* @serializer png
-function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe = NA, algorithmus = NA, datenanteil) {
+function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe = NA, algorithmus = NA, datenanteil = NA) {
   library(terra)
   library(sf)
   library(caret)
@@ -62,16 +60,14 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
 
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   trainingsdaten <- read_sf("myfiles/trainingsdaten.geojson")
-  # trainingsdaten <- read_sf("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/beispieldaten/trainingsdaten.geojson")
-  # rasterdaten <- rast("D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/rasterdaten.tif")
 
-  ## Variablen definieren
+  ## define variables
   predictors <- names(rasterdaten)
 
-  # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
+  # reproject traindata if different crs
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
 
-  # Daten auf Maske zuschneiden
+  # cut data to provided mask
   if (!(is.na(ymin) || is.na(ymax) || is.na(xmin) || is.na(xmax))) {
     rasterdaten <- crop(rasterdaten, ext(maske_raster))
     sf_use_s2(FALSE)
@@ -83,29 +79,21 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
     trainingsdaten <- st_crop(trainingsdaten2, ext(rasterdaten))
   }
 
-  # Daten mergen
+  # merge data
   extr <<- extract(rasterdaten, trainingsdaten)
-  # head(extr)
-  # head(trainingsdaten)
   trainingsdaten$PolyID <- 1:nrow(trainingsdaten)
   extr <<- merge(extr, trainingsdaten, by.x = "ID", by.y = "PolyID")
-  # head(extr)
 
 
-  # Modell trainieren
-  # nicht alle Daten verwenden um Rechenzeit zu sparen
+  # use less amount of data for faster calculation
   extr_subset <- extr[createDataPartition(extr$ID, p = datenanteil)$Resample1, ]
-
-  # eventuell Daten limitieren.
-  # Verhälnis der Daten aus jedem Trainingsgebiet soll aber gleich bleiben
-  # hier:10% aus jedem Trainingsgebiet (see ?createDataPartition)
   trainIDs <- createDataPartition(extr$ID, p = datenanteil, list = FALSE)
   trainDat <- extr[trainIDs, ]
-  # Sicherstellen das kein NA in Prädiktoren enthalten ist:
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
 
+  #train Model
   if (algorithmus == "rf") {
-    # Hyperparameter für Modelltraining abfragen
+    # queryhHyperparameter for model training
     if (is.na(baumAnzahl)) {
       baumAnzahl <- 50 # 50 is quite small (default=500). But it runs faster.
     }
@@ -116,7 +104,7 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
     }
     class(baumTiefe) <- "numeric"
 
-    #### Modelltraining
+    #### Modeltraining
     model <- train(trainDat[, predictors],
       trainDat$Label,
       method = "rf",
@@ -129,19 +117,17 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
       trainDat$Label,
       method = "rpart",
       trControl = trainControl(method = "cv") # Classification Tree Algorithmus
-    ) # nicht so gut wie rf Algorithmus
+    ) # not so good like rf Algorithmus
   }
   saveRDS(model, "myfiles/RFModel2.RDS")
 
-  # model
-  # plot(model) # see tuning results
-  # plot(varImp(model)) # variablenwichtigkeit
-
-  # klassifizieren
+  # classification
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), model)
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
+  
+  # create suitable color table for color blind people
   farben1 <- brewer.pal(n = 12, name = "Paired")
   farben2 <- brewer.pal(n = 8, name = "Set2")
   farben3 <- brewer.pal(n = 8, name = "Dark2")
@@ -160,9 +146,10 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
     }
   coltab(prediction_terra) <- neueFarben
 
+  # export classification
   terra::writeRaster(prediction_terra, "myfiles/prediction.tif", overwrite = TRUE)
 
-  # Prediction Legende exportieren
+  # export classification legend
   legend_plot <- ggplot() +
     geom_spatraster(data = prediction_terra) +
     scale_fill_manual(values = farben[1:12], na.value = NA)
@@ -170,7 +157,7 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
 
   ggsave("myfiles/legend.png", plot = legend, width = 1.7, height = 2.7)
 
-  # Abfrage, ob bereits eine AOA gerechnet wurde
+  # query, if an AOA was calculated before
   AOA_Differenz_nötig <- FALSE
   if (file.exists("myfiles/AOA_klassifikation.tif")) {
     AOA_Differenz_nötig <- TRUE
@@ -179,51 +166,34 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
     AOA_klassifikation_alt <- rast("myfiles/AOA_klassifikation_alt.tif")
   }
 
-  # AOA Berechnungen
+  # calculate AOA
   AOA_klassifikation <- aoa(rasterdaten, model)
   crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   crs(AOA_klassifikation$DI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
-  # plot(AOA_klassifikation$DI)
-  # plot(AOA_klassifikation$AOA)
   terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
-  # coltab(prediction_terra) <- brewer.pal(n = 10, name = "RdBu")
-  # levels(r) <- data.frame(id=1:9, cover=c("Acker_bepflanzt","Fliessgewässer","Gruenland","Industriegebiet", "Laubwald", "Mischwald", "Offenboden", "See", "Siedlung"))
 
-  # DI Berechnungen
+  # calculate DI
   maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   # terra::writeRaster(maxDI, "myfiles/maxDI.tif", overwrite = TRUE)
 
-  # DI als GeoJSON exportieren
+  # export DI as GeoJSON
   maxDIVector <- as.polygons(maxDI)
   crs(maxDIVector) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   terra::writeVector(maxDIVector, "myfiles/maxDI.geojson", filetype = "geojson", overwrite = TRUE)
 
-  # AOA Differenz berechnen
+  # calculate AOA difference
   if (AOA_Differenz_nötig == TRUE) {
     AOA_klassifikation_alt <- crop(AOA_klassifikation_alt, ext(AOA_klassifikation$AOA))
     AOA_klassifikation$AOA <- crop(AOA_klassifikation$AOA, ext(AOA_klassifikation_alt))
     differenz <- AOA_klassifikation$AOA - AOA_klassifikation_alt
     terra::writeRaster(differenz, "myfiles/AOADifferenz.tif", overwrite = TRUE)
   } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
-
-  # tiff(paste(
-  #  getwd(),
-  # "/public/uploads/prediction.tif",
-  #  sep = ""
-  # ))
-  # plot(prediction_terra,col=cols, legend=FALSE)
-  # dev.off()
-
-  # writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
-  # filename <- paste(normalizePath("D:/Dokumente/Studium"), "\\prediction.tif", sep = "")
-  # stop(getwd())
-  # terra::writeRaster(prediction_terra, "D:/Dokumente/Studium/5 FS/Geosoftware II/geosoft-II/public/uploads/prediction.tif", overwrite = TRUE)
-  # plot(prediction_terra, col = cols)
 }
 
-#* Klassifikation mit Modell
-#* @param maske If provided, Zuschnitt fuer die Rasterdaten
+#* classification with Model
+#* Function to calculate a classifikation and depending AOA by using a RDS model
+#* @param ymin,ymax,xmin,xmax If provided, cutting for the rasterdata
 #* @get /resultModell
 #* @serializer png
 function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
@@ -242,16 +212,18 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
   rasterdaten <- rast("myfiles/rasterdaten.tif")
   modell <- readRDS("myfiles/modell.RDS")
 
-  # Daten auf Maske zuschneiden
+  # cut data to mask
   if (!(is.na(ymin) || is.na(ymax) || is.na(xmin) || is.na(xmax))) {
     rasterdaten <- crop(rasterdaten, ext(maske_raster))
   }
 
-  # klassifizieren
+  # classify
   ### little detour due to terra/raster change
   prediction <- predict(as(rasterdaten, "Raster"), modell)
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
+  
+  # create suitable color table for color blind people
   farben1 <- brewer.pal(n = 12, name = "Paired")
   farben2 <- brewer.pal(n = 8, name = "Set2")
   farben3 <- brewer.pal(n = 8, name = "Dark2")
@@ -270,14 +242,10 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
     }
   coltab(prediction_terra) <- neueFarben
 
-  # erste Visualisierung der Klassifikation:
-  # plot(prediction_terra)
-  # export raster
-  # writeRaster(prediction_terra,"prediction.grd",overwrite=TRUE)
-  # return(plot(prediction_terra)) # ,col=cols))
+  # export classification
   terra::writeRaster(prediction_terra, "myfiles/prediction.tif", overwrite = TRUE)
 
-  # Prediction Legende exportieren
+  # export calssification legend
   legend_plot <- ggplot() +
     geom_spatraster(data = prediction_terra) +
     scale_fill_manual(values = farben[2:12], na.value = NA)
@@ -285,7 +253,7 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
 
   ggsave("myfiles/legend.png", plot = legend, width = 1.7, height = 2.7)
 
-  # Abfrage, ob bereits eine AOA gerechnet wurde
+  # query, if an AOA was calculated before
   AOA_Differenz_nötig <- FALSE
   if (file.exists("myfiles/AOA_klassifikation.tif")) {
     AOA_Differenz_nötig <- TRUE
@@ -294,7 +262,7 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
     AOA_klassifikation_alt <- rast("myfiles/AOA_klassifikation_alt.tif")
   }
 
-  # AOA Berechnungen
+  # calculate AOA
   AOA_klassifikation <- aoa(rasterdaten, modell)
   crs(AOA_klassifikation$AOA) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   crs(AOA_klassifikation$DI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
@@ -302,17 +270,17 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
   # plot(AOA_klassifikation$AOA)
   terra::writeRaster(AOA_klassifikation$AOA, "myfiles/AOA_klassifikation.tif", overwrite = TRUE)
 
-  # DI Berechnungen
+  # calculate DI
   maxDI <- selectHighest(AOA_klassifikation$DI, 3000)
   crs(maxDI) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   # terra::writeRaster(maxDI, "myfiles/maxDI.tif", overwrite = TRUE)
 
-  # DI als GeoJSON exportieren
+  # export DI in GeoJSON format
   maxDIVector <- as.polygons(maxDI)
   crs(maxDIVector) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   terra::writeVector(maxDIVector, "myfiles/maxDI.geojson", filetype = "geojson", overwrite = TRUE)
 
-  # AOA Differenz berechnen
+  # calculate AOA difference
   if (AOA_Differenz_nötig == TRUE) {
     AOA_klassifikation_alt <- crop(AOA_klassifikation_alt, ext(AOA_klassifikation$AOA))
     AOA_klassifikation$AOA <- crop(AOA_klassifikation$AOA, ext(AOA_klassifikation_alt))

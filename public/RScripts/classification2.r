@@ -1,3 +1,6 @@
+#### file only for testing, do not pay attention
+
+
 ## librarys installieren
 library(terra)
 library(sf)
@@ -7,7 +10,7 @@ library(CAST)
 library(cowplot)
 library(tidyterra)
 library(RColorBrewer)
-library(tmap)
+library(testthat)
 
 
 # zum testen wd so setzen
@@ -148,7 +151,7 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
 klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus, datenanteil) {
   ## Variablen definieren
   predictors <- names(rasterdaten)
-  
+
   # Rasterdaten zuschneiden
   rasterdaten <- crop(rasterdaten, maske_raster)
   
@@ -162,7 +165,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
 
   # Trainingsdaten umprojizieren, falls die Daten verschiedene CRS haben
   trainingsdaten <- st_transform(trainingsdaten, crs(rasterdaten))
-
+  
   # Daten mergen
   extr <<- extract(rasterdaten, trainingsdaten)
   # head(extr)
@@ -448,6 +451,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     ), overwrite = TRUE)
     #plot(differenz)
   } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
+
 }
 #aoa_alt <- rast(paste(
 #  getwd(),
@@ -467,4 +471,5 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
 # zum Testen der Funktionen
  klassifizierung_mit_Modell(rasterdaten, modell, maske_raster)
  klassifizierung_ohne_Modell(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus, datenanteil)
+ test_that('teste klassifizierung_ohne_Modell', {expect_equal(klassifizierung_ohne_Modell(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus, datenanteil), "alles erledigt")})
  
