@@ -27,6 +27,7 @@ const storage = multer.diskStorage({
   // checks filetype for each file and saves it according to the type
   filename: (req, file, cb) => {
     console.log(file);
+    //Get the filetype
     filetype = file.originalname.toString().split(".")[1];
     switch (filetype) {
       case "geojson":
@@ -68,6 +69,7 @@ function uploadFiles(req, res) {
           return console.log(err);
         }
 
+        //Write geojson to folder
         fs.readFile("myfiles/trainingsdaten.geojson", function read(err, data) {
           if (err) {
             throw err;
@@ -77,6 +79,7 @@ function uploadFiles(req, res) {
       }
     );
   } else if (filetype == "geojson" || filetype == "json") {
+    //Write geojson to folder
     fs.readFile("myfiles/trainingsdaten.geojson", function read(err, data) {
       if (err) {
         throw err;

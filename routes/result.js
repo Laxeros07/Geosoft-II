@@ -10,61 +10,56 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/", function (req, res, next) {
-  console.log(req.body);
   if (req.body.algorithmus) {
+    //Button "Skript ausführen" event
     let url = "http://172.17.0.1:7001/";
     let bbSplit = "";
     if (req.body.bb) {
       if (req.body.bb != "-") {
-        //Es wurde eine Boundingbox angegeben
+        //No Boundingbox
         bbSplit = req.body.bb.split(",");
       }
     }
 
-    if (req.body.id) {
-      //Zusammenbauen der Url mit den Parametern
-      switch (req.body.id) {
-        case "trainingsdaten":
-          url += "result?";
-          url += "datenanteil=" + req.body.reduzieren + "&";
-          if (bbSplit != "") {
-            //Boundingbox
-            url +=
-              "ymin=" +
-              bbSplit[2] +
-              "&ymax=" +
-              bbSplit[3] +
-              "&xmin=" +
-              bbSplit[0] +
-              "&xmax=" +
-              bbSplit[1] +
-              "&";
-          }
-          break;
-        case "modell":
-          url += "resultModell?";
-          url += "datenanteil=" + req.body.reduzieren + "&";
-          if (bbSplit != "") {
-            //Boundingbox
-            url +=
-              "ymin=" +
-              bbSplit[2] +
-              "ymax=" +
-              bbSplit[3] +
-              "xmin=" +
-              bbSplit[0] +
-              "xmax=" +
-              bbSplit[1] +
-              "&";
-          }
-          break;
-      }
-    } else {
-      url += "result?";
-      url += "datenanteil=" + req.body.reduzieren + "&";
+    //Build url with parameters
+    switch (req.body.id) {
+      case "trainingsdaten":
+        url += "result?";
+        url += "datenanteil=" + req.body.reduzieren + "&";
+        if (bbSplit != "") {
+          //Boundingbox
+          url +=
+            "ymin=" +
+            bbSplit[2] +
+            "&ymax=" +
+            bbSplit[3] +
+            "&xmin=" +
+            bbSplit[0] +
+            "&xmax=" +
+            bbSplit[1] +
+            "&";
+        }
+        break;
+      case "modell":
+        url += "resultModell?";
+        url += "datenanteil=" + req.body.reduzieren + "&";
+        if (bbSplit != "") {
+          //Boundingbox
+          url +=
+            "ymin=" +
+            bbSplit[2] +
+            "ymax=" +
+            bbSplit[3] +
+            "xmin=" +
+            bbSplit[0] +
+            "xmax=" +
+            bbSplit[1] +
+            "&";
+        }
+        break;
     }
     if (req.body.algorithmus == "rf") {
-      // Random Forest
+      // Random Forest Parameters
       if (req.body.anzahl != "" && req.body.id == "trainingsdaten") {
         url += "baumAnzahl=" + req.body.anzahl + "&";
       }
@@ -80,6 +75,7 @@ router.post("/", function (req, res, next) {
     console.log("URL:");
     console.log(url);
 
+    //Send a request to Plumber
     request(url, { json: true }, (err, res2, body) => {
       console.log(res2.body);
       console.log(body);
@@ -89,6 +85,7 @@ router.post("/", function (req, res, next) {
       res.render("result", { title: "Result" });
     });
   } else if (req.body.type == "FeatureCollection") {
+    //Event for uploading geojson
     const jsonData = req.body;
     console.log(jsonData);
     fs.writeFileSync(
@@ -145,17 +142,5 @@ router.post("/", function (req, res, next) {
     res.zip(dateien);
   }
 });
-
-/**
- * Aufrufen der Trainingsdatenseit (bearbeiten der seite)
- */
-/*
-router.post("/trainingsdaten", function (req, res, next) {
-  res.render("trainingsdaten", { title: "Demo Result" });
-});
-*/
-function uploadFiles(req, res) {
-  res.json({ message: "Successfully uploaded files" });
-}
 
 module.exports = router;
