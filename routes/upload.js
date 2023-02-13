@@ -24,6 +24,7 @@ var filetype;
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: "myfiles",
+  // checks filetype for each file and saves it according to the type
   filename: (req, file, cb) => {
     console.log(file);
     filetype = file.originalname.toString().split(".")[1];
@@ -52,13 +53,13 @@ router.get("/", function (req, res, next) {
   res.render("upload", { title: "Upload", radius: "", result: "" });
 });
 
-// Läd die Daten in den Upload Ordner hoch
+// saves files in Upload folder
 router.post("/", upload.single("daten"), uploadFiles);
 
 function uploadFiles(req, res) {
   console.log("Filetype: " + filetype);
   if (filetype == "gpkg") {
-    // Geopackage wird in GeoJSON konvertiert
+    // Geopackage is converted to gejson
     request(
       "http://172.17.0.1:7001/convert",
       { json: true },
@@ -83,7 +84,7 @@ function uploadFiles(req, res) {
       res.send({ message: filetype, json: JSON.parse(data) });
     });
   } else {
-    //Rasterdaten oder Modell
+    //Rasterdata or model
     res.send({ message: filetype });
   }
 }
