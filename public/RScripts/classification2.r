@@ -20,7 +20,7 @@ rasterdaten <- rast(paste(
 ))
 trainingsdaten <- read_sf(paste(
   getwd(),
-  "/public/uploads/trainingsgebiete.geojson",
+  "/public/uploads/trainingsdaten2.geojson",
   sep = ""
 ))
 modell <- readRDS(paste(
@@ -33,7 +33,7 @@ maske_raster <- c(7.55738996178022, 7.64064656833175, 51.9372943715445, 52.00015
 maske_training <- c(xmin =7.55738996178022, ymin =51.9372943715445, xmax =7.64064656833175, ymax =52.0001517816852)
 baumAnzahl <- NA
 baumTiefe <- NA
-algorithmus <- "rf"
+algorithmus <- "dt"
 datenanteil <- 0.1
 
 ## Ausgabe
@@ -144,9 +144,8 @@ klassifizierung_mit_Modell <- function(rasterdaten, modell, maske_raster) {
 ## Ausgabe
 klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raster, maske_training, baumAnzahl, baumTiefe, algorithmus, datenanteil) {
   ## Variablen definieren
-  predictors <- c(
-    "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B10", "B11", "B12")
-
+  predictors <- names(rasterdaten)
+  
   # Rasterdaten zuschneiden
   rasterdaten <- crop(rasterdaten, maske_raster)
   
@@ -200,8 +199,8 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
     #print(algorithmus)
     model <- train(trainDat[, predictors],
                    trainDat$Label,
-                   method="rpart", 
-                   trControl = trainControl(method = "cv")   # Classification Tree Algorithmus
+                   method="rpart"#, 
+                   #trControl = trainControl(method = "cv")   # Classification Tree Algorithmus
     ) # nicht so gut wie rf Algorithmus
   }
   #model
@@ -224,30 +223,54 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   projection(prediction)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
   farben <- brewer.pal(n = 12, name = "Paired")
-  coltab(prediction_terra) <- farben#[0:12]
+  #?categories
+  #levels(prediction_terra)
+  #id <- c(1:length(test1))
+  #id
+  #df <- as.data.frame(id, Label)
+  #df
+  #levels(prediction_terra) <- testung#as.data.frame(id, Label)
+  #values(prediction_terra)
+  #prediction_terra
+  #coltab(prediction_terra) <- farben#[1:(length(as.data.frame(levels(prediction_terra))$value)+1)]#[0:12]
   #terra::plot(prediction_terra, col=farben[1:12])
-  #test <- as.polygons(prediction_terra)
-  #test1 <- values(test)[,1]
+  #length(as.data.frame(levels(prediction_terra))$value)
+  test <- as.polygons(prediction_terra)
+  #Label <- c(values(test)[,1])
+  #values(test)
+  #testung <- as.data.frame(levels(prediction_terra))
   #trainingsdaten$Label
   #test2 <- sort(trainingsdaten$Label)
   #test2 <- unique(test2)
   #test2
-  #test1
+  #Label <- c(Label)
+  #Label
+  #testung
+  #ebenen <- as.data.frame(levels(prediction_terra))
+  #ebenen
+  #levels(prediction_terra)
+  #legend(prediction_terra) <- legend("right", legend=values(test))
+  #?legend
+  #plot(prediction_terra)
   #farben
   #test1[1]
-  #neueFarben <-c()
+  neueFarben <-c("#000000")
   #nobreak <- TRUE
-  #for(i in 1:length(test2)){
-  #  if((test2[i] %in% test1) & (nobreak)){
-  #    neueFarben <- c(neueFarben, farben[i+1])
-  #  } else {
-  #    nobreak<-FALSE
-  #    if((test2[i] %in% test1)){
-  #      neueFarben <- c(neueFarben, farben[i])
-  #    }
-  #  }
-  #}
+  #values(test)$layer
+  #alle$value
+  index <- 1
+  #index
+  alle <- as.data.frame(levels(prediction_terra))
+  for(i in 1:length(alle$value)){
+    if(!(alle$value[i] %in% values(test)$layer)){
+      neueFarben <- c(neueFarben, "#000000")
+    } else {
+        neueFarben <- c(neueFarben, farben[index])
+        index <- index+1
+      }
+    }
   #neueFarben
+  coltab(prediction_terra) <- neueFarben
   #plot(test)
   #coltab(prediction_terra)
   #plot(prediction_terra)
@@ -292,19 +315,41 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   ), overwrite = TRUE)
   
   # Prediction Legende exportieren
-  legend_plot <- ggplot()+
+  legend_plot <- ggplot(prediction_terra)+
     geom_spatraster(data=prediction_terra)+
-    scale_fill_manual(values=farben[2:12], na.value=NA)
+    scale_fill_manual(values=farben[1:12], na.value=NA) +
+    coord_sf(crs="+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
     #scale_fill_manual(values=neueFarben, na.value=NA)
-  legend <- get_legend(legend_plot)
+  #legend_plot <- ggplot(prediction_terra)+
+  #  geom_map(aes(map_id = hallo$id), map=hallo)+
+  #  scale_fill_manual(values=farben[2:12], na.value=NA) +
+  #  coord_sf(crs="+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
+  legend <- get_legend(legend_plot)#, farben)
+  #?get_legend
+  #?geom_spatraster
+  #?ggsave
+  #?geom_map
+  #ext(prediction_terra)
+  #bereich <- as.data.frame(c(ext(prediction_terra)[1],ext(prediction_terra)[2],ext(prediction_terra)[3],ext(prediction_terra)[4]))
+  #hallo <- fortify(prediction_terra)
+  #hallo
+  #colnames(hallo)[3] <- "id"
+  #bereich
 
   ggsave(paste(
     getwd(),
     "/public/uploads/legend.png",
     sep = ""
-  ), plot= legend_plot, width = 2, height = 3)
+  ), plot= legend, width = 2, height = 3)
+  
+  #ggsave(paste(
+  #  getwd(),
+  #  "/public/uploads/legend_plot.tiff",
+  #  sep = ""
+  #), plot= prediction_terra)
   
   #plot(legend_plot)
+  #plot(prediction_terra)
   #plot(legend)
   #test <- as(map, "SpatRaster")
   # crs(prediction_terra) <- "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
@@ -339,8 +384,19 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
       "/public/uploads/AOA_klassifikation.tif",
       sep = ""
     ))
+    terra::writeRaster(AOA_klassifikation_alt, paste(
+      getwd(),
+      "/public/uploads/AOA_klassifikation_alt.tif",
+      sep = ""
+    ), overwrite = TRUE) # 1=gute AOA; 0=schlechte AOA
+    AOA_klassifikation_alt<- rast(paste(
+      getwd(),
+      "/public/uploads/AOA_klassifikation_alt.tif",
+      sep = ""
+    ))
   }
-
+#plot(AOA_klassifikation_alt)
+#plot(AOA_klassifikation$AOA)
   # AOA Berechnungen
   AOA_klassifikation <- aoa(rasterdaten,model)
   crs(AOA_klassifikation$AOA)<- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
@@ -373,6 +429,8 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
   ), filetype="geojson", overwrite = TRUE)
   
   # AOA Differenz berechnen
+  #plot(AOA_klassifikation_alt)
+  #plot(AOA_klassifikation$AOA)
   if(AOA_Differenz_nötig == TRUE){
     AOA_klassifikation_alt <- crop(AOA_klassifikation_alt, ext(AOA_klassifikation$AOA))
     AOA_klassifikation$AOA <- crop(AOA_klassifikation$AOA, ext(AOA_klassifikation_alt))
@@ -382,6 +440,7 @@ klassifizierung_ohne_Modell <- function(rasterdaten, trainingsdaten, maske_raste
       "/public/uploads/AOADifferenz.tif",
       sep = ""
     ), overwrite = TRUE)
+    #plot(differenz)
   } # 1=Verbesserung der AOA; 0=keine Veränderung; -1=Verschlechterung der AOA
 }
 #aoa_alt <- rast(paste(
