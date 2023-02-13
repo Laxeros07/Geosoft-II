@@ -99,10 +99,10 @@ router.post("/", function (req, res, next) {
   }
   // Download
   else {
-    //var zip = new JSZip();
     var dateien = [];
     console.log("req");
     console.log(req.body);
+    // checks which elements have been requested and adds the file paths to an array
     if (req.body.prediction_datei) {
       dateien.push({
         path: req.body.prediction_datei,
@@ -139,21 +139,9 @@ router.post("/", function (req, res, next) {
         name: "AOADifferenz.tif",
       });
     }
-    // fs.readFile(req.body.value, function read(err, file) {
-    //   if (err) {
-    //     throw err;
-    //   }
-    //   zip.file("AoA.tif", file);
-    // });
-
-    // console.log("zip:");
-    // console.log(zip.files);
-    // var blob = zip.generateAsync({ type: "nodebuffer" });
-    // console.log("blob:");
-    // console.log(blob.files);
-    // //saveAs(blob, "hello.zip");
     console.log("Dateien:");
     console.log(dateien);
+    // creates zip and sends it back
     res.zip(dateien);
   }
 });

@@ -12,11 +12,14 @@ router.post("/result", function (req, res, next) {
 
 module.exports = router;
 
+/**
+ * creates zip of the demo data and sends it back to the client
+ */
 router.post("/", function (req, res, next) {
   var dateien = [];
   console.log("req");
   console.log(req.body);
-
+  // adds all data paths from the demo data to an array
   dateien.push({
     path: "beispieldaten/trainingsgebiete.geojson",
     name: "trainingsgebiete.geojson",
