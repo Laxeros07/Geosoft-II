@@ -1,11 +1,5 @@
 # Geosoft-II Apollo13
 
-Das Projekt stellt eine einfache Schnittstelle zum Benutzen der AOA (Area of Applicability). 
-
-Dockerimage im Readme anpassen.
-
------------ Ab hier beginnt das offizielle Readme ----------------------------
-
 Dies ist das Repo zum Kurs Geosoft II und dem Projekt Apollo 13 der Firma Spacey.
 Entwickelt wurde diese von den folgenden Personen:
 * Felix Disselkamp
