@@ -96,12 +96,12 @@ map.on(L.Draw.Event.CREATED, function (e) {
 });
 
 /**
- * Wird aufgerufen wenn der der laden button gedrückt wird
+ * will be excuted if loading button pressed
  */
 function datenAnzeigen() {
   console.log("Tabelle leeren");
 
-  //Tabelle zurücksetzen
+  // reset table
   tbl = document.getElementById("tabelle");
   tbl.innerHTML =
     "<tbody><tr><th>Id</th><th>Label</th><th>Class_ID</th></tr></tbody>";
@@ -111,7 +111,7 @@ function datenAnzeigen() {
 
 var data = []; //Array für die Geojson
 /**
- * Übersichtlicher in ein Geojson speichern
+ * save in geojson
  */
 function toJson() {
   data = [];
@@ -132,14 +132,14 @@ function toJson() {
     i++;
   }
   console.log(data);
-  einlesen(data); //die Werte der Tabelle übergeben
+  einlesen(data); // give values to table
 }
 
-//Punkte und Attribute zur Tabelle hinzufügen
+// add points and attributes to table
 const table = document.getElementById("tabelle");
 
 /**
- * Tabelle mit den Daten (Label & Class_ID befüllen)
+ * add data (Label & Class_ID) to table
  */
 function einlesen() {
   data.forEach((item) => {
@@ -148,7 +148,7 @@ function einlesen() {
     let cell1 = row.insertCell(1);
     let cell2 = row.insertCell(2);
 
-    // Speichern der Nummer und der Attribute in jeder Zeile
+    // Saving of number an attribute in every row
     cell0.innerHTML = item.properties.id;
     cell1.innerHTML = item.properties.Label;
     cell2.innerHTML = item.properties.ClassID;
@@ -158,13 +158,12 @@ function einlesen() {
 }
 
 function tabelleFüllen() {
-  //Punkte und Attribute zur Tabelle hinzufügen
   const table = document.getElementById("tabelle");
 
   /**
-   * Klick-Event-wenn auf Zeile in Tabelle auf Gebirge in Karte zoomen
-   * und das PopUp öffnen
-   * Quelle: stackoverflow https://stackoverflow.com/questions/1207939/adding-an-onclick-event-to-a-table-row
+   * Klick-Event-for row in table-zoom to feature
+   * open pop-up
+   * source: stackoverflow https://stackoverflow.com/questions/1207939/adding-an-onclick-event-to-a-table-row
    */
   function addRowHandlers() {
     var table = document.getElementById("tabelle");
@@ -191,7 +190,7 @@ function tabelleFüllen() {
 }
 
 /**
- * Findet die Passenden Coordniaten zu einer Class_ID
+ * find correct coordinates for class_ID
  */
 function findXY(cell) {
   console.log("sucht");
@@ -226,7 +225,7 @@ function findXY(cell) {
 
 // Export to GeoJSON File
 function geojsonExport() {
-  //Die alten trainingspolygone werden in ein Array gepushed
+  // old tariningspolygones are pushed into an array
   oldLayer = [];
   geojsonLayer.forEach((item) => {
     fc = item.toGeoJSON();
@@ -235,7 +234,7 @@ function geojsonExport() {
 
   let nodata = '{"type":"FeatureCollection","features":[]}';
 
-  //Zusammenfügen der neuen und alten feature
+  // morphing of old and new trainingsdata
   let jsonData = {
     type: "FeatureCollection",
     name: "trainingsgebiete",
@@ -246,7 +245,7 @@ function geojsonExport() {
     features: data.concat(oldLayer),
   };
 
-  //Zuweisen einer eindeutigen ID zu jedem Feature
+  // giving each feature an iconic ID
   for (let i = 0; i < jsonData.features.length; i++) {
     jsonData.features[i].properties.id = i + 1;
   }
@@ -263,20 +262,21 @@ function geojsonExport() {
   if (string == nodata) {
     alert("No features are drawn");
   } else {
-    //Download
+    // Download
     linkElement.click();
   }
 }
 
+/**
+ * uploading the geojson
+ */
 function geojsonHochladen() {
-  //Die alten trainingspolygone werden in ein Array gepushed
   oldLayer = [];
   geojsonLayer.forEach((item) => {
     fc = item.toGeoJSON();
     oldLayer.push(fc.features[0]);
   });
 
-  //Zusammenfügen der neuen und alten feature
   let jsonData = {
     type: "FeatureCollection",
     name: "trainingsgebiete",
@@ -301,6 +301,9 @@ function geojsonHochladen() {
     .catch((error) => console.error("Error:", error));
 }
 
+/**
+ * input of tree numbers has to be an integer between 0 and 1000
+ */
 setInputFilter(
   document.getElementById("baumAnzahl"),
   function (value) {
@@ -315,6 +318,13 @@ setInputFilter(
   },
   "Must be between 0 and 1000"
 );
+
+/**
+ * sets input filter for Baumtiefe and Baumanzahl
+ * @param {*} textbox
+ * @param {*} inputFilter
+ * @param {*} errMsg
+ */
 function setInputFilter(textbox, inputFilter, errMsg) {
   [
     "input",

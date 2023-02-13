@@ -1,47 +1,45 @@
-if(localStorage.getItem('theme') == 'dark'){
-    setDarkMode();
+if (localStorage.getItem("theme") == "dark") {
+  setDarkMode();
 
-    if(document.getElementbyId('switchDark').checked){
-        localStorage.setItem('switchDark', true)
-    }
+  if (document.getElementbyId("switchDark").checked) {
+    localStorage.setItem("switchDark", true);
+  }
 }
 
+/**
+ * checks if dark mode is enabled and sets it
+ */
 function setDarkMode() {
-    let isDark = document.body.classList.toggle('darkMode');
+  let isDark = document.body.classList.toggle("darkMode");
 
-    if(isDark){
-        setDarkMode.checked = true;
-        localStorage.setItem('theme','dark');
-        document.getElementById('switchDark').setAttribute('checked', 'checked');
-        document.getElementById('tabelle').classList.remove('table-light');
-        document.getElementById('tabelle').classList.add('table-dark');
-
-    }
-    else{
-        setDarkMode.checked = false;
-        localStorage.removeItem('theme', 'dark');
-        document.getElementById('tabelle').classList.remove('table-dark');
-        document.getElementById('tabelle').classList.add('table-light');
-    }
+  if (isDark) {
+    setDarkMode.checked = true;
+    localStorage.setItem("theme", "dark");
+    document.getElementById("switchDark").setAttribute("checked", "checked");
+    document.getElementById("tabelle").classList.remove("table-light");
+    document.getElementById("tabelle").classList.add("table-dark");
+  } else {
+    setDarkMode.checked = false;
+    localStorage.removeItem("theme", "dark");
+    document.getElementById("tabelle").classList.remove("table-dark");
+    document.getElementById("tabelle").classList.add("table-light");
+  }
 }
-
-
 
 // ######################################################################
 /**
  * Darkmode version 2 inaktiv
  */
 
-const darkSwitch = document.getElementById('darkSwitch');
-window.addEventListener('load', () => {
-if (darkSwitch) {
+const darkSwitch = document.getElementById("darkSwitch");
+window.addEventListener("load", () => {
+  if (darkSwitch) {
     initTheme();
-    darkSwitch.addEventListener('change', () => {
-    resetTheme();
+    darkSwitch.addEventListener("change", () => {
+      resetTheme();
     });
-}
+  }
 });
-
 
 /**
  * Summary: function that adds or removes the attribute 'data-theme' depending if
@@ -55,14 +53,14 @@ if (darkSwitch) {
  * @return {void}
  */
 function initTheme() {
-const darkThemeSelected =
-    localStorage.getItem('darkSwitch') !== null &&
-    localStorage.getItem('darkSwitch') === 'dark';
-darkSwitch.checked = darkThemeSelected;
-darkThemeSelected ? document.body.setAttribute('data-theme', 'dark') :
-    document.body.removeAttribute('data-theme');
+  const darkThemeSelected =
+    localStorage.getItem("darkSwitch") !== null &&
+    localStorage.getItem("darkSwitch") === "dark";
+  darkSwitch.checked = darkThemeSelected;
+  darkThemeSelected
+    ? document.body.setAttribute("data-theme", "dark")
+    : document.body.removeAttribute("data-theme");
 }
-
 
 /**
  * Summary: resetTheme checks if the switch is 'on' or 'off' and if it is toggled
@@ -71,11 +69,11 @@ darkThemeSelected ? document.body.setAttribute('data-theme', 'dark') :
  * @return {void}
  */
 function resetTheme() {
-if (darkSwitch.checked) {
-    document.body.setAttribute('data-theme', 'dark');
-    localStorage.setItem('darkSwitch', 'dark');
-} else {
-    document.body.removeAttribute('data-theme');
-    localStorage.removeItem('darkSwitch');
-}
+  if (darkSwitch.checked) {
+    document.body.setAttribute("data-theme", "dark");
+    localStorage.setItem("darkSwitch", "dark");
+  } else {
+    document.body.removeAttribute("data-theme");
+    localStorage.removeItem("darkSwitch");
+  }
 }

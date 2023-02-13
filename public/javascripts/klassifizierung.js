@@ -13,6 +13,7 @@ function showLoadingScreen() {
   loading.style.display = "block";
 }
 
+// input has to be an integer between 0 and 1000
 setInputFilter(
   document.getElementById("baumAnzahl"),
   function (value) {
@@ -27,6 +28,12 @@ setInputFilter(
   },
   "Must be between 0 and 1000"
 );
+/**
+ * sets input filter for Baumanzahl and Baumtiefe
+ * @param {*} textbox
+ * @param {*} inputFilter
+ * @param {*} errMsg
+ */
 function setInputFilter(textbox, inputFilter, errMsg) {
   [
     "input",
@@ -112,7 +119,7 @@ map.on("draw:created", function (e) {
   drawnItems.addLayer(boundingBox);
 });
 
-// Löschen des letzten Punkts
+// deleting of last point
 map.on(L.Draw.Event.DRAWSTART, function (e) {
   if (boundingBox != null) {
     map.removeLayer(boundingBox);

@@ -1,22 +1,22 @@
 // Bounding Box Layer
 var boundingBox = null;
 
-// Trainingsdaten:
+// TRainingsdata::
 const trainingsdatenKnopf = document.getElementById("trainingsdaten");
-// Modell:
+// Model:
 const modellKnopf = document.getElementById("modell");
-// Trainingsdaten:
+// Trainingsdata:
 const trainingsdatenForm = document.getElementById("trainingsdatenForm");
 const trainingsdatenFiles = document.getElementById("trainingsdatenFiles");
 const trainingsdatenHochladen = document.getElementById(
   "trainingsdatenHochladen"
 );
-// Modell:
+// Model:
 const modellForm = document.getElementById("modellForm");
 const modelFiles = document.getElementById("modelFiles");
 const modellHochladen = document.getElementById("modellHochladen");
 
-// Trainingsdaten:
+// hide Trainingsdata:
 function hideTrainingsdatenForm() {
   trainingsdatenForm.style.display = "block"; // <-- Set it to block
   modellKnopf.style.display = "block"; // <-- Set it to block
@@ -26,7 +26,7 @@ function hideTrainingsdatenForm() {
   document.getElementById("algorithmusDiv").style.display = "block";
   document.getElementById("reduzierenDiv").style.display = "block";
 }
-// Modell:
+// hide Model:
 function hideModellForm() {
   modellForm.style.display = "block"; // <-- Set it to block
   trainingsdatenKnopf.style.display = "block"; // <-- Set it to block
@@ -36,14 +36,14 @@ function hideModellForm() {
   document.getElementById("algorithmusDiv").style.display = "none";
   document.getElementById("reduzierenDiv").style.display = "none";
 }
-// Trainingsdaten:
+// Event listener Trainingsdata:
 trainingsdatenForm.addEventListener("submit", submitFormT);
-// Modell:
+// Event listener Modell:
 modellForm.addEventListener("submit", submitFormM);
 
-// Trainingsdaten:
-// Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
-// Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
+// Trainingsdata:
+// Upload button is activated when a file has been choosen
+// Skript Ausführen Button is activated when raster and trainingsdata have been uploaded
 trainingsdatenFiles.addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (getDateityp(file.name) == "geojson") {
@@ -70,16 +70,20 @@ trainingsdatenFiles.addEventListener("change", (event) => {
 trainingsdatenHochladen.disabled = true;
 trainingsdatenForm.reset();
 
-// Modell:
-// Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
-// Skript Ausführen Button wird aktiviert, wenn Raster- und Modell vorliegen
+// Model:
+// Trainingsdata:
+// Upload button is activated when a file has been choosen
+// Skript Ausführen Button is activated when raster and model have been uploaded
 modelFiles.addEventListener("change", () => {
   modellHochladen.disabled = false;
 });
 modellHochladen.disabled = true;
 modellForm.reset();
 
-// Wenn Trainingsdaten hochgeladen wurden
+/**
+ * if Trainingsdata has been uploaded:
+ * @param {*} e
+ */
 function submitFormT(e) {
   if (document.getElementById("rasterdatenFiles").value != "") {
     skriptAusfuehren.disabled = false;
@@ -91,7 +95,7 @@ function submitFormT(e) {
   formData.append("daten", trainingsdatenFiles.files[0]);
   var dateiname = trainingsdatenFiles.files[0].name;
 
-  // Dateityp wird abgefragt und dann gesetzt
+  // Datatype is asked an set
   if (getDateityp(dateiname) == "geojson") {
     trainingsdatenFiles.files[0].type = "application/geo+json";
   } else if (getDateityp(dateiname) == "json") {
@@ -115,20 +119,19 @@ function submitFormT(e) {
       console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
       console.log(dateiname);
 
-      // Die verschiedenen Labels werden in einem Set gespeichert
+      // different labels are saved in a set
       let labels = new Set();
       data.json.features.forEach((element) => {
         labels.add(element.properties.Label);
       });
-      // Das Set mit den Labels wird in einen Array umgewandelt
+      // set is turned into an arry
       const labelsArray = Array.from(labels);
       let layerArray = [];
-      // Für jedes Array wird eine zufällige Frabe erstellt und in der Variabel color gespeichert
+      // for every element in labes is a different color generated
       for (let index = 0; index < labelsArray.length; index++) {
         let label = labelsArray[index];
         color = getRandomColor();
-        // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
-        // Farbe zuvor gespeicherte Farbe zugeordnet
+        // for every element with the same label the same color is attached
         data.json.features.forEach((element) => {
           if (element.properties.Label == label) {
             layerArray.push(
@@ -158,7 +161,10 @@ function submitFormT(e) {
     .catch((err) => ("Error occured", err));
 }
 
-// Wenn ein Modell hochgeladen wurde
+/**
+ * if a model is uploaded:
+ * @param {*} e
+ */
 function submitFormM(e) {
   if (document.getElementById("rasterdatenFiles").value != "") {
     skriptAusfuehren.disabled = false;

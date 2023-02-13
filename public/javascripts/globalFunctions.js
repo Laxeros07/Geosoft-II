@@ -5,27 +5,26 @@ var geojsonLayer;
 var aoaDif;
 
 /**
- * Lädt die Trainingsdaten auf die Karte
+ * adds trainings data to map
  * @param {*} url
  */
 function addGeoJSONToMap(url) {
   // this requests the file and executes a callback with the parsed result once it is available
   fetchJSONFile(url, function (data) {
     trainingspolygone = data;
-    // Die verschiedenen Labels werden in einem Set gespeichert
+    // all different labels are saved in a set
     let labels = new Set();
     data.features.forEach((element) => {
       labels.add(element.properties.Label);
     });
-    // Das Set mit den Labels wird in einen Array umgewandelt
+    // set with labels is turned into an array
     const labelsArray = Array.from(labels);
     let layerArray = [];
-    // Für jedes Array wird eine zufällige Frabe erstellt und in der Variabel color gespeichert
+    // for every label a random color is generated and saved in the varibale color
     for (let index = 0; index < labelsArray.length; index++) {
       let label = labelsArray[index];
       color = getRandomColor();
-      // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
-      // Farbe zuvor gespeicherte Farbe zugeordnet
+      // All features with the same label get the previous in color saved color
       data.features.forEach((element) => {
         if (
           element.properties.Label == label &&
@@ -57,14 +56,13 @@ function addGeoJSONToMap(url) {
 }
 
 /**
- * Lädt die Trainingsdaten auf die Karte
+ * adds trainings data to map
  * @param {*} url
  */
 function addDIToMap(url) {
   // this requests the file and executes a callback with the parsed result once it is available
   fetchJSONFile(url, function (data) {
-    // Für jedes Label werden alle features mit dem selben Label herausgefiltert und bekommen die
-    // Farbe zuvor gespeicherte Farbe zugeordnet
+    // All features with the same label get the previous in color saved color
     let layerArray = [];
     data.features.forEach((element) => {
       layerArray.push(
@@ -85,7 +83,7 @@ function addDIToMap(url) {
 }
 
 /**
- * Ruft eine lokale JSON Datei auf
+ * calls a local json file
  * Quelle: https://stackoverflow.com/questions/14388452/how-do-i-load-a-json-object-from-a-file-with-ajax
  * @param {*} path
  * @param {*} callback
@@ -106,7 +104,7 @@ function fetchJSONFile(path, callback) {
 }
 
 /**
- * Lädt ein Geotiff im RGB Format auf die Karte
+ * adds a geotiff in RGB to the map
  * @param {*} url
  */
 function addGeotiffToMap(url) {
@@ -158,7 +156,7 @@ function addGeotiffToMap(url) {
 }
 
 /**
- * Läd die Prediction und die AoA auf die Karte
+ * adds prediction and AOA to map
  * @param {*} predUrl
  * @param {*} aoaUrl
  */
@@ -203,7 +201,7 @@ function addPredictionAndAoaToMap(predUrl, aoaUrl) {
 }
 
 /**
- * Läd die Prediction und die AoA auf die Karte
+ * adds satellite photo to map
  * @param {*} predUrl
  * @param {*} aoaUrl
  */
@@ -227,7 +225,7 @@ function addAoaDifToMap(url) {
 }
 
 /**
- * Generiert eine zufällige Farbe im Hexadezimalformat
+ * generates a random color in hexadicimal format
  * @returns
  */
 function getRandomColor() {
@@ -240,18 +238,17 @@ function getRandomColor() {
 }
 
 /**
- * checkt, ob das Dateiformat Geopackage ist
+ * chacks if data format is a geopackage
  * @param {*} name
  * @returns
  */
 function getDateityp(name) {
   extension = name.toString().split(".")[1];
-  //console.log(extension);
   return extension;
 }
 
 /**
- * Setzt die richtige Reihenfolge
+ * sets correct order of layers on the map
  */
 function setOrder() {
   if (rasterLayer) {
@@ -273,22 +270,22 @@ function setOrder() {
 }
 
 /**
- * Überprüft ein geojson auf Richtigkeit
+ * checks if geojson has the correct format and semantics
  * @param {*} geojson
  * @returns
  */
 function validateGeoJSON(geojson) {
-  // Überprüfen Sie, ob das GeoJSON-Objekt eine "type" -Eigenschaft hat und diese den Wert "FeatureCollection" hat.
+  // checks if geojsan has a "type" -property and the value "FeatureCollection"
   if (!geojson.hasOwnProperty("type") || geojson.type !== "FeatureCollection") {
     return false;
   }
 
-  // Überprüfen Sie, ob das GeoJSON-Objekt eine "features" -Eigenschaft hat und dies ein Array ist.
+  // checks if geojson has "features" -property and if it's an array
   if (!geojson.hasOwnProperty("features") || !Array.isArray(geojson.features)) {
     return false;
   }
 
-  // Überprüfen Sie jedes Feature in der "features" -Eigenschaft auf seine Struktur.
+  // checks every element in the "features" -property according to its structure
   for (let i = 0; i < geojson.features.length; i++) {
     let feature = geojson.features[i];
     if (!feature.hasOwnProperty("type") || feature.type !== "Feature") {
@@ -297,11 +294,11 @@ function validateGeoJSON(geojson) {
     if (!feature.hasOwnProperty("geometry")) {
       return false;
     }
-    //Koordinaten dürfen nicht leer sein.
+    //coordinates aren't allowed to be empty
     if (feature.geometry.coordinates.length == 0) {
       return false;
     }
-    //Überprüfung auf Attribute
+    //checks attributes
     if (
       !feature.properties ||
       !feature.properties.id ||
@@ -312,6 +309,6 @@ function validateGeoJSON(geojson) {
     }
   }
 
-  // Wenn alle Überprüfungen erfolgreich waren, geben Sie true zurück.
+  // return true if everything is correct
   return true;
 }

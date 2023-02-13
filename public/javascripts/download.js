@@ -14,7 +14,9 @@ const modell = document.getElementById("modell");
 // call downloadZip after pressing the download button.
 downloadForm.addEventListener("submit", (event) => downloadZip(event));
 
-// this function filters after all checked boxes and sends them to the server
+/**
+ * this function filters after all checked boxes and sends them to the server
+ */
 function downloadZip(e) {
   e.preventDefault();
   let formData = new FormData();
@@ -72,7 +74,12 @@ function downloadZip(e) {
     });
 }
 
-// Wandelt Daten in ein Blob um, damit diese im Brwoser heruntergeladen werden können
+/**
+ * creating a blob element from the zip for the download in the browser
+ * @param {*} binaryData the zip which is to be downloaded
+ * @param {*} filename the name for the zip
+ * @returns a blob element with an url
+ */
 function downloadBlob(binaryData, filename) {
   // Create an object URL for the blob object
   const url = URL.createObjectURL(

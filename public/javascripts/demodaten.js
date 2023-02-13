@@ -1,11 +1,6 @@
-/**
- * GeoJSON objects are added to the map through a GeoJSON layer.
- * To create it and add it to a map, we can use the following code
- * a function that styles individual features based on their properties
- */
-
+// creating new layer
 let trainingspolygone = L.layerGroup().addTo(map);
-
+// setting color of the polygones according to their label and adding them to the map
 var trainingsgebiete = L.geoJSON(trainingsgebiete, {
   onEachFeature: addMyData,
   style: function (feature) {
@@ -44,5 +39,5 @@ layerControl.addOverlay(trainingsgebiete, "Trainingspolygone");
 function addMyData(feature, layer) {
   trainingspolygone.addLayer(layer);
 }
-
+// adds satellite photo to map
 addGeotiffToMap("../beispieldaten/rasterdaten.tif");

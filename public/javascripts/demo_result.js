@@ -1,5 +1,6 @@
+// creating new layer
 let trainingspolygone = L.layerGroup().addTo(map);
-
+// setting color of the polygones according to their label and adding them to the map
 var trainingsgebiete = L.geoJSON(trainingsgebiete, {
   onEachFeature: addMyData,
   style: function (feature) {
@@ -39,17 +40,17 @@ function addMyData(feature, layer) {
   trainingspolygone.addLayer(layer);
 }
 
+// adding the satellite photo to the map
 addGeotiffToMap("../beispieldaten/rasterdaten.tif");
 
+// adding the classification and the aoa to the map
 addPredictionAndAoaToMap(
   "../beispieldaten/prediction.tif",
   "../beispieldaten/AOA_klassifikation.tif"
 );
 addDIToMap("../beispieldaten/maxDI.geojson");
 
-//Legende
-
-// AoA
+// legend aoa
 var legend = L.control({ position: "bottomleft" });
 
 legend.onAdd = function () {
@@ -64,7 +65,7 @@ legend.onAdd = function () {
 
 legend.addTo(map);
 
-// Klassifizierung
+// legend classification
 var legend2 = L.control({ position: "bottomleft" });
 
 legend2.onAdd = function () {
@@ -78,6 +79,10 @@ legend2.addTo(map);
 var downloadKnopf = document.getElementById("downloadKnopf");
 downloadKnopf.addEventListener("click", (event) => downloadZip(event));
 
+/**
+ * Downloads all demo data as a zip if button is pressed
+ * @param {*} e | event
+ */
 function downloadZip(e) {
   e.preventDefault();
   let data = {};
@@ -101,6 +106,12 @@ function downloadZip(e) {
     });
 }
 
+/**
+ * creating a blob element from the zip for the download in the browser
+ * @param {*} binaryData the zip which is to be downloaded
+ * @param {*} filename the name for the zip
+ * @returns a blob element with an url
+ */
 function downloadBlob(binaryData, filename) {
   // Create an object URL for the blob object
   const url = URL.createObjectURL(

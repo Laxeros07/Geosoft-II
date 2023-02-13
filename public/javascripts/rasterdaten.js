@@ -7,8 +7,8 @@ const rasterdatenHochladen = document.getElementById("rasterdatenHochladen");
 
 rasterdatenForm.addEventListener("submit", submitFormR);
 
-// Hochladen Button wird aktiviert, wenn etwas hochgeladen wurde
-// Skript Ausführen Button wird aktiviert, wenn Raster- und Trainingsdaten vorliegen
+// Upload button is activated when a file has been choosen
+// Skript Ausführen Button is activated when raster and trainingsdtat or model have been uploaded
 rasterdatenFiles.addEventListener("change", () => {
   rasterdatenHochladen.disabled = false;
 });
