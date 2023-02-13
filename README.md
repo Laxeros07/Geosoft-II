@@ -23,7 +23,7 @@ nutzen Sie bitte folgende Befehle, um die beiden Images zu pullen und die Webanw
 
 ## Wartung/Tests
 
-Nutzen Sie bitte folgende Befehle, um die Tests für die JS Funktionen auszuführen:
+Nutzen Sie bitte folgende Befehle, um die Tests für die Funktionen auszuführen:
 * ```npm install --save-dev jest```
 * ```npm test```
 
