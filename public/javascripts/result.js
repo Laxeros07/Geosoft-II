@@ -22,14 +22,15 @@ legend.addTo(map);
 
 var legend2 = L.control({ position: "bottomleft" });
 
-legend2.onAdd = function () {
-  var img = L.DomUtil.create("img", "legend");
-  img.src += "http://localhost:3000/legend.png";
-  return img;
-};
+if (imageExists()) {
+  legend2.onAdd = function () {
+    var img = L.DomUtil.create("img", "legend");
+    img.src += "http://localhost:3000/legend.png";
+    return img;
+  };
 
-legend2.addTo(map);
-
+  legend2.addTo(map);
+}
 // Add Data to map
 addGeotiffToMap("http://localhost:3000/rasterdaten.tif");
 addPredictionAndAoaToMap(
@@ -41,3 +42,16 @@ addDIToMap("http://localhost:3000/maxDI.geojson");
 addAoaDifToMap("http://localhost:3000/AOADifferenz.tif");
 
 map.createPane("labels");
+
+/**
+ * Checks wether a image exists on a url.
+ * @returns boolean
+ */
+function imageExists() {
+  var http = new XMLHttpRequest();
+
+  http.open("HEAD", "http://localhost:3000/legend.png", false);
+  http.send();
+
+  return http.status != 404;
+}
