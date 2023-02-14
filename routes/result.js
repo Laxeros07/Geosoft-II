@@ -21,42 +21,47 @@ router.post("/", function (req, res, next) {
       }
     }
 
-    //Build url with parameters
-    switch (req.body.id) {
-      case "trainingsdaten":
-        url += "result?";
-        url += "datenanteil=" + req.body.reduzieren + "&";
-        if (bbSplit != "") {
-          //Boundingbox
-          url +=
-            "ymin=" +
-            bbSplit[2] +
-            "&ymax=" +
-            bbSplit[3] +
-            "&xmin=" +
-            bbSplit[0] +
-            "&xmax=" +
-            bbSplit[1] +
-            "&";
-        }
-        break;
-      case "modell":
-        url += "resultModell?";
-        url += "datenanteil=" + req.body.reduzieren + "&";
-        if (bbSplit != "") {
-          //Boundingbox
-          url +=
-            "ymin=" +
-            bbSplit[2] +
-            "ymax=" +
-            bbSplit[3] +
-            "xmin=" +
-            bbSplit[0] +
-            "xmax=" +
-            bbSplit[1] +
-            "&";
-        }
-        break;
+    if (req.body.id) {
+      //Build url with parameters
+      switch (req.body.id) {
+        case "trainingsdaten":
+          url += "result?";
+          url += "datenanteil=" + req.body.reduzieren + "&";
+          if (bbSplit != "") {
+            //Boundingbox
+            url +=
+              "ymin=" +
+              bbSplit[2] +
+              "&ymax=" +
+              bbSplit[3] +
+              "&xmin=" +
+              bbSplit[0] +
+              "&xmax=" +
+              bbSplit[1] +
+              "&";
+          }
+          break;
+        case "modell":
+          url += "resultModell?";
+          url += "datenanteil=" + req.body.reduzieren + "&";
+          if (bbSplit != "") {
+            //Boundingbox
+            url +=
+              "ymin=" +
+              bbSplit[2] +
+              "ymax=" +
+              bbSplit[3] +
+              "xmin=" +
+              bbSplit[0] +
+              "xmax=" +
+              bbSplit[1] +
+              "&";
+          }
+          break;
+      }
+    } else {
+      url += "result?";
+      url += "datenanteil=" + req.body.reduzieren + "&";
     }
     if (req.body.algorithmus == "rf") {
       // Random Forest Parameters
