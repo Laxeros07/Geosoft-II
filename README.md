@@ -32,27 +32,33 @@ Nutzen Sie bitte folgende Befehle, um die Tests für die Funktionen auszuführen
 ![grafik](https://user-images.githubusercontent.com/102729357/215824118-e502d007-78ea-4be7-880f-98bc749df30f.png)
 
 ## Schritt 2: Lade deine Trainingsdaten oder das Trainierte Modell:
-![image](https://user-images.githubusercontent.com/90246149/218687583-9245f290-09e6-4d18-ba9e-47505c011ad9.png)
+<img src="https://user-images.githubusercontent.com/90246149/218690677-fef7e2d5-9cb8-47cf-b1ce-383e6f94ed2c.png" height="206"> ![image](https://user-images.githubusercontent.com/90246149/218687583-9245f290-09e6-4d18-ba9e-47505c011ad9.png) 
+
 
 ## Schritt 3: Rasterdaten einladen:
 Lade deine Satellitendaten ein, auf denen du die Klassifizierung anwenden willst.
-![image](https://user-images.githubusercontent.com/90246149/218687830-c449fe07-0659-4124-beb1-f8166ff90d73.png)
 
-In der Karte kann nach dem Einladen der Rasterdaten eine Boundingbox, für das Festlegen einer Area of Interest, festgelegt werden.
+![image](https://user-images.githubusercontent.com/90246149/218687830-c449fe07-0659-4124-beb1-f8166ff90d73.png)
 
 ## Schritt 4: Unterscheidung zwischen Trainingsdaten und einem Modell:
 Basierend auf deiner Entscheidung, ob du Trainingsdaten oder ein Modell ausgewählt hast, ändern sich die folgenden Schritte
 
 ### Schritt 4.1: Trainingsdaten:
-Entscheide dich für einen der beiden Algorithmen (Random Forrest oder Decision Tree).
-Random Forrest: lege eine Anzahl und die Tiefe der Bäume fest.
 
 ![grafik](https://user-images.githubusercontent.com/102729357/215829306-8ee80cc5-ce89-4544-9685-25cbfbde1f34.png)
 
-### Schritt 4.2: Modell:
-Über die Scral-Bar hast du die Möglichkeit, die Anzahl benutzter Trainingsdaten zu variieren.
+* Entscheide dich für einen der beiden Algorithmen (Random Forrest oder Decision Tree).
+* Random Forrest: lege eine Anzahl und die Tiefe der Bäume fest. (optional)
+* Lege einen Bereich fest auf den das skript angewendet werden soll (optional)
 
-![grafik](https://user-images.githubusercontent.com/102729357/215829717-804353fd-9f81-448c-b039-1fad3e365531.png)
+<img src="https://user-images.githubusercontent.com/90246149/218690414-faf7a203-54db-402f-8cc3-f87d7ba8107d.png" height="300">
+
+* Über die Scral-Bar hast du die Möglichkeit, die Anzahl benutzter Trainingsdaten zu variieren. (optional)
+
+### Schritt 4.2: Modell:
+Bei einem bereits trainierten Modell besteht nur die Möglichkeit einen Bereich zu wählen auf den das Skript angewendet werden soll.
+
+![image](https://user-images.githubusercontent.com/90246149/218688514-c0de1214-04e8-47f4-9f14-6ae468d8ac18.png)
 
 ### Schritt 5: Ergebnis Seite:
 Nach der Ausführung der vorherigen Prozesse, gelangt ihr automatisch auf die Result Page.
@@ -67,12 +73,12 @@ Dieser Schritt kann beliebig oft wiederholt werden.
 
 ## Output 
 Als Output stehen nachher..
-* Klassifikation
-* Area of Applicability
-* Trainingspolygone
-* Modell
-* Dissimilarity Index
-* AOA Differenz
+* Klassifikation (tif)
+* Area of Applicability (tif)
+* Trainingspolygone (geojson)
+* Modell (RDS)
+* Dissimilarity Index (tif)
+* AOA Differenz (tif)
 
 ..zur Verfügung 
 
