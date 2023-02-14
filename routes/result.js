@@ -43,7 +43,6 @@ router.post("/", function (req, res, next) {
           break;
         case "modell":
           url += "resultModell?";
-          url += "datenanteil=" + req.body.reduzieren + "&";
           if (bbSplit != "") {
             //Boundingbox
             url +=

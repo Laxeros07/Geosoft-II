@@ -43,6 +43,7 @@ RUN R -e "install.packages('RColorBrewer', dependencies=TRUE)"
 RUN R -e "install.packages('CAST', dependencies=TRUE)"
 RUN R -e "install.packages('cowplot', dependencies=TRUE)"
 RUN R -e "install.packages('tidyterra', dependencies=TRUE)"
+RUN R -e "install.packages('testthat', dependencies=TRUE)"
 
 COPY ./r-backend/plumber.R ./
 
