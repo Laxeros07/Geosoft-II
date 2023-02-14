@@ -1,6 +1,6 @@
 # Geosoft-II Apollo13
 
-Dies ist das Repo zum Kurs Geosoft II und dem Projekt Apollo 13 der Firma Spacey.
+Dies ist das Repository zum Kurs Geosoftware II und dem Projekt Apollo 13 der Firma Spacey.
 Entwickelt wurde diese von den folgenden Personen:
 * Felix Disselkamp
 * Eva Langstein
@@ -10,7 +10,7 @@ Entwickelt wurde diese von den folgenden Personen:
 
 ## Ziel und Zweck
 
-Mit unserer Webanwendung können Sie Satellitendaten klassifizieren und die AOA berechnen.
+Mit unserer Webanwendung können Sie Satellitendaten klassifizieren und die AOA(area of applicability) berechnen.
 Die Daten können im Anschluss bearbeitet werden, um eine größere AOA zu erreichen. Der Algorithmus gibt Ihnen dafür Gebiete aus, in denen weitere Trainingsdaten erstellt werden können. So wird das Modell immer besser.
 
 ## Installation
