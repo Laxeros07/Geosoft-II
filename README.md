@@ -32,13 +32,13 @@ Nutzen Sie bitte folgende Befehle, um die Tests für die Funktionen auszuführen
 ![grafik](https://user-images.githubusercontent.com/102729357/215824118-e502d007-78ea-4be7-880f-98bc749df30f.png)
 
 ## Schritt 2: Lade deine Trainingsdaten oder das Trainierte Modell:
-![image](https://user-images.githubusercontent.com/90246149/218687583-9245f290-09e6-4d18-ba9e-47505c011ad9.png)
+<img src="https://user-images.githubusercontent.com/90246149/218690677-fef7e2d5-9cb8-47cf-b1ce-383e6f94ed2c.png" height="206"> ![image](https://user-images.githubusercontent.com/90246149/218687583-9245f290-09e6-4d18-ba9e-47505c011ad9.png) 
+
 
 ## Schritt 3: Rasterdaten einladen:
 Lade deine Satellitendaten ein, auf denen du die Klassifizierung anwenden willst.
-![image](https://user-images.githubusercontent.com/90246149/218687830-c449fe07-0659-4124-beb1-f8166ff90d73.png)
 
-In der Karte kann nach dem Einladen der Rasterdaten eine Boundingbox, für das Festlegen einer Area of Interest, festgelegt werden.
+![image](https://user-images.githubusercontent.com/90246149/218687830-c449fe07-0659-4124-beb1-f8166ff90d73.png)
 
 ## Schritt 4: Unterscheidung zwischen Trainingsdaten und einem Modell:
 Basierend auf deiner Entscheidung, ob du Trainingsdaten oder ein Modell ausgewählt hast, ändern sich die folgenden Schritte
