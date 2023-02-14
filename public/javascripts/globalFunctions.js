@@ -68,8 +68,8 @@ function addDIToMap(url) {
       layerArray.push(
         L.geoJSON(element, {
           style: {
-            color: "red",
-            fillColor: "red",
+            color: "#bc13fe",
+            fillColor: "#bc13fe",
             weight: 3,
             opacity: 0.65,
             fillOpacity: 0.65,
