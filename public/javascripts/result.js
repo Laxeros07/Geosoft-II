@@ -10,11 +10,11 @@ legend.onAdd = function () {
     '<i style="background: #fff"></i><small><span>Schlechte Klassifikation</span></small><br>';
   div.innerHTML += "<h4>AoA Differenz</h4>";
   div.innerHTML +=
-    '<i style="background: #000"></i><small><span>Verschlechtert</span></small><br>';
+    '<i style="background: #fff"></i><small><span>Verschlechtert</span></small><br>';
   div.innerHTML +=
     '<i style="background: #666"></i><small><span>Gleich</span></small><br>';
   div.innerHTML +=
-    '<i style="background: #fff"></i><small><span>Verbessert</span></small><br>';
+    '<i style="background: #000"></i><small><span>Verbessert</span></small><br>';
   return div;
 };
 
