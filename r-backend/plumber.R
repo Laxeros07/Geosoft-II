@@ -10,13 +10,17 @@ function(msg = "") {
 
 #* function to test if r functions in plumber work
 #* @return string, if everything has worked well
-Testfunktion  <- function(){
+Testfunktion <- function() {
   library(testthat)
   hallo <- "bla bla"
-  return("hat geklappt")}
+  return("hat geklappt")
+}
 
+library(testthat)
 # Test the function
-test_that('teste Testfunktion', {expect_identical(Testfunktion(), "hat geklappt")})
+test_that("teste Testfunktion", {
+  expect_identical(Testfunktion(), "hat geklappt")
+})
 
 
 
@@ -84,14 +88,15 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   trainingsdaten$PolyID <- 1:nrow(trainingsdaten)
   extr <<- merge(extr, trainingsdaten, by.x = "ID", by.y = "PolyID")
 
-
+  class(datenanteil) <- "numeric"
+  datenanteil <- datenanteil / 100
   # use less amount of data for faster calculation
   extr_subset <- extr[createDataPartition(extr$ID, p = datenanteil)$Resample1, ]
   trainIDs <- createDataPartition(extr$ID, p = datenanteil, list = FALSE)
   trainDat <- extr[trainIDs, ]
   trainDat <- trainDat[complete.cases(trainDat[, predictors]), ]
 
-  #train Model
+  # train Model
   if (algorithmus == "rf") {
     # queryhHyperparameter for model training
     if (is.na(baumAnzahl)) {
@@ -126,24 +131,24 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA, baumAnzahl = NA, baumTiefe 
   prediction <- predict(as(rasterdaten, "Raster"), model)
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  
+
   # create suitable color table for color blind people
   farben1 <- brewer.pal(n = 12, name = "Paired")
   farben2 <- brewer.pal(n = 8, name = "Set2")
   farben3 <- brewer.pal(n = 8, name = "Dark2")
   farben <- c(farben1, farben2, farben3)
   test <- as.polygons(prediction_terra)
-  neueFarben <-c("#000000")
+  neueFarben <- c("#000000")
   index <- 1
   alle <- as.data.frame(levels(prediction_terra))
-  for(i in 1:length(alle$value)){
-    if(!(alle$value[i] %in% values(test)$layer)){
+  for (i in 1:length(alle$value)) {
+    if (!(alle$value[i] %in% values(test)$layer)) {
       neueFarben <- c(neueFarben, "#000000")
     } else {
-        neueFarben <- c(neueFarben, farben[index])
-        index <- index+1
-      }
+      neueFarben <- c(neueFarben, farben[index])
+      index <- index + 1
     }
+  }
   coltab(prediction_terra) <- neueFarben
 
   # export classification
@@ -222,24 +227,24 @@ function(ymin = NA, ymax = NA, xmin = NA, xmax = NA) {
   prediction <- predict(as(rasterdaten, "Raster"), modell)
   projection(prediction) <- "+proj=longlat +datum=WGS84 +no_defs +type=crs"
   prediction_terra <- as(prediction, "SpatRaster")
-  
+
   # create suitable color table for color blind people
   farben1 <- brewer.pal(n = 12, name = "Paired")
   farben2 <- brewer.pal(n = 8, name = "Set2")
   farben3 <- brewer.pal(n = 8, name = "Dark2")
   farben <- c(farben1, farben2, farben3)
   test <- as.polygons(prediction_terra)
-  neueFarben <-c("#000000")
+  neueFarben <- c("#000000")
   index <- 1
   alle <- as.data.frame(levels(prediction_terra))
-  for(i in 1:length(alle$value)){
-    if(!(alle$value[i] %in% values(test)$layer)){
+  for (i in 1:length(alle$value)) {
+    if (!(alle$value[i] %in% values(test)$layer)) {
       neueFarben <- c(neueFarben, "#000000")
     } else {
-        neueFarben <- c(neueFarben, farben[index])
-        index <- index+1
-      }
+      neueFarben <- c(neueFarben, farben[index])
+      index <- index + 1
     }
+  }
   coltab(prediction_terra) <- neueFarben
 
   # export classification
