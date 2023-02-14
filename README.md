@@ -50,7 +50,7 @@ Basierend auf deiner Entscheidung, ob du Trainingsdaten oder ein Modell ausgewä
 
 ![image](https://user-images.githubusercontent.com/90246149/218690414-faf7a203-54db-402f-8cc3-f87d7ba8107d.png)
 
-* Über die Scral-Bar hast du die Möglichkeit, die Anzahl benutzter Trainingsdaten zu variieren. (optional)
+* Über den Schieberegler hast du die Möglichkeit, die Anzahl benutzter Trainingsdaten zu variieren. (optional)
 
 ![grafik](https://user-images.githubusercontent.com/102729357/215829306-8ee80cc5-ce89-4544-9685-25cbfbde1f34.png)
 
