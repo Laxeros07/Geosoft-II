@@ -63,7 +63,7 @@ Bei einem bereits trainierten Modell besteht nur die Möglichkeit einen Bereich 
 Nach der Ausführung der vorherigen Prozesse, gelangt ihr automatisch auf die Result Page.
 Hier könnt ihr euche die Ergebnisse der AOA angucken und die verschiedenen Layer auswählen.
 
-Unter anderem wird auf der Seite auch der Dissimliartiy Index angegeben. An diesem kann erkannt werden in welchen Bereichen noch Trainingspolygone fehlen.
+Unter anderem wird auf der Seite auch der Dissimliarity Index angegeben. An diesem kann erkannt werden in welchen Bereichen noch Trainingspolygone fehlen.
 
 ## 5.1 Ergebnis verbessern: 
 Falls ihr mit dem Ergebnis so noch nicht zu frieden seid, könnt Ihr in dem Bereich "Trainingsdaten bearbeiten" die Trainingspolygone bearbeiten oder an fehlenden Stellen ergänzen.
